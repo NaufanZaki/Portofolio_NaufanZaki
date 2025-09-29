@@ -93,14 +93,7 @@ const Navigation: React.FC = () => {
                     }}
                   />
                 </motion.div>
-                <motion.span 
-                  className="font-title text-lg md:text-xl font-bold text-primary group-hover:text-accent transition-colors hidden sm:block"
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  Zaki
-                </motion.span>
+              
               </motion.button>
 
               {/* Desktop Navigation */}

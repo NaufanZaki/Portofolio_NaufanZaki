@@ -99,7 +99,7 @@ const Navigation: React.FC = () => {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  Naufan
+                  Zaki
                 </motion.span>
               </motion.button>
 

@@ -1,6 +1,5 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import heroBackground from '@/assets/hero-background.jpg';
+import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface HeroSectionProps {
   onViewWork: () => void;
@@ -8,63 +7,137 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
+  const calculateLetterOffset = (letterIndex: number, totalLetters: number, lineIndex: number) => {
+    const letterElement = document.querySelector(`[data-letter-id="${lineIndex}-${letterIndex}"]`);
+    if (!letterElement) return { x: 0, y: 0 };
+    
+    const rect = letterElement.getBoundingClientRect();
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    if (!containerRect) return { x: 0, y: 0 };
+    
+    const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
+    const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
+    
+    const distance = Math.sqrt(
+      Math.pow(mousePosition.x - letterCenterX, 2) + 
+      Math.pow(mousePosition.y - letterCenterY, 2)
+    );
+    
+    const maxDistance = 150;
+    const repelStrength = Math.max(0, (maxDistance - distance) / maxDistance);
+    
+    if (repelStrength === 0) return { x: 0, y: 0 };
+    
+    const angle = Math.atan2(letterCenterY - mousePosition.y, letterCenterX - mousePosition.x);
+    const offsetX = Math.cos(angle) * repelStrength * 30;
+    const offsetY = Math.sin(angle) * repelStrength * 30;
+    
+    return { x: offsetX, y: offsetY };
+  };
+
+  const AnimatedLetter: React.FC<{ 
+    children: string; 
+    index: number; 
+    totalLetters: number; 
+    lineIndex: number;
+  }> = ({ children, index, totalLetters, lineIndex }) => {
+    const offset = calculateLetterOffset(index, totalLetters, lineIndex);
+    
+    return (
+      <motion.span
+        data-letter-id={`${lineIndex}-${index}`}
+        initial={{ opacity: 0, y: 50, rotateX: -90 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0, 
+          rotateX: 0,
+          x: offset.x,
+          translateY: offset.y
+        }}
+        transition={{
+          opacity: { delay: index * 0.05, duration: 0.8 },
+          y: { delay: index * 0.05, duration: 0.8, type: "spring" },
+          rotateX: { delay: index * 0.05, duration: 0.8 },
+          x: { type: "spring", stiffness: 200, damping: 20 },
+          translateY: { type: "spring", stiffness: 200, damping: 20 }
+        }}
+        className="inline-block"
+        style={{
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        {children === ' ' ? '\u00A0' : children}
+      </motion.span>
+    );
+  };
+
+  const AnimatedWord: React.FC<{ 
+    children: string; 
+    startIndex: number; 
+    lineIndex: number;
+  }> = ({ children, startIndex, lineIndex }) => {
+    return (
+      <>
+        {children.split('').map((letter, letterIndex) => (
+          <AnimatedLetter 
+            key={letterIndex} 
+            index={startIndex + letterIndex}
+            totalLetters={children.length}
+            lineIndex={lineIndex}
+          >
+            {letter}
+          </AnimatedLetter>
+        ))}
+      </>
+    );
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{ backgroundImage: `url(${heroBackground})` }}
-      />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 hero-gradient" />
-      
-      {/* Interactive particles overlay */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/20 rounded-full animate-float" />
-        <div className="absolute top-3/4 right-1/3 w-3 h-3 bg-accent/30 rounded-full animate-float stagger-delay-1" />
-        <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-primary/40 rounded-full animate-float stagger-delay-2" />
-        <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-accent/25 rounded-full animate-float stagger-delay-3" />
-      </div>
-      
-      {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in-up">
-          From Big Data to{' '}
-          <span className="text-gradient">Secure Systems</span>,
-          <br />
-          I Build Robust and{' '}
-          <span className="text-gradient">Intelligent Solutions</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl mb-12 font-subtitle text-muted-foreground max-w-2xl mx-auto animate-fade-in-up stagger-delay-1">
-          Web Developer & Machine Learning Engineer with expertise in scalable systems and secure applications
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up stagger-delay-2">
-          <Button 
-            onClick={onViewWork}
-            className="btn-hero px-8 py-4 text-lg font-medium rounded-xl"
-            size="lg"
+        ref={containerRef}
+        className="relative z-10 text-center px-6"
+        onMouseMove={handleMouseMove}
+      >
+        {/* Main Name Block */}
+        <div className="mb-8">
+          <motion.div 
+            className="text-6xl md:text-8xl lg:text-9xl font-bold text-foreground leading-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
           >
-            View My Work
-          </Button>
-          <Button 
-            onClick={onGetInTouch}
-            className="btn-outline-hero px-8 py-4 text-lg font-medium rounded-xl"
-            variant="outline"
-            size="lg"
-          >
-            Get In Touch
-          </Button>
+            <div className="block">
+              <AnimatedWord lineIndex={0} startIndex={0}>Naufan Zaki</AnimatedWord>
+            </div>
+            <div className="block">
+              <AnimatedWord lineIndex={1} startIndex={0}>Luqmanulhakim</AnimatedWord>
+            </div>
+          </motion.div>
         </div>
-      </div>
-      
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse" />
-        </div>
+
+        {/* Subtitle */}
+        <motion.p 
+          className="font-subtitle text-lg md:text-xl text-muted-foreground tracking-wider"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+        >
+          Full-Stack Developer & Creative Technologist
+        </motion.p>
       </div>
     </section>
   );

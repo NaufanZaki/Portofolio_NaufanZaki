@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 interface HeroSectionProps {
   onViewWork: () => void;
@@ -8,45 +8,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setMousePosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
-    }
-  };
-
-  const calculateLetterOffset = (letterIndex: number, totalLetters: number, lineIndex: number) => {
-    const letterElement = document.querySelector(`[data-letter-id="${lineIndex}-${letterIndex}"]`);
-    if (!letterElement) return { x: 0, y: 0 };
-    
-    const rect = letterElement.getBoundingClientRect();
-    const containerRect = containerRef.current?.getBoundingClientRect();
-    if (!containerRect) return { x: 0, y: 0 };
-    
-    const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
-    const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
-    
-    const distance = Math.sqrt(
-      Math.pow(mousePosition.x - letterCenterX, 2) + 
-      Math.pow(mousePosition.y - letterCenterY, 2)
-    );
-    
-    const maxDistance = 150;
-    const repelStrength = Math.max(0, (maxDistance - distance) / maxDistance);
-    
-    if (repelStrength === 0) return { x: 0, y: 0 };
-    
-    const angle = Math.atan2(letterCenterY - mousePosition.y, letterCenterX - mousePosition.x);
-    const offsetX = Math.cos(angle) * repelStrength * 30;
-    const offsetY = Math.sin(angle) * repelStrength * 30;
-    
-    return { x: offsetX, y: offsetY };
-  };
+  const isInView = useInView(containerRef, { once: false, margin: "-10%" });
 
   const AnimatedLetter: React.FC<{ 
     children: string; 
@@ -54,29 +16,36 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
     totalLetters: number; 
     lineIndex: number;
   }> = ({ children, index, totalLetters, lineIndex }) => {
-    const offset = calculateLetterOffset(index, totalLetters, lineIndex);
+    const [isHovered, setIsHovered] = useState(false);
     
     return (
       <motion.span
         data-letter-id={`${lineIndex}-${index}`}
-        initial={{ opacity: 0, y: 50, rotateX: -90 }}
+        initial={{ opacity: 0, y: 100 }}
         animate={{ 
-          opacity: 1, 
-          y: 0, 
-          rotateX: 0,
-          x: offset.x,
-          translateY: offset.y
+          opacity: isInView ? 1 : 0, 
+          y: isInView ? 0 : 100,
+        }}
+        whileHover={{
+          y: -20,
+          transition: { type: "spring", stiffness: 400, damping: 10 }
         }}
         transition={{
-          opacity: { delay: index * 0.05, duration: 0.8 },
-          y: { delay: index * 0.05, duration: 0.8, type: "spring" },
-          rotateX: { delay: index * 0.05, duration: 0.8 },
-          x: { type: "spring", stiffness: 200, damping: 20 },
-          translateY: { type: "spring", stiffness: 200, damping: 20 }
+          opacity: { delay: isInView ? index * 0.03 : 0, duration: 0.6 },
+          y: { 
+            delay: isInView ? index * 0.03 : 0, 
+            duration: 0.6, 
+            type: "spring",
+            stiffness: 100,
+            damping: 20
+          }
         }}
-        className="inline-block"
+        className="inline-block cursor-pointer relative"
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
         style={{
-          transformStyle: 'preserve-3d'
+          filter: isHovered ? 'drop-shadow(0 25px 25px rgba(0, 0, 0, 0.3))' : 'drop-shadow(0 0px 0px rgba(0, 0, 0, 0))',
+          transition: 'filter 0.3s ease'
         }}
       >
         {children === ' ' ? '\u00A0' : children}
@@ -110,7 +79,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
       <div 
         ref={containerRef}
         className="relative z-10 text-center px-6"
-        onMouseMove={handleMouseMove}
       >
         {/* Main Name Block */}
         <div className="mb-8">
@@ -132,9 +100,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
         {/* Subtitle */}
         <motion.p 
           className="font-subtitle text-lg md:text-xl text-muted-foreground tracking-wider"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ 
+            opacity: isInView ? 1 : 0, 
+            y: isInView ? 0 : 30 
+          }}
+          transition={{ delay: isInView ? 0.8 : 0, duration: 0.8 }}
         >
           Full-Stack Developer & Creative Technologist
         </motion.p>

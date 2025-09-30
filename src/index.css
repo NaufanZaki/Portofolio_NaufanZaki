@@ -39,6 +39,10 @@
 
     --radius: 0.75rem;
 
+    --card-background: 48 60% 96%;
+    --card-font-primary: 50 8% 37%;
+    --card-font-accent: 34 49% 35%;
+
     /* Portfolio-specific tokens */
     --hero-gradient-from: 45 33% 93%;
     --hero-gradient-to: 45 33% 88%;

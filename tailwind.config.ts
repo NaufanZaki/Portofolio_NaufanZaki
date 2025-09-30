@@ -47,6 +47,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "card-background": "hsl(var(--card-background))",
+        "card-font-primary": "hsl(var(--card-font-primary))",
+        "card-font-accent": "hsl(var(--card-font-accent))",
         // Portfolio-specific colors
         surface: "hsl(var(--surface))",
         "surface-elevated": "hsl(var(--surface-elevated))",

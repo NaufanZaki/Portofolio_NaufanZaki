@@ -71,30 +71,16 @@ const ExperienceSection: React.FC = () => {
 
   const titleVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut"
-      } 
-    },
+    visible: { opacity: 1, y: 0 },
   };
 
   const navItemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { 
-        duration: 0.4, 
-        ease: "easeOut"
-      } 
-    },
+    visible: { opacity: 1, x: 0 },
   };
 
   return (
-    <section id="experience" className="section-padding bg-surface/30 relative overflow-hidden" ref={ref}>
+    <section id="experience" className="section-padding bg-background/80 backdrop-blur-sm relative overflow-hidden" ref={ref}>
       {/* Animated background grid */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0" style={{
@@ -119,6 +105,7 @@ const ExperienceSection: React.FC = () => {
           <motion.div 
             className="lg:col-span-1 lg:sticky lg:top-24 lg:self-start"
             variants={titleVariants}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <div className="mb-12 relative">
               <div className="relative">
@@ -149,6 +136,7 @@ const ExperienceSection: React.FC = () => {
                   onHoverEnd={() => setHoveredIndex(null)}
                   className="w-full text-left relative group"
                   variants={navItemVariants}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                 >
                   <div className={`p-5 rounded-2xl transition-all duration-300 flex items-center gap-4 relative overflow-hidden ${
                     selectedIndex === index
@@ -185,7 +173,7 @@ const ExperienceSection: React.FC = () => {
                 </motion.button>
               ))}
               {experiences.length > 3 && (
-                <motion.div className="pt-2" variants={navItemVariants}>
+                <motion.div className="pt-2" variants={navItemVariants} transition={{ duration: 0.4, ease: "easeOut" }}>
                   <button
                     onClick={() => setShowAll(!showAll)}
                     className="w-full text-center py-3 px-5 rounded-xl bg-surface/50 hover:bg-surface/80 text-sm font-medium text-primary transition-all duration-300 flex items-center justify-center gap-2 group"
@@ -206,15 +194,9 @@ const ExperienceSection: React.FC = () => {
             className="lg:col-span-2 relative min-h-[600px]"
             variants={{
               hidden: { opacity: 0, y: 30 },
-              visible: { 
-                opacity: 1, 
-                y: 0,
-                transition: { 
-                  duration: 0.5, 
-                  ease: "easeOut"
-                } 
-              },
+              visible: { opacity: 1, y: 0 }
             }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <AnimatePresence mode="wait">
               <motion.div

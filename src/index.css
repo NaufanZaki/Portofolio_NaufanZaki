@@ -9,43 +9,43 @@
 @layer base {
   :root {
     /* Portfolio Color Palette - Warm Earth Tones */
-    --background: 42 12% 64%; /* #ADAA94 - Warm sage green */
-    --foreground: 45 19% 95%; /* #FBF9F1 - Warm off-white */
+    --background: 45 33% 93%; /* #F0EEDE - New warm white */
+    --foreground: 42 8% 25%; /* #45443C - Dark olive for text */
 
-    --card: 42 15% 68%; /* Slightly lighter sage for cards */
-    --card-foreground: 45 19% 95%;
+    --card: 45 33% 96%; /* Slightly lighter white for cards */
+    --card-foreground: 42 8% 25%;
 
-    --popover: 42 15% 68%;
-    --popover-foreground: 45 19% 95%;
+    --popover: 45 33% 96%;
+    --popover-foreground: 42 8% 25%;
 
-    --primary: 31 50% 35%; /* #87602D - Warm bronze accent */
-    --primary-foreground: 45 19% 95%;
+    --primary: 42 12% 64%; /* #ADAA94 - Sage green as primary */
+    --primary-foreground: 45 33% 93%;
 
-    --secondary: 42 8% 40%; /* #676556 - Muted olive */
-    --secondary-foreground: 45 19% 95%;
+    --secondary: 31 50% 35%; /* #87602D - Bronze as secondary */
+    --secondary-foreground: 45 33% 93%;
 
     --muted: 42 8% 45%;
     --muted-foreground: 42 8% 25%;
 
-    --accent: 31 50% 35%;
-    --accent-foreground: 45 19% 95%;
+    --accent: 42 12% 64%; /* Sage green as accent */
+    --accent-foreground: 45 33% 93%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 45 19% 95%;
+    --destructive-foreground: 45 33% 93%;
 
-    --border: 42 12% 52%;
-    --input: 42 15% 68%;
-    --ring: 31 50% 35%;
+    --border: 42 12% 80%;
+    --input: 42 12% 85%;
+    --ring: 42 12% 64%;
 
     --radius: 0.75rem;
 
     /* Portfolio-specific tokens */
-    --hero-gradient-from: 42 12% 64%;
-    --hero-gradient-to: 42 15% 58%;
-    --surface: 42 18% 72%;
-    --surface-elevated: 42 20% 76%;
-    --text-subtle: 42 8% 30%;
-    --border-soft: 42 10% 55%;
+    --hero-gradient-from: 45 33% 93%;
+    --hero-gradient-to: 45 33% 88%;
+    --surface: 45 33% 96%;
+    --surface-elevated: 45 33% 98%;
+    --text-subtle: 42 8% 40%;
+    --border-soft: 42 12% 85%;
 
     /* Typography Scale */
     --font-title: 'Segoe UI', sans-serif;

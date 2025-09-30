@@ -84,7 +84,7 @@ const experiences = [
 ];
 
 const DRAG_BUFFER = 35;
-const CARD_WIDTH_OFFSET = 350;
+const CARD_WIDTH_OFFSET = 320;
 
 const cardContentVariants = {
   hidden: { opacity: 0 },
@@ -129,7 +129,7 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative transition-transform duration-300 h-[400px]"
+      className="relative transition-transform duration-300 h-[450px] md:h-[400px]"
       onClick={() => isActive && openModal(exp)}
     >
       <Card
@@ -141,24 +141,14 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
         )}
         style={{ transform: "translateZ(20px)" }}
       >
-        {isActive && (
-          <div className="absolute inset-0"></div>
-        )}
-        <CardContent className="p-6 relative z-10 flex flex-col h-full">
-          <motion.span
-            style={{ transform: "translateZ(50px)" }}
-            className="text-5xl drop-shadow-lg absolute top-6 right-6"
-          >
-            {exp.logo}
-          </motion.span>
+        <img
+          src={exp.image}
+          alt={exp.role}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-          <motion.h3
-            style={{ transform: "translateZ(40px)" }}
-            className="text-2xl font-bold mb-2 text-card-foreground"
-          >
-            {exp.role}
-          </motion.h3>
-
+        <CardContent className="p-6 relative z-10 flex flex-col h-full justify-end">
           <div className="flex-grow" />
 
           <AnimatePresence>
@@ -171,12 +161,21 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
                 className="space-y-2"
                 style={{ transform: "translateZ(30px)" }}
               >
-                <motion.p variants={cardItemVariants} className="text-muted-foreground text-md font-subtitle">
-                  {exp.organization}
-                </motion.p>
-                <motion.p variants={cardItemVariants} className="text-muted-foreground/80 text-sm">
-                  {exp.duration}
-                </motion.p>
+                <motion.h3
+                  variants={cardItemVariants}
+                  className="text-2xl font-bold text-white"
+                  style={{ transform: "translateZ(40px)" }}
+                >
+                  {exp.role}
+                </motion.h3>
+                <div className="space-y-1">
+                  <motion.p variants={cardItemVariants} className="text-white/80 text-md font-subtitle">
+                    {exp.organization}
+                  </motion.p>
+                  <motion.p variants={cardItemVariants} className="text-white/60 text-sm">
+                    {exp.duration}
+                  </motion.p>
+                </div>
 
                 <motion.div
                   variants={cardItemVariants}
@@ -197,6 +196,54 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
         </CardContent>
       </Card>
     </motion.div>
+  );
+};
+
+const CrayonArrow = () => {
+  return (
+    <motion.svg
+      width="120"
+      height="60"
+      viewBox="0 0 120 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="absolute -top-5 center hidden xl:block"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{
+        opacity: [0, 1, 1, 0],
+        x: [-20, 0, 0, 20],
+      }}
+      transition={{
+        duration: 2.5,
+        repeat: Infinity,
+        repeatDelay: 1,
+        ease: "easeInOut"
+      }}
+    >
+      <defs>
+        <filter id="crayon-texture">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+        </filter>
+      </defs>
+      <motion.path
+        d="M 10 30 Q 40 15, 70 25 Q 85 30, 95 28"
+        stroke="currentColor"
+        strokeWidth="3.5"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        filter="url(#crayon-texture)"
+        className="text-primary/70"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+      />
+      <motion.path d="M 95 28 L 88 23 M 95 28 L 90 34" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" filter="url(#crayon-texture)" className="text-primary/70" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.3, repeat: Infinity, repeatDelay: 1.2 }} />
+      <motion.text x="30" y="50" className="text-xs font-medium fill-muted-foreground" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.5, repeat: Infinity, repeatDelay: 1.5 }}>
+        Drag me!
+      </motion.text>
+    </motion.svg>
   );
 };
 
@@ -282,7 +329,7 @@ const ExperienceSection = () => {
             </motion.p>
           </div>
           <motion.div
-            className="relative h-[550px] flex items-center justify-center select-none"
+            className="relative h-[500px] md:h-[550px] flex items-center justify-center select-none"
             drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={onDragEnd} dragElastic={0.1}
           >
             {experiences.map((exp, index) => {
@@ -292,14 +339,11 @@ const ExperienceSection = () => {
                 <motion.div
                   key={exp.id}
                   className="absolute cursor-grab active:cursor-grabbing"
-                  style={{
-                    width: "clamp(300px, 40vw, 400px)",
-                    transformOrigin: "center",
-                    perspective: 800,
-                  }}
+                  style={{ width: "clamp(280px, 80vw, 380px)", transformOrigin: "center", perspective: 800 }}
                   initial={false}
                   animate={{
-                    x: offset * CARD_WIDTH_OFFSET, y: Math.abs(offset) * 60,
+                    x: offset * (window.innerWidth < 768 ? 290 : CARD_WIDTH_OFFSET),
+                    y: Math.abs(offset) * 40,
                     scale: isActive ? 1 : 0.75, rotateZ: offset * 8,
                     zIndex: experiences.length - Math.abs(offset), opacity: isActive ? 1 : 0.4,
                   }}
@@ -315,6 +359,7 @@ const ExperienceSection = () => {
             <Button onClick={handleNext} variant="outline" size="icon" className="absolute right-0 sm:right-4 z-20 bg-card/50 backdrop-blur-sm rounded-full">
               <ChevronRight size={24} />
             </Button>
+            <CrayonArrow />
           </motion.div>
           <div className="flex justify-center gap-2 mt-8">
             {experiences.map((_, index) => (
@@ -331,11 +376,11 @@ const ExperienceSection = () => {
             ))}
           </div>
         </motion.div>
+         
       </section>
-
       {/* The Dialog component remains unchanged */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-2xl w-[90vw] bg-card/80 backdrop-blur-xl border-border/50 flex flex-col">
+        <DialogContent className="sm:max-w-2xl w-[90vw] bg-card/80 backdrop-blur-xl border-border/50 flex flex-col max-h-[85vh]">
           <DialogHeader>
             <div className="flex items-center gap-4">
               <motion.div

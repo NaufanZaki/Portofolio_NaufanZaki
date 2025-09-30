@@ -16,14 +16,6 @@ const Index: React.FC = () => {
     }
   };
 
-  const handleViewWork = () => {
-    scrollToSection('projects');
-  };
-
-  const handleGetInTouch = () => {
-    scrollToSection('contact');
-  };
-
   return (
     <div className="min-h-screen relative">
       {/* Fixed Parallax Background */}
@@ -73,10 +65,7 @@ const Index: React.FC = () => {
       
       <main className="relative z-10">
         <div id="home">
-          <HeroSection 
-            onViewWork={handleViewWork}
-            onGetInTouch={handleGetInTouch}
-          />
+          <HeroSection />
         </div>
         
         <ExperienceSection />

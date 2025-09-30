@@ -7,6 +7,10 @@
 /* Portfolio Design System - Warm, Minimalist, Professional */
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   :root {
     /* Portfolio Color Palette - Warm Earth Tones */
     --background: 45 33% 93%; /* #F0EEDE - New warm white */

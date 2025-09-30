@@ -2,12 +2,7 @@ import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import heroAvatar from '@/assets/heroAvatar.png';
 
-interface HeroSectionProps {
-  onViewWork: () => void;
-  onGetInTouch: () => void;
-}
-
-const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) => {
+const HeroSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: false, margin: "-10%" });
 
@@ -78,25 +73,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-      <div 
+      <div
         ref={containerRef}
-        className="relative z-10 px-6"
+        className="relative z-10 px-6 text-center md:text-left"
       >
-        <div className="flex items-start md:items-center gap-x-4 md:gap-x-8">
+        <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Avatar */}
           <motion.div
             className="relative"
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? {
               opacity: [0, 1, 1, 1],
-              scale: [0, 1.8, 1.8, 1],
+              scale: [0, 1.2, 1.2, 1],
               rotate: [0, 0, 5, 0],
               y: [0, 0, -10, 0]
             } : { opacity: 0, scale: 0 }}
             transition={{
               duration: 2.2,
               times: [0, 0.3, 0.7, 1],
-              ease: [0.34, 1.56, 0.64, 1], // Bouncy ease for greeting effect
+              ease: [0.34, 1.56, 0.64, 1],
               delay: isInView ? 0.3 : 0,
             }}
             whileHover={{
@@ -104,15 +99,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
               transition: { duration: 0.5, ease: "easeInOut" }
             }}
           >
-            <img src={heroAvatar} alt="Avatar" className="h-48 md:h-52 lg:h-64 w-auto" />
+            <img src={heroAvatar} alt="Avatar" className="h-40 w-40 md:h-52 md:w-52 lg:h-64 lg:w-64 object-cover" />
           </motion.div>
 
           {/* Text Content */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             {/* Main Name Block */}
-            <div className="mb-4">
+            <div className="mb-2">
               <motion.div 
-                className="text-6xl md:text-8xl lg:text-9xl font-bold text-foreground leading-none text-left"
+                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: isInView ? 2.5 : 0 }}
@@ -127,7 +122,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
             </div>
             {/* Subtitle */}
             <motion.p 
-              className="font-subtitle text-lg md:text-xl text-muted-foreground tracking-wider text-left py-4"
+              className="font-subtitle text-base md:text-lg text-muted-foreground tracking-wider max-w-md py-5"
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
                 opacity: isInView ? 1 : 0, 
@@ -135,7 +130,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewWork, onGetInTouch }) =
               }}
               transition={{ delay: isInView ? 3.2 : 0, duration: 0.8 }}
             >
-              Data Enthusiast | Web Developer | Project Management Learner
+              IT Student | Still Learning
             </motion.p>
           </div>
         </div>

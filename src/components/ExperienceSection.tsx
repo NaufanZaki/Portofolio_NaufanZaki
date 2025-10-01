@@ -92,14 +92,13 @@ const cardContentVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.15,
-      ease: "easeOut",
     },
   },
 };
 
 const cardItemVariants = {
   hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 const ExperienceCard = ({ exp, isActive, openModal }) => {
@@ -272,7 +271,7 @@ const ExperienceSection = () => {
   };
   const letterVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
   return (

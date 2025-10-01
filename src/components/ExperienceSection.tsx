@@ -252,17 +252,8 @@ const ExperienceSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(null);
 
-  // --- New Scroll Animation Setup ---
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"], // Animate from when the top of the section hits the bottom of the viewport, to when the bottom of the section leaves the top.
-  });
-  
-  // Create parallax and reveal effects based on scroll progress
-  const yBg = useTransform(scrollYProgress, [0, 1], [-200, 100]);
-  const scaleContent = useTransform(scrollYProgress, [0, 0.4], [0.85, 1]);
-  const opacityContent = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
   const handleNext = () => setActiveIndex((p) => (p + 1) % experiences.length);
   const handlePrev = () => setActiveIndex((p) => (p - 1 + experiences.length) % experiences.length);
@@ -292,26 +283,22 @@ const ExperienceSection = () => {
         className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative"
       >
         <div className="absolute inset-0 z-0 overflow-hidden">
-            <motion.div 
-              style={{ y: yBg }} // Apply parallax effect
-              className="absolute w-[500px] h-[500px] bg-secondary/20 rounded-full blur-3xl animate-blob animation-delay-2000 top-1/4 left-1/4"
-            />
-            <motion.div 
-              style={{ y: yBg }} // Apply parallax effect
-              className="absolute w-[400px] h-[400px] bg-primary/20 rounded-full blur-3xl animate-blob animation-delay-4000 bottom-1/4 right-1/4"
-            />
+            <div className="absolute w-[500px] h-[500px] bg-secondary/20 rounded-full blur-3xl animate-blob animation-delay-2000 top-1/4 left-1/4" />
+            <div className="absolute w-[400px] h-[400px] bg-primary/20 rounded-full blur-3xl animate-blob animation-delay-4000 bottom-1/4 right-1/4" />
         </div>
 
         <motion.div
-          style={{ scale: scaleContent, opacity: opacityContent }} // Apply reveal effect
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-7xl w-full mx-auto z-10"
         >
           <div className="text-center mb-9">
             <motion.h2
-              className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+              className="text-4xl sm:text-5xl font-bold mb-4 font-title text-foreground bg-clip-text"
               variants={titleVariants}
               initial="hidden"
-              animate="visible" // Animate automatically, the parent motion.div will handle the reveal
+              animate={isInView ? "visible" : "hidden"}
             >
               {"Work Experience".split("").map((char, i) => (
                 <motion.span key={i} variants={letterVariants} className="inline-block">
@@ -325,7 +312,7 @@ const ExperienceSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              A timeline of my professional journey and growth.
+              A timeline of professional journey and growth.
             </motion.p>
           </div>
           <motion.div

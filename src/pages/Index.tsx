@@ -7,8 +7,10 @@ import ProjectsSection from '@/components/ProjectsSection';
 import SkillsSection from '@/components/SkillsSection';
 import AchievementsSection from '@/components/AchievementsSection';
 import ContactSection from '@/components/ContactSection';
+import { useTheme } from '../hooks/use-theme';
 
 const Index: React.FC = () => {
+  const { theme, toggleTheme } = useTheme();
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {

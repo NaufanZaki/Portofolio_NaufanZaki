@@ -30,10 +30,10 @@ const ProjectsSection: React.FC = () => {
     <section id="projects" className="section-padding">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground dark:text-white">
             Featured Projects
           </h2>
-          <p className="text-lg text-muted-foreground font-subtitle">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 font-subtitle">
             Innovative solutions combining cutting-edge technology with practical applications
           </p>
         </div>
@@ -42,14 +42,14 @@ const ProjectsSection: React.FC = () => {
           {projects.map((project, index) => (
             <div 
               key={index}
-              className="card-portfolio p-8 rounded-2xl group cursor-pointer animate-fade-in-up"
+              className="card-portfolio bg-white dark:bg-gray-800 p-8 rounded-2xl group cursor-pointer animate-fade-in-up"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <h3 className="text-xl font-bold mb-4 text-primary group-hover:text-accent transition-colors">
+              <h3 className="text-xl font-bold mb-4 text-primary dark:text-primary-foreground group-hover:text-accent transition-colors">
                 {project.title}
               </h3>
               
-              <p className="text-muted-foreground mb-6 leading-relaxed">
+              <p className="text-muted-foreground dark:text-gray-300 mb-6 leading-relaxed">
                 {project.description}
               </p>
               
@@ -65,8 +65,8 @@ const ProjectsSection: React.FC = () => {
                 ))}
               </div>
               
-              <div className="mt-6 pt-4 border-t border-border-soft">
-                <span className="text-sm font-subtitle text-primary group-hover:text-accent transition-colors">
+              <div className="mt-6 pt-4 border-t border-border-soft dark:border-gray-700">
+                <span className="text-sm font-subtitle text-primary dark:text-primary-foreground group-hover:text-accent transition-colors">
                   View Details →
                 </span>
               </div>

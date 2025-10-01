@@ -11,6 +11,54 @@
     scroll-behavior: smooth;
   }
 
+  .dark {
+    /* Dark Theme Palette */
+    --background: 42 8% 15%; /* #2A2925 - Dark olive background */
+    --foreground: 45 33% 93%; /* #F0EEDE - Warm white text */
+
+    --card: 42 8% 18%; /* #31302B - Slightly lighter card background */
+    --card-foreground: 45 33% 93%;
+
+    --popover: 42 8% 18%;
+    --popover-foreground: 45 33% 93%;
+
+    --primary: 42 12% 50%; /* #8C8979 - Muted sage green for dark mode */
+    --primary-foreground: 42 8% 15%;
+
+    --secondary: 31 50% 45%; /* #A47B42 - Muted bronze for dark mode */
+    --secondary-foreground: 42 8% 15%;
+
+    --muted: 42 8% 35%;
+    --muted-foreground: 45 33% 93%;
+
+    --accent: 42 12% 50%;
+    --accent-foreground: 42 8% 15%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 45 33% 93%;
+
+    --border: 42 12% 30%;
+    --input: 42 12% 35%;
+    --ring: 42 12% 50%;
+
+    --radius: 0.75rem;
+
+    --card-background: 42 8% 18%;
+    --card-font-primary: 45 33% 93%;
+    --card-font-accent: 31 50% 45%;
+
+    --hero-gradient-from: 42 8% 15%;
+    --hero-gradient-to: 42 8% 12%;
+    --surface: 42 8% 18%;
+    --surface-elevated: 42 8% 22%;
+    --text-subtle: 42 8% 60%;
+    --border-soft: 42 12% 30%;
+
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.2);
+    --shadow-medium: 0 8px 30px -8px hsl(0 0% 0% / 0.25);
+    --shadow-strong: 0 16px 40px -12px hsl(0 0% 0% / 0.3);
+  }
+
   :root {
     /* Portfolio Color Palette - Warm Earth Tones */
     --background: 45 33% 93%; /* #F0EEDE - New warm white */

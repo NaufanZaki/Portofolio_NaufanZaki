@@ -107,7 +107,7 @@ const HeroSection: React.FC = () => {
             {/* Main Name Block */}
             <div className="mb-2">
               <motion.div 
-                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-tight"
+                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-foreground dark:text-white leading-tight"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: isInView ? 2.5 : 0 }}
@@ -122,7 +122,7 @@ const HeroSection: React.FC = () => {
             </div>
             {/* Subtitle */}
             <motion.p 
-              className="font-subtitle text-base md:text-lg text-muted-foreground tracking-wider max-w-md py-5"
+              className="font-subtitle text-base md:text-lg text-muted-foreground dark:text-gray-300 tracking-wider max-w-md py-5"
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
                 opacity: isInView ? 1 : 0, 

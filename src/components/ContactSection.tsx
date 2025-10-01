@@ -16,19 +16,19 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section-padding bg-surface/30">
+    <section id="contact" className="section-padding bg-surface/30 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground dark:text-white">
             Let's Work Together
           </h2>
-          <p className="text-lg text-muted-foreground font-subtitle">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 font-subtitle">
             Ready to bring your ideas to life with innovative technology solutions
           </p>
         </div>
         
-        <div className="card-portfolio p-8 md:p-12 rounded-2xl text-center animate-fade-in-up">
-          <p className="text-lg mb-8 text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+        <div className="card-portfolio bg-white dark:bg-gray-800 p-8 md:p-12 rounded-2xl text-center animate-fade-in-up">
+          <p className="text-lg mb-8 text-muted-foreground dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
             I'm always interested in discussing new opportunities, innovative projects, 
             and collaborations. Whether you have a specific project in mind or just want 
             to connect, I'd love to hear from you.
@@ -48,7 +48,7 @@ const ContactSection: React.FC = () => {
           <div className="flex justify-center space-x-6">
             <button 
               onClick={handleGithubClick}
-              className="p-4 rounded-full bg-surface hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
+              className="p-4 rounded-full bg-surface dark:bg-gray-700 hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
               aria-label="GitHub Profile"
             >
               <Github className="w-6 h-6" />
@@ -56,7 +56,7 @@ const ContactSection: React.FC = () => {
             
             <button 
               onClick={handleLinkedinClick}
-              className="p-4 rounded-full bg-surface hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
+              className="p-4 rounded-full bg-surface dark:bg-gray-700 hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
               aria-label="LinkedIn Profile"
             >
               <Linkedin className="w-6 h-6" />
@@ -65,7 +65,7 @@ const ContactSection: React.FC = () => {
         </div>
         
         <div className="text-center mt-12">
-          <p className="font-subtitle text-sm text-muted-foreground">
+          <p className="font-subtitle text-sm text-muted-foreground dark:text-gray-400">
             Built with React, TypeScript, and Tailwind CSS
           </p>
         </div>

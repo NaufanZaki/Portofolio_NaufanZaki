@@ -31,13 +31,13 @@ const skillCategories: SkillCategory[] = [
 
 const SkillsSection: React.FC = () => {
   return (
-    <section id="skills" className="section-padding bg-surface/20">
+    <section id="skills" className="section-padding bg-surface/20 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground dark:text-white">
             Technical Skills
           </h2>
-          <p className="text-lg text-muted-foreground font-subtitle">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 font-subtitle">
             A comprehensive toolkit for building modern applications
           </p>
         </div>
@@ -46,10 +46,10 @@ const SkillsSection: React.FC = () => {
           {skillCategories.map((category, categoryIndex) => (
             <div 
               key={categoryIndex}
-              className="card-portfolio p-8 rounded-2xl animate-fade-in-up"
+              className="card-portfolio bg-white dark:bg-gray-800 p-8 rounded-2xl animate-fade-in-up"
               style={{ animationDelay: `${categoryIndex * 0.1}s` }}
             >
-              <h3 className="text-xl font-bold mb-6 text-primary font-title">
+              <h3 className="text-xl font-bold mb-6 text-primary dark:text-primary-foreground font-title">
                 {category.category}
               </h3>
               

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import heroAvatar from '@/assets/heroAvatar.png';
-import StaggeredMenu from './StaggeredMenu';
+import { StaggeredMenu } from './StaggeredMenu';
+import { useTheme } from '../hooks/use-theme';
 
 const Navigation: React.FC = () => {
   const [showNavbar, setShowNavbar] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {

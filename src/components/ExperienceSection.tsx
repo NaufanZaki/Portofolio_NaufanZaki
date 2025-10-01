@@ -279,7 +279,7 @@ const ExperienceSection = () => {
       <section
         id="experience"
         ref={sectionRef} // Attach ref here
-        className="min-h-screen text-foreground flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative"
+        className="min-h-screen text-foreground dark:text-gray-200 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative"
       >
         <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute w-[500px] h-[500px] bg-secondary/20 rounded-full blur-3xl animate-blob animation-delay-2000 top-1/4 left-1/4" />
@@ -294,7 +294,7 @@ const ExperienceSection = () => {
         >
           <div className="text-center mb-9">
             <motion.h2
-              className="text-4xl sm:text-5xl font-bold mb-4 font-title text-foreground bg-clip-text"
+              className="text-4xl sm:text-5xl font-bold mb-4 font-title text-foreground dark:text-white bg-clip-text"
               variants={titleVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -306,7 +306,7 @@ const ExperienceSection = () => {
               ))}
             </motion.h2>
             <motion.p
-              className="text-muted-foreground text-lg font-subtitle mb-8 max-w-3xl mx-auto"
+              className="text-muted-foreground dark:text-gray-300 text-lg font-subtitle mb-8 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
@@ -339,10 +339,10 @@ const ExperienceSection = () => {
                 </motion.div>
               );
             })}
-            <Button onClick={handlePrev} variant="outline" size="icon" className="absolute left-0 sm:left-4 z-20 bg-card/50 backdrop-blur-sm rounded-full">
+            <Button onClick={handlePrev} variant="outline" size="icon" className="absolute left-0 sm:left-4 z-20 bg-card/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full">
               <ChevronLeft size={24} />
             </Button>
-            <Button onClick={handleNext} variant="outline" size="icon" className="absolute right-0 sm:right-4 z-20 bg-card/50 backdrop-blur-sm rounded-full">
+            <Button onClick={handleNext} variant="outline" size="icon" className="absolute right-0 sm:right-4 z-20 bg-card/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full">
               <ChevronRight size={24} />
             </Button>
             <CrayonArrow />
@@ -356,7 +356,7 @@ const ExperienceSection = () => {
                   "h-2 rounded-full transition-all duration-300",
                   index === activeIndex
                     ? "w-8 bg-gradient-to-r from-primary to-secondary"
-                    : "w-2 bg-muted hover:bg-muted-foreground/50"
+                    : "w-2 bg-muted dark:bg-gray-600 hover:bg-muted-foreground/50 dark:hover:bg-gray-500"
                 )}
               />
             ))}

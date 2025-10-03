@@ -412,54 +412,145 @@ animateText(target);
             >
               {/* Liquid Glass Container */}
               <div className="relative w-full h-full rounded-full overflow-visible">
-                {/* Flowing shimmer effect - liquid waves */}
+                {/* Aurora Borealis Background - Dynamic gradient */}
                 <motion.div
-                  className="absolute inset-[-4px] rounded-full overflow-hidden"
+                  className="absolute inset-[-8px] rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+                    filter: 'blur(20px)',
+                    opacity: 0.3,
+                  }}
                   animate={{
                     rotate: [0, 360],
+                    scale: isAvatarHovered ? [1, 1.1, 1] : 1,
+                  }}
+                  transition={{
+                    rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                />
+
+                {/* Iridescent Border - Glowing Edge */}
+                <motion.div
+                  className="absolute inset-[-2px] rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.8), rgba(200,220,255,0.6), rgba(255,200,255,0.6), rgba(255,255,255,0.8))',
+                    padding: '1px',
+                  }}
+                  animate={{
+                    rotate: [0, 360],
+                    opacity: isAvatarHovered ? [0.8, 1, 0.8] : [0.5, 0.7, 0.5],
+                  }}
+                  transition={{
+                    rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                    opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                >
+                  <div className="w-full h-full rounded-full bg-background" />
+                </motion.div>
+
+                {/* Frosted Glass Layer - Primary Material */}
+                <motion.div
+                  className="absolute inset-0 rounded-full backdrop-blur-[30px] bg-white/[0.15] dark:bg-white/[0.08]"
+                  style={{
+                    boxShadow: `
+                      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                      inset 0 -1px 0 rgba(255, 255, 255, 0.2),
+                      0 8px 32px rgba(0, 0, 0, 0.1)
+                    `,
+                  }}
+                  animate={{
+                    scale: isAvatarHovered ? [1, 1.02, 1] : 1,
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+
+                {/* Dynamic Reflection - Gyroscope-like effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-full overflow-hidden"
+                  animate={{
+                    background: [
+                      'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 70% 30%, rgba(255,255,255,0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 70% 70%, rgba(255,255,255,0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 30% 70%, rgba(255,255,255,0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 50%)',
+                    ]
                   }}
                   transition={{
                     duration: 8,
                     repeat: Infinity,
                     ease: "linear"
                   }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/30 via-transparent to-purple-400/30" />
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent"
-                    animate={{
-                      x: ['-100%', '100%'],
-                      y: ['-100%', '100%'],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut"
-                    }}
-                  />
-                </motion.div>
-
-                {/* Glass border with animated gradient */}
-                <motion.div
-                  className="absolute inset-[-2px] rounded-full"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1))',
-                  }}
-                  animate={{
-                    opacity: isAvatarHovered ? 1 : 0.6,
-                  }}
-                  transition={{ duration: 0.3 }}
                 />
 
-                {/* Liquid droplet effect - floating orbs */}
+                {/* Liquid Flow - Morphing waves */}
+                <motion.div
+                  className="absolute inset-0 rounded-full overflow-hidden opacity-40"
+                  animate={{
+                    background: [
+                      'linear-gradient(0deg, rgba(200,220,255,0.3) 0%, transparent 50%)',
+                      'linear-gradient(90deg, rgba(255,200,255,0.3) 0%, transparent 50%)',
+                      'linear-gradient(180deg, rgba(200,255,255,0.3) 0%, transparent 50%)',
+                      'linear-gradient(270deg, rgba(255,220,200,0.3) 0%, transparent 50%)',
+                      'linear-gradient(360deg, rgba(200,220,255,0.3) 0%, transparent 50%)',
+                    ]
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+
+                {/* Ripple Effect on Hover */}
                 <AnimatePresence>
                   {isAvatarHovered && (
                     <>
                       {[...Array(3)].map((_, i) => (
                         <motion.div
-                          key={i}
-                          className="absolute w-2 h-2 rounded-full bg-white/60 backdrop-blur-sm"
+                          key={`ripple-${i}`}
+                          className="absolute inset-0 rounded-full border border-white/40"
+                          initial={{
+                            scale: 1,
+                            opacity: 0.6
+                          }}
+                          animate={{
+                            scale: [1, 1.5],
+                            opacity: [0.6, 0]
+                          }}
+                          exit={{
+                            scale: 1.5,
+                            opacity: 0
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            delay: i * 0.5,
+                            ease: "easeOut"
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
+                </AnimatePresence>
+
+                {/* Liquid Droplets - Floating particles */}
+                <AnimatePresence>
+                  {isAvatarHovered && (
+                    <>
+                      {[...Array(5)].map((_, i) => (
+                        <motion.div
+                          key={`droplet-${i}`}
+                          className="absolute w-1.5 h-1.5 rounded-full backdrop-blur-sm"
+                          style={{
+                            background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(200,220,255,0.4) 100%)',
+                            boxShadow: '0 0 10px rgba(255,255,255,0.5)',
+                          }}
                           initial={{
                             x: 32,
                             y: 32,
@@ -467,15 +558,15 @@ animateText(target);
                             opacity: 0
                           }}
                           animate={{
-                            x: [32, 20 + Math.cos(i * 2) * 20, 32],
-                            y: [32, 20 + Math.sin(i * 2) * 20, 32],
-                            scale: [0, 1, 0],
-                            opacity: [0, 0.8, 0]
+                            x: [32, 32 + Math.cos(i * 1.2) * 25, 32],
+                            y: [32, 32 + Math.sin(i * 1.2) * 25, 32],
+                            scale: [0, 1, 0.5, 0],
+                            opacity: [0, 1, 0.8, 0]
                           }}
                           transition={{
-                            duration: 2,
+                            duration: 3,
                             repeat: Infinity,
-                            delay: i * 0.4,
+                            delay: i * 0.3,
                             ease: "easeInOut"
                           }}
                         />
@@ -484,26 +575,58 @@ animateText(target);
                   )}
                 </AnimatePresence>
 
-                {/* Avatar wrapper with glassmorphism */}
-                <div
+                {/* Avatar wrapper with additional glass effect */}
+                <motion.div
                   ref={logoRef}
-                  className="relative w-full h-full rounded-full overflow-hidden backdrop-blur-md bg-white/10 dark:bg-black/10 transition-all duration-500 flex-shrink-0"
+                  className="relative w-full h-full rounded-full overflow-hidden backdrop-blur-[10px] bg-white/[0.25] dark:bg-black/[0.15]"
                   style={{
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)'
+                    boxShadow: `
+                      inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                      inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+                      0 8px 32px rgba(0, 0, 0, 0.15)
+                    `,
+                  }}
+                  animate={{
+                    scale: isAvatarHovered ? [1, 1.05, 1.02] : 1,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                    ease: "easeOut"
                   }}
                   aria-hidden="true"
                 >
-                  {/* Liquid wave overlay */}
+                  {/* Specular Highlight on Press/Hover */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-transparent"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: 'radial-gradient(circle at 50% 20%, rgba(255,255,255,0.6) 0%, transparent 40%)',
+                    }}
                     animate={{
-                      y: ['-100%', '100%'],
+                      opacity: isAvatarHovered ? [0.3, 0.6, 0.3] : 0.3,
                     }}
                     transition={{
-                      duration: 4,
+                      duration: 1.5,
                       repeat: Infinity,
-                      repeatType: "reverse",
                       ease: "easeInOut"
+                    }}
+                  />
+
+                  {/* Morphing Liquid Flow Inside */}
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{
+                      background: [
+                        'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.2) 0%, transparent 70%)',
+                        'radial-gradient(ellipse at 100% 50%, rgba(200,220,255,0.2) 0%, transparent 70%)',
+                        'radial-gradient(ellipse at 50% 100%, rgba(255,200,255,0.2) 0%, transparent 70%)',
+                        'radial-gradient(ellipse at 0% 50%, rgba(200,255,255,0.2) 0%, transparent 70%)',
+                        'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.2) 0%, transparent 70%)',
+                      ]
+                    }}
+                    transition={{
+                      duration: 10,
+                      repeat: Infinity,
+                      ease: "linear"
                     }}
                   />
                   
@@ -514,34 +637,30 @@ animateText(target);
                     draggable={false}
                   />
                   
-                  {/* Glass shine effect */}
+                  {/* Satin Sheen - Soft highlights */}
                   <motion.div
-                    className="absolute top-0 left-0 w-full h-full"
-                    animate={{
-                      background: [
-                        'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-                        'radial-gradient(circle at 80% 80%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-                        'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-                      ]
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.1) 100%)',
                     }}
                   />
-                </div>
+                </motion.div>
 
-                {/* Outer glow pulse */}
+                {/* Outer Holographic Ring */}
                 <motion.div
-                  className="absolute inset-[-4px] border-2 border-primary/50 rounded-full"
+                  className="absolute inset-[-4px] rounded-full"
+                  style={{
+                    background: 'conic-gradient(from 0deg, rgba(255,255,255,0.3), rgba(200,220,255,0.3), rgba(255,200,255,0.3), rgba(200,255,255,0.3), rgba(255,255,255,0.3))',
+                    WebkitMaskImage: 'radial-gradient(circle, transparent 60%, black 62%, black 100%)',
+                    maskImage: 'radial-gradient(circle, transparent 60%, black 62%, black 100%)',
+                  }}
                   animate={{
-                    borderColor: isAvatarHovered ? 'hsl(var(--primary))' : 'hsl(var(--primary) / 0.5)',
-                    scale: [1, 1.05, 1],
+                    rotate: [0, 360],
+                    opacity: isAvatarHovered ? [0.6, 1, 0.6] : [0.3, 0.5, 0.3],
                   }}
                   transition={{
-                    borderColor: { duration: 0.3 },
-                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    rotate: { duration: 12, repeat: Infinity, ease: "linear" },
+                    opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                   }}
                 />
               </div>

@@ -402,7 +402,7 @@ animateText(target);
           >
             {/* The central Avatar button */}
             <button
-              ref={toggleBtnRef} // Ref moved to the main button for color animation
+              ref={toggleBtnRef}
               className="sm-avatar-button relative w-16 h-16 rounded-full cursor-pointer z-10 transition-transform duration-300 active:scale-90"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
@@ -410,19 +410,141 @@ animateText(target);
               onClick={toggleMenu}
               type="button"
             >
-              <div
-                ref={logoRef}
-                className="sm-avatar-wrapper w-full h-full rounded-full overflow-hidden border-2 border-white/40 dark:border-white/20 transition-all duration-500 flex-shrink-0 group-hover:border-white/80"
-                aria-hidden="true"
-              >
-                <img
-                  src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
-                  alt="Menu Avatar"
-                  className="sm-logo-img w-full h-full object-cover"
-                  draggable={false}
+              {/* Liquid Glass Container */}
+              <div className="relative w-full h-full rounded-full overflow-visible">
+                {/* Flowing shimmer effect - liquid waves */}
+                <motion.div
+                  className="absolute inset-[-4px] rounded-full overflow-hidden"
+                  animate={{
+                    rotate: [0, 360],
+                  }}
+                  transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/30 via-transparent to-purple-400/30" />
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent"
+                    animate={{
+                      x: ['-100%', '100%'],
+                      y: ['-100%', '100%'],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+
+                {/* Glass border with animated gradient */}
+                <motion.div
+                  className="absolute inset-[-2px] rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1))',
+                  }}
+                  animate={{
+                    opacity: isAvatarHovered ? 1 : 0.6,
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+
+                {/* Liquid droplet effect - floating orbs */}
+                <AnimatePresence>
+                  {isAvatarHovered && (
+                    <>
+                      {[...Array(3)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-2 h-2 rounded-full bg-white/60 backdrop-blur-sm"
+                          initial={{
+                            x: 32,
+                            y: 32,
+                            scale: 0,
+                            opacity: 0
+                          }}
+                          animate={{
+                            x: [32, 20 + Math.cos(i * 2) * 20, 32],
+                            y: [32, 20 + Math.sin(i * 2) * 20, 32],
+                            scale: [0, 1, 0],
+                            opacity: [0, 0.8, 0]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            delay: i * 0.4,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
+                </AnimatePresence>
+
+                {/* Avatar wrapper with glassmorphism */}
+                <div
+                  ref={logoRef}
+                  className="relative w-full h-full rounded-full overflow-hidden backdrop-blur-md bg-white/10 dark:bg-black/10 transition-all duration-500 flex-shrink-0"
+                  style={{
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)'
+                  }}
+                  aria-hidden="true"
+                >
+                  {/* Liquid wave overlay */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-transparent"
+                    animate={{
+                      y: ['-100%', '100%'],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut"
+                    }}
+                  />
+                  
+                  <img
+                    src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
+                    alt="Menu Avatar"
+                    className="sm-logo-img relative w-full h-full object-cover z-10"
+                    draggable={false}
+                  />
+                  
+                  {/* Glass shine effect */}
+                  <motion.div
+                    className="absolute top-0 left-0 w-full h-full"
+                    animate={{
+                      background: [
+                        'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                        'radial-gradient(circle at 80% 80%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                        'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                      ]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </div>
+
+                {/* Outer glow pulse */}
+                <motion.div
+                  className="absolute inset-[-4px] border-2 border-primary/50 rounded-full"
+                  animate={{
+                    borderColor: isAvatarHovered ? 'hsl(var(--primary))' : 'hsl(var(--primary) / 0.5)',
+                    scale: [1, 1.05, 1],
+                  }}
+                  transition={{
+                    borderColor: { duration: 0.3 },
+                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                  }}
                 />
               </div>
-              <div className="absolute inset-[-4px] border-2 border-primary/50 rounded-full animate-breathing-glow group-hover:border-primary"></div>
             </button>
 
             {/* --- New Theme Toggle Button --- */}

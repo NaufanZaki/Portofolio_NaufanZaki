@@ -845,7 +845,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 >
                   <span className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
                     <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
-                                            No items
+                     No items
                     </span>
                   </span>
                 </li>

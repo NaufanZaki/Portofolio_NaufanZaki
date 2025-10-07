@@ -162,11 +162,11 @@ const ProjectsSection: React.FC = () => {
   return (
     <section id="projects" className="relative bg-background">
       {/* Main container with proper height for scroll */}
-      <div className="min-h-screen" ref={sectionRef}>
+      <div className="min-h-full" ref={sectionRef}>
         {/* Sticky wrapper */}
         <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex-shrink-0 px-6 md:px-16 pt-20 md:pt-24 pb-8 md:pb-10 bg-background/95 backdrop-blur-md z-20 border-b border-border-soft">
+          <div className="flex-shrink-0 px-6 md:px-16 pt-20 md:pt-8 pb-8 md:pb-10 bg-background/95 backdrop-blur-md z-20 border-b border-border-soft">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -184,12 +184,12 @@ const ProjectsSection: React.FC = () => {
                 >
                   <span className="text-sm md:text-base font-subtitle text-primary tracking-wider uppercase">Portfolio</span>
                 </motion.div>
-                <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 leading-tight">
+                <h2 className="text-xl md:text-7xl lg:text-8xl font-bold mb-4 leading-tight font-title">
                   <span className="text-foreground">SELECTED</span>
                   <br />
                   <span className="text-gradient">PROJECTS</span>
                 </h2>
-                <p className="text-text-subtle text-lg md:text-xl mb-8 max-w-2xl leading-relaxed">
+                <p className="text-text-subtle text-lg md:text-xl mb-8 max-w-2xl leading-relaxed font-subtitle">
                   Projects I've enjoyed working on—built, tweaked, and learned from.
                 </p>
               </div>

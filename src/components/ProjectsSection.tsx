@@ -405,7 +405,7 @@ const ProjectsSection: React.FC = () => {
 
       {/* Project Detail Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-surface-elevated border-border-soft">
+        <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto bg-surface-elevated border-border-soft rounded-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
               {selectedProject.title}
@@ -428,7 +428,7 @@ const ProjectsSection: React.FC = () => {
             {/* Description */}
             <div>
               <h3 className="text-lg md:text-xl font-semibold mb-3 text-foreground">About</h3>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed break-words">
                 {selectedProject.longDescription}
               </p>
             </div>
@@ -452,7 +452,7 @@ const ProjectsSection: React.FC = () => {
                 Code Snippet
               </h3>
               <pre className="bg-background border border-border-soft rounded-xl p-4 overflow-x-auto">
-                <code className="text-xs md:text-sm font-mono text-muted-foreground">
+                <code className="text-xs md:text-sm font-mono text-muted-foreground break-all">
                   {selectedProject.codeSnippet}
                 </code>
               </pre>

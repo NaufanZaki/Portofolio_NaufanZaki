@@ -166,42 +166,65 @@ const ProjectsSection: React.FC = () => {
         {/* Sticky wrapper */}
         <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex-shrink-0 px-6 md:px-12 pt-16 md:pt-20 pb-6 md:pb-8 bg-background/95 backdrop-blur-sm z-20 border-b border-border-soft">
+          <div className="flex-shrink-0 px-6 md:px-16 pt-20 md:pt-24 pb-8 md:pb-10 bg-background/95 backdrop-blur-md z-20 border-b border-border-soft">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="max-w-7xl mx-auto"
+              className="max-w-[1600px] mx-auto"
             >
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-3 md:mb-4">
-                <span className="text-foreground">SELECTED</span>
-                <br />
-                <span className="text-gradient">PROJECTS</span>
-              </h2>
-              <p className="text-muted-foreground text-base md:text-lg mb-6 md:mb-8 max-w-2xl">
-                Projects I've enjoyed working on—built, tweaked, and learned from.
-              </p>
+              <div className="mb-8">
+                <motion.div 
+                  className="inline-block mb-4"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <span className="text-sm md:text-base font-subtitle text-primary tracking-wider uppercase">Portfolio</span>
+                </motion.div>
+                <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 leading-tight">
+                  <span className="text-foreground">SELECTED</span>
+                  <br />
+                  <span className="text-gradient">PROJECTS</span>
+                </h2>
+                <p className="text-text-subtle text-lg md:text-xl mb-8 max-w-2xl leading-relaxed">
+                  Projects I've enjoyed working on—built, tweaked, and learned from.
+                </p>
+              </div>
               
               {/* Filter Tabs */}
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-3 flex-wrap">
                 {(['All', 'Frontend', 'Full-Stack', 'Backend'] as const).map((category) => (
                   <motion.button
                     key={category}
                     onClick={() => setFilter(category)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`px-4 md:px-6 py-2 rounded-lg font-medium transition-all ${
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`relative px-6 md:px-8 py-3 rounded-xl font-medium text-sm md:text-base transition-all duration-300 ${
                       filter === category
-                        ? 'bg-foreground text-background shadow-md'
-                        : 'bg-surface-elevated text-muted-foreground hover:bg-surface-elevated hover:text-foreground'
+                        ? 'bg-primary text-primary-foreground shadow-lg'
+                        : 'bg-surface-elevated text-foreground hover:bg-surface border border-border-soft'
                     }`}
                   >
-                    {category}
-                    {category !== 'All' && (
-                      <span className="ml-2 text-xs opacity-60">
-                        {projects.filter(p => p.category === category).length}
-                      </span>
+                    <span className="relative z-10 flex items-center gap-2">
+                      {category}
+                      {category !== 'All' && (
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                          filter === category ? 'bg-primary-foreground/20' : 'bg-surface'
+                        }`}>
+                          {projects.filter(p => p.category === category).length}
+                        </span>
+                      )}
+                    </span>
+                    {filter === category && (
+                      <motion.div
+                        layoutId="activeFilter"
+                        className="absolute inset-0 bg-primary rounded-xl"
+                        style={{ zIndex: 0 }}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
                     )}
                   </motion.button>
                 ))}
@@ -211,23 +234,23 @@ const ProjectsSection: React.FC = () => {
 
           {/* Content Grid */}
           <div className="flex-1 overflow-hidden">
-            <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 px-6 md:px-12 py-6 md:py-8 max-w-7xl mx-auto">
+            <div className="h-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 md:gap-12 px-6 md:px-16 py-8 md:py-10 max-w-[1600px] mx-auto">
               {/* Left - Preview (Sticky on desktop) */}
               <div className="hidden lg:block">
                 <AnimatePresence mode="wait">
                   <motion.div 
                     key={displayProject.id}
-                    initial={{ opacity: 0, scale: 0.96, y: 20 }}
+                    initial={{ opacity: 0, scale: 0.97, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96, y: -20 }}
-                    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    exit={{ opacity: 0, scale: 0.97, y: -20 }}
+                    transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                     className="h-full flex items-center"
                   >
                     <div className="w-full group">
-                      <div className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-surface-elevated border border-border-soft aspect-[4/3] shadow-xl">
+                      <div className="relative rounded-3xl overflow-hidden bg-surface-elevated border-2 border-border-soft aspect-[5/4] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_70px_-10px_rgba(0,0,0,0.4)] transition-all duration-500">
                         {/* Loading skeleton */}
                         {!imageLoaded && (
-                          <div className="absolute inset-0 bg-surface-elevated animate-pulse" />
+                          <div className="absolute inset-0 bg-gradient-to-br from-surface-elevated to-surface animate-pulse" />
                         )}
                         
                         {/* Preview Image */}
@@ -236,43 +259,48 @@ const ProjectsSection: React.FC = () => {
                           alt={displayProject.title}
                           onLoad={() => setImageLoaded(true)}
                           className={`w-full h-full object-cover transition-all duration-700 ${
-                            imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-                          } group-hover:scale-105`}
+                            imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-110'
+                          } group-hover:scale-110`}
                         />
                         
-                        {/* Overlay Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-70" />
+                        {/* Artistic Overlay Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+                        
+                        {/* Decorative Elements */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary/10 rounded-full blur-3xl" />
                         
                         {/* Project Info Overlay */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
+                            className="space-y-4"
                           >
-                            <Badge className="mb-3 bg-primary/20 text-primary border-primary/30 backdrop-blur-sm">
+                            <Badge className="mb-3 bg-primary/30 text-primary-foreground border-primary/40 backdrop-blur-md px-4 py-1.5 text-xs font-medium shadow-lg">
                               {displayProject.category}
                             </Badge>
-                            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-3 leading-tight">
                               {displayProject.title}
                             </h3>
-                            <p className="text-sm md:text-base text-muted-foreground mb-4">
+                            <p className="text-base md:text-lg text-text-subtle mb-6 leading-relaxed">
                               {displayProject.subtitle}
                             </p>
                             
                             {/* Tech Stack Preview */}
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2.5">
                               {displayProject.techStack.slice(0, 3).map((tech, i) => (
                                 <span 
                                   key={i}
-                                  className="text-xs px-2 py-1 rounded bg-background/50 backdrop-blur-sm text-foreground border border-border-soft"
+                                  className="text-xs font-medium px-3 py-2 rounded-lg bg-surface-elevated/80 backdrop-blur-md text-foreground border border-border-soft shadow-sm"
                                 >
                                   {tech}
                                 </span>
                               ))}
                               {displayProject.techStack.length > 3 && (
-                                <span className="text-xs px-2 py-1 rounded bg-background/50 backdrop-blur-sm text-foreground border border-border-soft">
-                                  +{displayProject.techStack.length - 3}
+                                <span className="text-xs font-medium px-3 py-2 rounded-lg bg-surface-elevated/80 backdrop-blur-md text-foreground border border-border-soft shadow-sm">
+                                  +{displayProject.techStack.length - 3} more
                                 </span>
                               )}
                             </div>
@@ -281,14 +309,17 @@ const ProjectsSection: React.FC = () => {
 
                         {/* Hover indicator */}
                         <motion.div 
-                          className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
+                          className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                          initial={{ scale: 0, rotate: -45 }}
+                          animate={{ scale: 1, rotate: 0 }}
                         >
-                          <div className="bg-background/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                            <ExternalLink className="w-4 h-4 text-foreground" />
+                          <div className="bg-primary/90 backdrop-blur-md rounded-full p-3 shadow-xl">
+                            <ExternalLink className="w-5 h-5 text-primary-foreground" />
                           </div>
                         </motion.div>
+
+                        {/* Border accent */}
+                        <div className="absolute inset-0 rounded-3xl border-2 border-primary/0 group-hover:border-primary/20 transition-all duration-500" />
                       </div>
                     </div>
                   </motion.div>
@@ -298,20 +329,20 @@ const ProjectsSection: React.FC = () => {
               {/* Right - Project List (Scrollable) */}
               <div 
                 ref={listRef}
-                className="overflow-y-auto pr-2 space-y-3 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
-                style={{ maxHeight: 'calc(100vh - 280px)' }}
+                className="overflow-y-auto pr-3 space-y-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/40 transition-colors"
+                style={{ maxHeight: 'calc(100vh - 300px)' }}
               >
                 <AnimatePresence mode="popLayout">
                   {filteredProjects.map((project, index) => (
                     <motion.div
                       key={project.id}
                       layout
-                      initial={{ opacity: 0, x: 20 }}
+                      initial={{ opacity: 0, x: 30 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20, height: 0, marginBottom: 0 }}
+                      exit={{ opacity: 0, x: -30, height: 0, marginBottom: 0 }}
                       transition={{ 
-                        delay: index * 0.05,
-                        layout: { duration: 0.3 }
+                        delay: index * 0.06,
+                        layout: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }
                       }}
                       onMouseEnter={() => setHoveredProject(project)}
                       onMouseLeave={() => setHoveredProject(null)}
@@ -319,62 +350,90 @@ const ProjectsSection: React.FC = () => {
                         setSelectedProject(project);
                         setDialogOpen(true);
                       }}
-                      className={`relative p-4 md:p-6 rounded-xl md:rounded-2xl border cursor-pointer transition-all duration-300 ${
+                      className={`group relative p-6 md:p-8 rounded-2xl border-2 cursor-pointer transition-all duration-400 ${
                         selectedProject.id === project.id
-                          ? 'bg-surface-elevated border-primary shadow-lg scale-[1.02]'
-                          : 'bg-surface border-border-soft hover:border-primary/50 hover:bg-surface-elevated hover:shadow-md'
+                          ? 'bg-surface-elevated border-primary shadow-[0_10px_40px_-10px_rgba(0,0,0,0.25)] scale-[1.02]'
+                          : 'bg-surface border-border-soft hover:border-primary/40 hover:bg-surface-elevated hover:shadow-[0_8px_30px_-8px_rgba(0,0,0,0.2)]'
                       }`}
                     >
+                      {/* Accent line */}
+                      <motion.div 
+                        className={`absolute left-0 top-6 bottom-6 w-1 rounded-r-full transition-all duration-300 ${
+                          selectedProject.id === project.id || hoveredProject?.id === project.id
+                            ? 'bg-primary opacity-100'
+                            : 'bg-border-soft opacity-0 group-hover:opacity-100'
+                        }`}
+                      />
+
                       {/* Mobile preview image */}
-                      <div className="lg:hidden mb-4 rounded-lg overflow-hidden">
+                      <div className="lg:hidden mb-6 rounded-xl overflow-hidden border border-border-soft">
                         <img 
                           src={project.previewImage} 
                           alt={project.title}
-                          className="w-full h-32 object-cover"
+                          className="w-full h-40 object-cover"
                         />
                       </div>
 
-                      <div className="flex gap-4 md:gap-6">
+                      <div className="flex gap-6 md:gap-8">
                         <div className="flex-shrink-0">
-                          <motion.span 
-                            className={`text-3xl md:text-4xl font-bold transition-colors ${
+                          <motion.div
+                            className={`flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-xl transition-all duration-300 ${
                               selectedProject.id === project.id || hoveredProject?.id === project.id
-                                ? 'text-primary'
-                                : 'text-muted-foreground/30'
+                                ? 'bg-primary/20 border-2 border-primary'
+                                : 'bg-surface-elevated border-2 border-border-soft group-hover:border-primary/30'
                             }`}
                             animate={{
-                              scale: selectedProject.id === project.id ? [1, 1.1, 1] : 1
+                              scale: selectedProject.id === project.id ? [1, 1.05, 1] : 1
                             }}
+                            transition={{ duration: 0.3 }}
                           >
-                            {String(project.id).padStart(2, '0')}
-                          </motion.span>
+                            <span className={`text-2xl md:text-3xl font-bold transition-colors ${
+                              selectedProject.id === project.id || hoveredProject?.id === project.id
+                                ? 'text-primary'
+                                : 'text-text-subtle group-hover:text-foreground'
+                            }`}>
+                              {String(project.id).padStart(2, '0')}
+                            </span>
+                          </motion.div>
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <h4 className={`text-lg md:text-xl font-bold mb-2 transition-colors ${
+                          <div className="mb-3">
+                            <Badge 
+                              variant="secondary"
+                              className={`mb-3 text-xs font-medium ${
+                                selectedProject.id === project.id || hoveredProject?.id === project.id
+                                  ? 'bg-primary/20 text-primary border-primary/30'
+                                  : ''
+                              }`}
+                            >
+                              {project.category}
+                            </Badge>
+                          </div>
+                          <h4 className={`text-xl md:text-2xl font-bold mb-3 transition-colors leading-tight ${
                             selectedProject.id === project.id || hoveredProject?.id === project.id
                               ? 'text-primary'
-                              : 'text-foreground'
+                              : 'text-foreground group-hover:text-primary'
                           }`}>
                             {project.title}
                           </h4>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-3 md:mb-4 line-clamp-2">
+                          <p className="text-sm md:text-base text-text-subtle mb-5 line-clamp-2 leading-relaxed">
                             {project.description}
                           </p>
                           
                           <div className="flex flex-wrap gap-2">
-                            {project.techStack.slice(0, 3).map((tech, i) => (
+                            {project.techStack.slice(0, 4).map((tech, i) => (
                               <Badge 
                                 key={i} 
-                                variant="secondary"
-                                className="text-xs"
+                                variant="outline"
+                                className="text-xs font-medium px-3 py-1 bg-surface-elevated border-border-soft"
                               >
                                 {tech}
                               </Badge>
                             ))}
-                            {project.techStack.length > 3 && (
-                              <Badge variant="secondary" className="text-xs">
-                                +{project.techStack.length - 3}
+                            {project.techStack.length > 4 && (
+                              <Badge variant="outline" className="text-xs font-medium px-3 py-1 bg-surface-elevated">
+                                +{project.techStack.length - 4}
                               </Badge>
                             )}
                           </div>
@@ -384,14 +443,22 @@ const ProjectsSection: React.FC = () => {
                         <motion.div
                           className="flex-shrink-0 self-center"
                           animate={{
-                            x: selectedProject.id === project.id || hoveredProject?.id === project.id ? 4 : 0
+                            x: selectedProject.id === project.id || hoveredProject?.id === project.id ? 6 : 0,
+                            scale: selectedProject.id === project.id || hoveredProject?.id === project.id ? 1.1 : 1
                           }}
+                          transition={{ duration: 0.2 }}
                         >
-                          <ExternalLink className={`w-5 h-5 transition-colors ${
+                          <div className={`p-2 rounded-full transition-all duration-300 ${
                             selectedProject.id === project.id || hoveredProject?.id === project.id
-                              ? 'text-primary'
-                              : 'text-muted-foreground'
-                          }`} />
+                              ? 'bg-primary/20'
+                              : 'bg-surface-elevated group-hover:bg-surface'
+                          }`}>
+                            <ExternalLink className={`w-5 h-5 transition-colors ${
+                              selectedProject.id === project.id || hoveredProject?.id === project.id
+                                ? 'text-primary'
+                                : 'text-text-subtle group-hover:text-foreground'
+                            }`} />
+                          </div>
                         </motion.div>
                       </div>
                     </motion.div>
@@ -405,40 +472,57 @@ const ProjectsSection: React.FC = () => {
 
       {/* Project Detail Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto bg-surface-elevated border-border-soft rounded-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
-              {selectedProject.title}
-            </DialogTitle>
-            <DialogDescription className="text-base md:text-lg text-muted-foreground">
-              {selectedProject.subtitle}
-            </DialogDescription>
+        <DialogContent className="w-[95vw] max-w-5xl max-h-[90vh] overflow-y-auto bg-surface-elevated border-2 border-border-soft rounded-3xl shadow-[0_25px_70px_-10px_rgba(0,0,0,0.4)]">
+          <DialogHeader className="space-y-4 pb-6 border-b border-border-soft">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <Badge className="mb-4 bg-primary/20 text-primary border-primary/30 px-4 py-1.5">
+                  {selectedProject.category}
+                </Badge>
+                <DialogTitle className="text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3">
+                  {selectedProject.title}
+                </DialogTitle>
+                <DialogDescription className="text-lg md:text-xl text-text-subtle leading-relaxed">
+                  {selectedProject.subtitle}
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
 
-          <div className="space-y-6 mt-6">
+          <div className="space-y-8 mt-8">
             {/* Preview Image */}
-            <div className="rounded-xl md:rounded-2xl overflow-hidden border border-border-soft">
+            <div className="rounded-2xl overflow-hidden border-2 border-border-soft shadow-lg">
               <img 
                 src={selectedProject.previewImage} 
                 alt={selectedProject.title}
-                className="w-full h-48 md:h-64 object-cover"
+                className="w-full h-64 md:h-80 object-cover"
               />
             </div>
 
             {/* Description */}
-            <div>
-              <h3 className="text-lg md:text-xl font-semibold mb-3 text-foreground">About</h3>
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed break-words">
+            <div className="bg-surface rounded-2xl p-6 md:p-8 border border-border-soft">
+              <h3 className="text-xl md:text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
+                <div className="w-1 h-6 bg-primary rounded-full" />
+                About This Project
+              </h3>
+              <p className="text-base md:text-lg text-text-subtle leading-relaxed break-words">
                 {selectedProject.longDescription}
               </p>
             </div>
 
             {/* Tech Stack */}
-            <div>
-              <h3 className="text-lg md:text-xl font-semibold mb-3 text-foreground">Technologies</h3>
-              <div className="flex flex-wrap gap-2">
+            <div className="bg-surface rounded-2xl p-6 md:p-8 border border-border-soft">
+              <h3 className="text-xl md:text-2xl font-bold mb-5 text-foreground flex items-center gap-2">
+                <div className="w-1 h-6 bg-primary rounded-full" />
+                Technologies Used
+              </h3>
+              <div className="flex flex-wrap gap-3">
                 {selectedProject.techStack.map((tech, i) => (
-                  <Badge key={i} variant="secondary" className="text-xs md:text-sm px-3 py-1">
+                  <Badge 
+                    key={i} 
+                    variant="outline" 
+                    className="text-sm md:text-base px-4 py-2 bg-surface-elevated border-border-soft hover:border-primary hover:bg-surface-elevated transition-all"
+                  >
                     {tech}
                   </Badge>
                 ))}
@@ -446,32 +530,34 @@ const ProjectsSection: React.FC = () => {
             </div>
 
             {/* Code Snippet */}
-            <div>
-              <h3 className="text-lg md:text-xl font-semibold mb-3 text-foreground flex items-center gap-2">
-                <Code2 className="w-5 h-5" />
+            <div className="bg-surface rounded-2xl p-6 md:p-8 border border-border-soft">
+              <h3 className="text-xl md:text-2xl font-bold mb-5 text-foreground flex items-center gap-3">
+                <div className="w-1 h-6 bg-primary rounded-full" />
+                <Code2 className="w-6 h-6" />
                 Code Snippet
               </h3>
-              <pre className="bg-background border border-border-soft rounded-xl p-4 overflow-x-auto">
-                <code className="text-xs md:text-sm font-mono text-muted-foreground break-all">
+              <pre className="bg-background border-2 border-border-soft rounded-xl p-5 overflow-x-auto shadow-inner">
+                <code className="text-sm md:text-base font-subtitle text-text-subtle break-all leading-relaxed">
                   {selectedProject.codeSnippet}
                 </code>
               </pre>
             </div>
 
             {/* Links */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 border-t border-border-soft">
+            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t-2 border-border-soft">
               {selectedProject.links.demo && (
                 <Button 
                   asChild
-                  className="flex-1"
+                  size="lg"
+                  className="flex-1 h-14 text-base font-medium shadow-lg hover:shadow-xl transition-all"
                 >
                   <a 
                     href={selectedProject.links.demo} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2"
+                    className="flex items-center justify-center gap-3"
                   >
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="w-5 h-5" />
                     Live Demo
                   </a>
                 </Button>
@@ -480,16 +566,17 @@ const ProjectsSection: React.FC = () => {
                 <Button 
                   asChild
                   variant="outline"
-                  className="flex-1"
+                  size="lg"
+                  className="flex-1 h-14 text-base font-medium border-2 shadow-lg hover:shadow-xl transition-all"
                 >
                   <a 
                     href={selectedProject.links.github} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2"
+                    className="flex items-center justify-center gap-3"
                   >
-                    <Github className="w-4 h-4" />
-                    GitHub
+                    <Github className="w-5 h-5" />
+                    View on GitHub
                   </a>
                 </Button>
               )}

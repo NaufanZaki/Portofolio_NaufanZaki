@@ -166,7 +166,7 @@ const ProjectsSection: React.FC = () => {
         {/* Sticky wrapper */}
         <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="flex-shrink-0 px-6 md:px-16 pt-20 md:pt-8 pb-8 md:pb-10 bg-background/95 backdrop-blur-md z-20 border-b border-border-soft">
+          <div className="flex-shrink-0 px-6 md:px-16 pt-20 md:pt-20 pb-4 md:pb-6 bg-background/95 backdrop-blur-md z-20 border-b border-border-soft">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -174,9 +174,9 @@ const ProjectsSection: React.FC = () => {
               transition={{ duration: 0.6 }}
               className="max-w-[1600px] mx-auto"
             >
-              <div className="mb-8">
+              <div className="mb-4 md:mb-6">
                 <motion.div 
-                  className="inline-block mb-4"
+                  className="inline-block mb-2 md:mb-3"
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -184,12 +184,12 @@ const ProjectsSection: React.FC = () => {
                 >
                   <span className="text-sm md:text-base font-subtitle text-primary tracking-wider uppercase">Portfolio</span>
                 </motion.div>
-                <h2 className="text-xl md:text-7xl lg:text-8xl font-bold mb-4 leading-tight font-title">
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-2 md:mb-3 leading-tight font-title">
                   <span className="text-foreground">SELECTED</span>
-                  <br />
+                  {" "}
                   <span className="text-gradient">PROJECTS</span>
                 </h2>
-                <p className="text-text-subtle text-lg md:text-xl mb-8 max-w-2xl leading-relaxed font-subtitle">
+                <p className="text-text-subtle text-base md:text-lg mb-4 md:mb-6 max-w-2xl leading-relaxed font-subtitle">
                   Projects I've enjoyed working on—built, tweaked, and learned from.
                 </p>
               </div>
@@ -234,7 +234,7 @@ const ProjectsSection: React.FC = () => {
 
           {/* Content Grid */}
           <div className="flex-1 overflow-hidden">
-            <div className="h-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 md:gap-12 px-6 md:px-16 py-8 md:py-10 max-w-[1600px] mx-auto">
+            <div className="h-full grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 px-6 md:px-16 py-6 md:py-8 max-w-[1600px] mx-auto">
               {/* Left - Preview (Sticky on desktop) */}
               <div className="hidden lg:block">
                 <AnimatePresence mode="wait">
@@ -329,8 +329,7 @@ const ProjectsSection: React.FC = () => {
               {/* Right - Project List (Scrollable) */}
               <div 
                 ref={listRef}
-                className="overflow-y-auto pr-3 space-y-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/40 transition-colors"
-                style={{ maxHeight: 'calc(100vh - 300px)' }}
+                className="overflow-y-auto pr-3 space-y-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/40 transition-colors h-full"
               >
                 <AnimatePresence mode="popLayout">
                   {filteredProjects.map((project, index) => (

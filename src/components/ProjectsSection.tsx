@@ -364,7 +364,7 @@ const ProjectsSection: React.FC = () => {
                   >
                     <div className="w-full group bg-card border-border/55 transition-all duration-300 overflow-hidden relative rounded-3xl p-4 shadow-[0_20px_50px_-12px_hsl(var(--primary)/0.25)]">
                       {/* Image Container with Padding */}
-                      <div className="relative rounded-2xl overflow-hidden bg-surface-elevated aspect-[5/4] mb-5">
+                      <div className="relative rounded-2xl overflow-hidden bg-surface-elevated aspect-[16/9] mb-5">
                         {/* Loading skeleton */}
                         {!imageLoaded && (
                           <div className="absolute inset-0 bg-gradient-to-br from-surface-elevated to-surface animate-pulse" />

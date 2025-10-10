@@ -5,7 +5,7 @@ import {
   useInView,
   useScroll,
 } from "framer-motion";
-import { ChevronLeft, ChevronRight, X, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ArrowRight, Calendar, Briefcase } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +29,7 @@ const experiences = [
       "Optimized application performance, resulting in a 30% reduction in load times.",
       "Collaborated in an Agile environment, participating in daily stand-ups and code reviews.",
     ],
-    logo: "🏢",
+    
     image:
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
   },
@@ -44,7 +44,7 @@ const experiences = [
       "Designed and graded comprehensive exams and assignments.",
       "Received a 95% positive feedback rating from student course evaluations.",
     ],
-    logo: "🎓",
+    
     image:
       "https://images.unsplash.com/photo-1555066931-4365d1469c9b?q=80&w=2070&auto=format&fit=crop",
   },
@@ -59,7 +59,7 @@ const experiences = [
       "Provided one-on-one technical support, improving student comprehension and project outcomes.",
       "Fostered a collaborative and supportive learning environment during lab sessions.",
     ],
-    logo: "📊",
+    
     image:
       "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
   },
@@ -74,7 +74,7 @@ const experiences = [
       "Provided one-on-one technical support, improving student comprehension and project outcomes.",
       "Fostered a collaborative and supportive learning environment during lab sessions.",
     ],
-    logo: "🎓",
+    
     image:
       "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
   },
@@ -93,7 +93,7 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
     >
       <Card
         className={cn(
-          "bg-card border-border/20 transition-all duration-300 overflow-hidden relative w-full h-full flex flex-col p-4",
+          "bg-card border-border/55 transition-all duration-300 overflow-hidden relative w-full h-full flex flex-col p-4 rounded-3xl",
           isActive
             ? "shadow-[0_20px_50px_-12px_hsl(var(--primary)/0.25)] border-primary/30"
             : "opacity-60 hover:opacity-80"
@@ -129,7 +129,7 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
             {/* Info Row with Icon */}
             <div className="flex items-center gap-4 pt-1">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <span className="text-lg">{exp.logo}</span>
+                <Calendar size={18} />
                 <span className="text-sm font-subtitle">{exp.duration}</span>
               </div>
             </div>
@@ -142,6 +142,10 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="pt-4 flex items-center gap-3"
+              onClick={(e) => e.stopPropagation()}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              
             >
               <Button
                 className="flex-1 bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 font-medium"
@@ -151,14 +155,7 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
                 }}
               >
                 View Details
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full h-12 w-12 border-border/50 hover:border-primary/50 hover:bg-primary/5"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight size={16} />
               </Button>
             </motion.div>
           )}
@@ -345,7 +342,7 @@ const ExperienceSection = () => {
                 transition={{ delay: 0.1 }}
                 className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-3xl shadow-lg flex-shrink-0"
               >
-                {selectedExperience?.logo}
+                <Briefcase/>
               </motion.div>
               <div className="flex-1">
                 <DialogTitle className="text-xl lg:text-2xl font-bold text-card-foreground">

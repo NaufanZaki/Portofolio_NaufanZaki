@@ -93,28 +93,28 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
     >
       <Card
         className={cn(
-          "bg-card border-border/20 transition-all duration-300 overflow-hidden relative w-full h-full flex flex-col",
+          "bg-card border-border/20 transition-all duration-300 overflow-hidden relative w-full h-full flex flex-col p-4",
           isActive
             ? "shadow-[0_20px_50px_-12px_hsl(var(--primary)/0.25)] border-primary/30"
             : "opacity-60 hover:opacity-80"
         )}
       >
-        {/* Image Section - Taking up ~60% of card */}
-        <div className="relative h-[300px] md:h-[320px] overflow-hidden bg-muted/10">
+        {/* Image Section with padding and rounded border */}
+        <div className="relative h-[300px] md:h-[320px] overflow-hidden rounded-2xl bg-muted/10">
           <img
             src={exp.image}
             alt={exp.role}
             className={cn(
-              "w-full h-full object-cover transition-transform duration-700",
+              "w-full h-full object-cover transition-transform duration-700 rounded-2xl",
               isActive && "group-hover:scale-105"
             )}
           />
           {/* Subtle overlay for better text readability if needed */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-card/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-card/30 rounded-2xl" />
         </div>
 
         {/* Content Section */}
-        <CardContent className="flex-1 p-6 flex flex-col justify-between">
+        <CardContent className="flex-1 p-4 pt-5 flex flex-col justify-between">
           <div className="space-y-3">
             {/* Role Title */}
             <h3 className="text-xl md:text-2xl font-bold text-foreground font-title leading-tight">

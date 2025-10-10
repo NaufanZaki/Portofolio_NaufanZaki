@@ -3,9 +3,6 @@ import {
   motion,
   PanInfo,
   useInView,
-  useMotionValue,
-  useTransform,
-  AnimatePresence,
   useScroll,
 } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, ArrowRight } from "lucide-react";
@@ -86,112 +83,85 @@ const experiences = [
 const DRAG_BUFFER = 35;
 const CARD_WIDTH_OFFSET = 320;
 
-const cardContentVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const cardItemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-};
-
 const ExperienceCard = ({ exp, isActive, openModal }) => {
-  const motionX = useMotionValue(0);
-  const motionY = useMotionValue(0);
-
-  const rotateX = useTransform(motionY, [-200, 200], [-15, 15]);
-  const rotateY = useTransform(motionX, [-200, 200], [15, -15]);
-
-  const handleMouseMove = (event) => {
-    const card = event.currentTarget.getBoundingClientRect();
-    motionX.set(event.clientX - card.left - card.width / 2);
-    motionY.set(event.clientY - card.top - card.height / 2);
-  };
-
-  const handleMouseLeave = () => {
-    motionX.set(0);
-    motionY.set(0);
-  };
-
   return (
     <motion.div
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative transition-transform duration-300 h-[450px] md:h-[400px]"
+      className="relative transition-all duration-300 h-[520px] md:h-[540px] cursor-pointer"
       onClick={() => isActive && openModal(exp)}
+      whileHover={isActive ? { y: -8 } : {}}
+      transition={{ duration: 0.3 }}
     >
       <Card
         className={cn(
-          "bg-card/60 backdrop-blur-md border-border/30 transition-all duration-300 overflow-hidden relative group w-full h-full",
+          "bg-card border-border/20 transition-all duration-300 overflow-hidden relative w-full h-full flex flex-col",
           isActive
-            ? "shadow-primary/30 shadow-2xl"
-            : "hover:border-primary/50"
+            ? "shadow-[0_20px_50px_-12px_hsl(var(--primary)/0.25)] border-primary/30"
+            : "opacity-60 hover:opacity-80"
         )}
-        style={{ transform: "translateZ(20px)" }}
       >
-        <img
-          src={exp.image}
-          alt={exp.role}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-        <CardContent className="p-6 relative z-10 flex flex-col h-full justify-end">
-          <div className="flex-grow" />
-
-          <AnimatePresence>
-            {isActive && (
-              <motion.div
-                variants={cardContentVariants}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                className="space-y-2"
-                style={{ transform: "translateZ(30px)" }}
-              >
-                <motion.h3
-                  variants={cardItemVariants}
-                  className="text-2xl font-bold text-white"
-                  style={{ transform: "translateZ(40px)" }}
-                >
-                  {exp.role}
-                </motion.h3>
-                <div className="space-y-1">
-                  <motion.p variants={cardItemVariants} className="text-white/80 text-md font-subtitle">
-                    {exp.organization}
-                  </motion.p>
-                  <motion.p variants={cardItemVariants} className="text-white/60 text-sm">
-                    {exp.duration}
-                  </motion.p>
-                </div>
-
-                <motion.div
-                  variants={cardItemVariants}
-                  className="!mt-6 flex items-center gap-2 text-primary font-semibold group-hover:text-secondary transition-colors"
-                >
-                  View Details
-                  <motion.div
-                    initial={{ x: 0 }}
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                  >
-                    <ArrowRight size={16} />
-                  </motion.div>
-                </motion.div>
-              </motion.div>
+        {/* Image Section - Taking up ~60% of card */}
+        <div className="relative h-[300px] md:h-[320px] overflow-hidden bg-muted/10">
+          <img
+            src={exp.image}
+            alt={exp.role}
+            className={cn(
+              "w-full h-full object-cover transition-transform duration-700",
+              isActive && "group-hover:scale-105"
             )}
-          </AnimatePresence>
+          />
+          {/* Subtle overlay for better text readability if needed */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-card/30" />
+        </div>
+
+        {/* Content Section */}
+        <CardContent className="flex-1 p-6 flex flex-col justify-between">
+          <div className="space-y-3">
+            {/* Role Title */}
+            <h3 className="text-xl md:text-2xl font-bold text-foreground font-title leading-tight">
+              {exp.role}
+            </h3>
+
+            {/* Organization Subtitle */}
+            <p className="text-muted-foreground text-sm md:text-base">
+              {exp.organization}
+            </p>
+
+            {/* Info Row with Icon */}
+            <div className="flex items-center gap-4 pt-1">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-lg">{exp.logo}</span>
+                <span className="text-sm font-subtitle">{exp.duration}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button - Only show when active */}
+          {isActive && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="pt-4 flex items-center gap-3"
+            >
+              <Button
+                className="flex-1 bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 font-medium"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openModal(exp);
+                }}
+              >
+                View Details
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full h-12 w-12 border-border/50 hover:border-primary/50 hover:bg-primary/5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </motion.div>
+          )}
         </CardContent>
       </Card>
     </motion.div>
@@ -315,7 +285,7 @@ const ExperienceSection = () => {
             </motion.p>
           </div>
           <motion.div
-            className="relative h-[500px] md:h-[550px] flex items-center justify-center select-none"
+            className="relative h-[580px] md:h-[600px] flex items-center justify-center select-none"
             drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={onDragEnd} dragElastic={0.1}
           >
             {experiences.map((exp, index) => {

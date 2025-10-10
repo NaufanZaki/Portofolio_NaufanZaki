@@ -362,8 +362,9 @@ const ProjectsSection: React.FC = () => {
                     transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                     className="h-full flex items-center"
                   >
-                    <div className="w-full group">
-                      <div className="mb-5 relative rounded-3xl overflow-hidden bg-surface-elevated border-2 border-border-soft aspect-[5/4] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_70px_-10px_rgba(0,0,0,0.4)] transition-all duration-500">
+                    <div className="w-full group bg-card border-border/55 transition-all duration-300 overflow-hidden relative rounded-3xl p-4 shadow-[0_20px_50px_-12px_hsl(var(--primary)/0.25)]">
+                      {/* Image Container with Padding */}
+                      <div className="relative rounded-2xl overflow-hidden bg-surface-elevated aspect-[5/4] mb-5">
                         {/* Loading skeleton */}
                         {!imageLoaded && (
                           <div className="absolute inset-0 bg-gradient-to-br from-surface-elevated to-surface animate-pulse" />
@@ -374,73 +375,66 @@ const ProjectsSection: React.FC = () => {
                           src={displayProject.previewImage}
                           alt={displayProject.title}
                           onLoad={() => setImageLoaded(true)}
-                          className={`w-full h-full object-cover transition-all duration-700 ${
+                          className={`w-full h-full object-cover rounded-2xl transition-all duration-700 ${
                             imageLoaded
                               ? "opacity-100 scale-100"
                               : "opacity-0 scale-110"
-                          } group-hover:scale-110`}
+                          } group-hover:scale-105`}
                         />
+                      </div>
 
-                        {/* Artistic Overlay Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
-
-                        {/* Decorative Elements */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary/10 rounded-full blur-3xl" />
-
-                        {/* Project Info Overlay */}
-                        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="space-y-4"
-                          >
-                            <Badge className="mb-3 bg-primary/30 text-primary-foreground border-primary/40 backdrop-blur-md px-4 py-1.5 text-xs font-medium shadow-lg">
-                              {displayProject.category}
-                            </Badge>
-                            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-3 leading-tight">
-                              {displayProject.title}
-                            </h3>
-                            <p className="text-base md:text-lg text-text-subtle mb-6 leading-relaxed">
-                              {displayProject.subtitle}
-                            </p>
-
-                            {/* Tech Stack Preview */}
-                            <div className="flex flex-wrap gap-2.5">
-                              {displayProject.techStack
-                                .slice(0, 3)
-                                .map((tech, i) => (
-                                  <span
-                                    key={i}
-                                    className="text-xs font-medium px-3 py-2 rounded-lg bg-surface-elevated/80 backdrop-blur-md text-foreground border border-border-soft shadow-sm"
-                                  >
-                                    {tech}
-                                  </span>
-                                ))}
-                              {displayProject.techStack.length > 3 && (
-                                <span className="text-xs font-medium px-3 py-2 rounded-lg bg-surface-elevated/80 backdrop-blur-md text-foreground border border-border-soft shadow-sm">
-                                  +{displayProject.techStack.length - 3} more
-                                </span>
-                              )}
-                            </div>
-                          </motion.div>
-                        </div>
-
-                        {/* Hover indicator */}
+                      {/* Project Info */}
+                      <div className="px-2">
                         <motion.div
-                          className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                          initial={{ scale: 0, rotate: -45 }}
-                          animate={{ scale: 1, rotate: 0 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="space-y-3"
                         >
-                          <div className="bg-primary/90 backdrop-blur-md rounded-full p-3 shadow-xl">
-                            <ExternalLink className="w-5 h-5 text-primary-foreground" />
+                          <Badge className="bg-primary/20 text-primary border-primary/30 px-3 py-1 text-xs font-medium">
+                            {displayProject.category}
+                          </Badge>
+                          <h3 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                            {displayProject.title}
+                          </h3>
+                          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                            {displayProject.subtitle}
+                          </p>
+
+                          {/* Tech Stack Preview */}
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {displayProject.techStack
+                              .slice(0, 3)
+                              .map((tech, i) => (
+                                <span
+                                  key={i}
+                                  className="text-xs font-medium px-3 py-1.5 rounded-lg bg-surface-elevated text-foreground border border-border-soft"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            {displayProject.techStack.length > 3 && (
+                              <span className="text-xs font-medium px-3 py-1.5 rounded-lg bg-surface-elevated text-foreground border border-border-soft">
+                                +{displayProject.techStack.length - 3} more
+                              </span>
+                            )}
                           </div>
                         </motion.div>
-
-                        {/* Border accent */}
-                        <div className="absolute inset-0 rounded-3xl border-2 border-primary/0 group-hover:border-primary/20 transition-all duration-500" />
                       </div>
+
+                      {/* Hover indicator */}
+                      <motion.div
+                        className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        initial={{ scale: 0, rotate: -45 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                      >
+                        <div className="bg-primary/90 backdrop-blur-md rounded-full p-3 shadow-xl">
+                          <ExternalLink className="w-5 h-5 text-primary-foreground" />
+                        </div>
+                      </motion.div>
+
+                      {/* Border accent */}
+                      <div className="absolute inset-0 rounded-3xl border-2 border-primary/0 group-hover:border-primary/20 transition-all duration-500" />
                     </div>
                   </motion.div>
                 </AnimatePresence>

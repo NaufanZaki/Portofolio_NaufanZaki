@@ -69,12 +69,12 @@ const experiences = [
     organization: "Smart City and Cyber Security Laboratory, ITS",
     duration: "March 2024 - Aug 2024",
     details: [
+      
       "Created engaging exercises on HackerRank to solidify understanding of complex algorithms.",
       "Simplified abstract concepts like trees and graphs through visual aids and supplementary materials.",
       "Provided one-on-one technical support, improving student comprehension and project outcomes.",
       "Fostered a collaborative and supportive learning environment during lab sessions.",
     ],
-    
     image:
       "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
   },
@@ -142,10 +142,7 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="pt-4 flex items-center gap-3"
-              onClick={(e) => e.stopPropagation()}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              
+          
             >
               <Button
                 className="flex-1 bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 font-medium"
@@ -219,7 +216,7 @@ const ExperienceSection = () => {
   const [selectedExperience, setSelectedExperience] = useState(null);
 
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const isInView = useInView(sectionRef, { once: true, amount: 0.4 });
 
   const handleNext = () => setActiveIndex((p) => (p + 1) % experiences.length);
   const handlePrev = () => setActiveIndex((p) => (p - 1 + experiences.length) % experiences.length);
@@ -292,15 +289,16 @@ const ExperienceSection = () => {
                 <motion.div
                   key={exp.id}
                   className="absolute cursor-grab active:cursor-grabbing"
-                  style={{ width: "clamp(280px, 80vw, 380px)", transformOrigin: "center", perspective: 800 }}
+                  style={{ width: "clamp(280px, 80vw, 380px)", transformOrigin: "center" }}
                   initial={false}
                   animate={{
                     x: offset * (window.innerWidth < 768 ? 290 : CARD_WIDTH_OFFSET),
-                    y: Math.abs(offset) * 40,
-                    scale: isActive ? 1 : 0.75, rotateZ: offset * 8,
-                    zIndex: experiences.length - Math.abs(offset), opacity: isActive ? 1 : 0.4,
+                    scale: isActive ? 1 : 0.85,
+                    skewY: offset * 3,
+                    zIndex: experiences.length - Math.abs(offset),
+                    opacity: isActive ? 1 : 0.5,
                   }}
-                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                  transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
                 >
                   <ExperienceCard exp={exp} isActive={isActive} openModal={openModal} />
                 </motion.div>

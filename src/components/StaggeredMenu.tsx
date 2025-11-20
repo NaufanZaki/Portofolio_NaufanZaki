@@ -884,19 +884,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       </div>
 
       <style>{`
-/* --- NEW STYLES for breathing glow --- */
-@keyframes breathing-glow {
-  0% { box-shadow: 0 0 10px 0px rgba(135, 96, 45, 0.4); }
-  50% { box-shadow: 0 0 25px 5px rgba(135, 96, 45, 0.2); }
-  100% { box-shadow: 0 0 10px 0px rgba(135, 96, 45, 0.4); }
-}
-.animate-breathing-glow {
-  animation: breathing-glow 4s ease-in-out infinite;
-}
-.dark .animate-breathing-glow {
-  box-shadow: 0 0 15px 2px rgba(135, 96, 45, 0.6);
-  animation: none; /* Can disable breathing in dark mode for a constant glow if preferred */
-}
+
 
 /* Original Styles (with minor adjustments for dark mode) */
 .sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 40; }

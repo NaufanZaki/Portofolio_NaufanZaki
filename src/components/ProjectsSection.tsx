@@ -283,9 +283,6 @@ const ProjectsSection: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <span className="text-sm md:text-base font-subtitle text-primary tracking-wider uppercase">
-                    Portfolio
-                  </span>
                 </motion.div>
                 <h2 className="text-3xl md:text-6xl lg:text-7xl font-bold mb-2 md:mb-3 leading-tight font-title">
                   <span className="text-foreground">SELECTED</span>{" "}

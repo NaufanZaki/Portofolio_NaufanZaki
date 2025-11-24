@@ -86,7 +86,7 @@ const CARD_WIDTH_OFFSET = 320;
 const ExperienceCard = ({ exp, isActive, openModal }) => {
   return (
     <motion.div
-      className="relative transition-all duration-300 h-[520px] md:h-[540px] cursor-pointer"
+      className="relative transition-all duration-300 h-[480px] md:h-[540px] cursor-pointer"
       onClick={() => isActive && openModal(exp)}
       whileHover={isActive ? { y: -8 } : {}}
       transition={{ duration: 0.3 }}
@@ -100,7 +100,7 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
         )}
       >
         {/* Image Section with padding and rounded border */}
-        <div className="relative h-[300px] md:h-[320px] overflow-hidden rounded-2xl bg-muted/10">
+        <div className="relative h-[240px] md:h-[320px] overflow-hidden rounded-2xl bg-muted/10">
           <img
             src={exp.image}
             alt={exp.role}
@@ -162,54 +162,6 @@ const ExperienceCard = ({ exp, isActive, openModal }) => {
   );
 };
 
-const CrayonArrow = () => {
-  return (
-    <motion.svg
-      width="120"
-      height="60"
-      viewBox="0 0 120 60"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="absolute -top-5 center hidden xl:block"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{
-        opacity: [0, 1, 1, 0],
-        x: [-20, 0, 0, 20],
-      }}
-      transition={{
-        duration: 2.5,
-        repeat: Infinity,
-        repeatDelay: 1,
-        ease: "easeInOut"
-      }}
-    >
-      <defs>
-        <filter id="crayon-texture">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
-        </filter>
-      </defs>
-      <motion.path
-        d="M 10 30 Q 40 15, 70 25 Q 85 30, 95 28"
-        stroke="currentColor"
-        strokeWidth="3.5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        filter="url(#crayon-texture)"
-        className="text-primary/70"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
-      />
-      <motion.path d="M 95 28 L 88 23 M 95 28 L 90 34" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" filter="url(#crayon-texture)" className="text-primary/70" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.3, repeat: Infinity, repeatDelay: 1.2 }} />
-      <motion.text x="30" y="50" className="text-xs font-medium fill-muted-foreground" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.5, repeat: Infinity, repeatDelay: 1.5 }}>
-        Drag me!
-      </motion.text>
-    </motion.svg>
-  );
-};
-
 const ExperienceSection = () => {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -243,7 +195,7 @@ const ExperienceSection = () => {
       <section
         id="experience"
         ref={sectionRef} // Attach ref here
-        className="min-h-screen text-foreground dark:text-gray-200 flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden relative"
+        className="min-h-screen text-foreground dark:text-gray-200 flex flex-col items-center justify-center py-20 px-4 sm:px-8 sm:py-24 overflow-hidden relative"
       >
         <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute w-[500px] h-[500px] bg-secondary/20 rounded-full blur-3xl animate-blob animation-delay-2000 top-1/4 left-1/4" />
@@ -279,7 +231,7 @@ const ExperienceSection = () => {
             </motion.p>
           </div>
           <motion.div
-            className="relative h-[580px] md:h-[600px] flex items-center justify-center select-none"
+            className="relative h-[540px] md:h-[600px] flex items-center justify-center select-none"
             drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={onDragEnd} dragElastic={0.1}
           >
             {experiences.map((exp, index) => {
@@ -310,7 +262,6 @@ const ExperienceSection = () => {
             <Button onClick={handleNext} variant="outline" size="icon" className="absolute right-0 sm:right-4 z-20 bg-card/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full">
               <ChevronRight size={24} />
             </Button>
-            <CrayonArrow />
           </motion.div>
           <div className="flex justify-center gap-2 mt-8">
             {experiences.map((_, index) => (
@@ -331,22 +282,22 @@ const ExperienceSection = () => {
       </section>
       {/* The Dialog component remains unchanged */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-2xl w-[90vw] bg-card/80 backdrop-blur-xl border-border/50 flex flex-col max-h-[85vh]">
-          <DialogHeader>
+        <DialogContent className="w-full max-w-[95vw] sm:max-w-2xl max-h-[85vh] bg-background dark:bg-zinc-900 border-2 border-border dark:border-zinc-800 p-4 md:p-6 flex flex-col gap-0 shadow-2xl">
+          <DialogHeader className="pb-4 border-b border-border dark:border-zinc-800 text-left">
             <div className="flex items-center gap-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1 }}
-                className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-3xl shadow-lg flex-shrink-0"
+                className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-2xl md:text-3xl shadow-lg flex-shrink-0"
               >
-                <Briefcase/>
+                <Briefcase className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </motion.div>
-              <div className="flex-1">
-                <DialogTitle className="text-xl lg:text-2xl font-bold text-card-foreground">
+              <div className="flex-1 min-w-0">
+                <DialogTitle className="text-lg md:text-2xl font-bold text-foreground dark:text-white break-words">
                   {selectedExperience?.role}
                 </DialogTitle>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground dark:text-zinc-400 text-xs md:text-sm mt-1 break-words">
                   {selectedExperience?.organization}
                 </p>
               </div>
@@ -354,26 +305,34 @@ const ExperienceSection = () => {
           </DialogHeader>
           <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 -mr-4 mt-4">
             <motion.div className="w-full mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <img src={selectedExperience?.image} alt="Project visual" className="rounded-lg object-cover w-full h-auto max-h-64" />
+              <img 
+                src={selectedExperience?.image} 
+                alt="Project visual" 
+                className="rounded-lg object-cover w-full h-auto max-h-40 md:max-h-64 shadow-md bg-muted" 
+              />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-              <p className="text-muted-foreground/80 text-sm mb-4 font-mono border-l-2 border-secondary pl-3">
+              <p className="text-muted-foreground/80 dark:text-zinc-400 text-xs md:text-sm mb-4 font-mono border-l-2 border-secondary pl-3">
                 {selectedExperience?.duration}
               </p>
-              <h4 className="text-lg font-semibold text-card-foreground mb-3">
+              <h4 className="text-base md:text-lg font-semibold text-foreground dark:text-white mb-3">
                 Key Responsibilities
               </h4>
               <ul className="space-y-3">
                 {selectedExperience?.details.map((detail, index) => (
-                  <li key={index} className="flex items-start gap-3 text-muted-foreground">
+                  <li key={index} className="flex items-start gap-3 text-muted-foreground dark:text-zinc-300 text-sm md:text-base">
                     <span className="w-1.5 h-1.5 bg-gradient-to-r from-primary to-secondary rounded-full mt-2 flex-shrink-0" />
-                    <span className="leading-relaxed">{detail}</span>
+                    <span className="leading-relaxed break-words">{detail}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
           </div>
           <DialogClose asChild>
+            <button className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </button>
           </DialogClose>
         </DialogContent>
       </Dialog>

@@ -16,161 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-interface Project {
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  longDescription: string;
-  techStack: string[];
-  category: "Frontend" | "Full-Stack" | "Backend";
-  links: {
-    demo?: string;
-    github?: string;
-  };
-  previewImage: string;
-  codeSnippet: string;
-}
-
-const projects: Project[] = [
-  {
-    id: 1,
-    title: "PySpark ML Pipeline",
-    subtitle: "Machine Learning Platform",
-    description:
-      "A distributed ML pipeline for large datasets using Apache Spark.",
-    longDescription:
-      "Built a distributed machine learning pipeline capable of processing large datasets efficiently using Apache Spark. Implemented various ML algorithms optimized for big data workloads with automated model evaluation and deployment strategies. This project demonstrates expertise in big data technologies and scalable machine learning.",
-    techStack: [
-      "PySpark",
-      "Machine Learning",
-      "Big Data",
-      "Apache Spark",
-      "Python",
-    ],
-    category: "Backend",
-    links: {
-      demo: "#",
-      github: "#",
-    },
-    previewImage:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-    codeSnippet: `from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.classification import LogisticRegression
-from pyspark.ml import Pipeline
-
-# Create feature vector
-assembler = VectorAssembler(inputCols=features, outputCol="features")
-lr = LogisticRegression(maxIter=10)
-pipeline = Pipeline(stages=[assembler, lr])
-
-# Train model
-model = pipeline.fit(training_data)
-predictions = model.transform(test_data)`,
-  },
-  {
-    id: 2,
-    title: "Cloud Resource Optimizer",
-    subtitle: "Optimization System",
-    description:
-      "An intelligent cloud resource allocation system using Crow Search Algorithm.",
-    longDescription:
-      "Developed an intelligent cloud resource allocation system using the Crow Search Algorithm for optimization. The system automatically adjusts resource distribution based on workload patterns, reducing costs while maintaining performance. This highlights skills in optimization algorithms and cloud infrastructure management.",
-    techStack: [
-      "Algorithms",
-      "Optimization",
-      "Cloud Computing",
-      "Python",
-      "AWS",
-    ],
-    category: "Full-Stack",
-    links: {
-      demo: "#",
-      github: "#",
-    },
-    previewImage:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-    codeSnippet: `def crow_search_optimizer(objective_function, bounds, n_crows=50, max_iter=100):
-    crows = initialize_population(n_crows, bounds)
-    memory = crows.copy()
-    
-    for iteration in range(max_iter):
-        for i in range(n_crows):
-            # Follow and search
-            j = random.randint(0, n_crows - 1)
-            new_position = crows[i] + random.random() * (memory[j] - crows[i])
-            
-            # Update if better
-            if objective_function(new_position) < objective_function(memory[i]):
-                memory[i] = new_position
-    
-    return best_solution(memory)`,
-  },
-  {
-    id: 3,
-    title: "Secure Attendance System",
-    subtitle: "Security Application",
-    description: "A robust attendance system with end-to-end RSA encryption.",
-    longDescription:
-      "Created a robust attendance management system with end-to-end encryption using the RSA algorithm. Features include biometric integration, real-time synchronization, and comprehensive audit trails for enhanced security. This project showcases strong knowledge of cryptography and secure system design.",
-    techStack: ["Cryptography", "Security", "RSA", "Biometrics", "Java"],
-    category: "Full-Stack",
-    links: {
-      demo: "#",
-      github: "#",
-    },
-    previewImage:
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-    codeSnippet: `import javax.crypto.Cipher;
-import java.security.*;
-
-public class RSAEncryption {
-    private KeyPair keyPair;
-    
-    public RSAEncryption() throws NoSuchAlgorithmException {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-        generator.initialize(2048);
-        keyPair = generator.generateKeyPair();
-    }
-    
-    public byte[] encrypt(String data) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
-        return cipher.doFinal(data.getBytes());
-    }
-}`,
-  },
-  {
-    id: 4,
-    title: "Real-time Analytics Dashboard",
-    subtitle: "Data Visualization",
-    description:
-      "Interactive dashboard for real-time data monitoring and analytics.",
-    longDescription:
-      "Built a comprehensive analytics dashboard with real-time data processing capabilities. Features include customizable widgets, data export functionality, and advanced filtering options for deep insights.",
-    techStack: ["React", "D3.js", "WebSocket", "Node.js", "MongoDB"],
-    category: "Frontend",
-    links: {
-      demo: "#",
-      github: "#",
-    },
-    previewImage:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-    codeSnippet: `const Dashboard = () => {
-  const [data, setData] = useState([]);
-  
-  useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
-    ws.onmessage = (event) => {
-      setData(prev => [...prev, JSON.parse(event.data)]);
-    };
-    return () => ws.close();
-  }, []);
-  
-  return <ChartComponent data={data} />;
-}`,
-  },
-];
+import { projects, Project } from "@/data/projects";
 
 const ProjectsSection: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project>(projects[0]);
@@ -612,114 +458,116 @@ const ProjectsSection: React.FC = () => {
 
       {/* Project Detail Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-5xl max-h-[90vh] overflow-y-auto bg-surface-elevated border-2 border-border-soft rounded-3xl shadow-[0_25px_70px_-10px_rgba(0,0,0,0.4)]">
-          <DialogHeader className="space-y-4 pb-6 border-b border-border-soft">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <Badge className="mb-4 bg-primary/20 text-primary border-primary/30 px-4 py-1.5">
-                  {selectedProject.category}
-                </Badge>
-                <DialogTitle className="text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3">
-                  {selectedProject.title}
-                </DialogTitle>
-                <DialogDescription className="text-lg md:text-xl text-text-subtle leading-relaxed">
-                  {selectedProject.subtitle}
-                </DialogDescription>
-              </div>
-            </div>
-          </DialogHeader>
-
-          <div className="space-y-8 mt-8">
-            {/* Preview Image */}
-            <div className="rounded-2xl overflow-hidden border-2 border-border-soft shadow-lg">
-              <img
-                src={selectedProject.previewImage}
-                alt={selectedProject.title}
-                className="w-full h-64 md:h-80 object-cover"
-              />
-            </div>
-
-            {/* Description */}
-            <div className="bg-surface rounded-2xl p-6 md:p-8 border border-border-soft">
-              <h3 className="text-xl md:text-2xl font-bold mb-4 text-foreground flex items-center gap-2">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                About This Project
-              </h3>
-              <p className="text-base md:text-lg text-text-subtle leading-relaxed break-words">
-                {selectedProject.longDescription}
-              </p>
-            </div>
-
-            {/* Tech Stack */}
-            <div className="bg-surface rounded-2xl p-6 md:p-8 border border-border-soft">
-              <h3 className="text-xl md:text-2xl font-bold mb-5 text-foreground flex items-center gap-2">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                Technologies Used
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {selectedProject.techStack.map((tech, i) => (
-                  <Badge
-                    key={i}
-                    variant="outline"
-                    className="text-sm md:text-base px-4 py-2 bg-surface-elevated border-border-soft hover:border-primary hover:bg-surface-elevated transition-all"
-                  >
-                    {tech}
+        <DialogContent className="w-full max-w-[95vw] md:max-w-5xl max-h-[90vh] overflow-y-auto bg-background dark:bg-zinc-900 border-2 border-border dark:border-zinc-800 rounded-3xl shadow-2xl p-0 gap-0">
+          <div className="p-6 md:p-8 space-y-6">
+            <DialogHeader className="space-y-4 pb-6 border-b border-border dark:border-zinc-800 text-left">
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <Badge className="mb-4 bg-primary/20 text-primary border-primary/30 px-4 py-1.5 w-fit">
+                    {selectedProject.category}
                   </Badge>
-                ))}
+                  <DialogTitle className="text-2xl md:text-4xl font-bold text-foreground dark:text-white leading-tight mb-3 break-words">
+                    {selectedProject.title}
+                  </DialogTitle>
+                  <DialogDescription className="text-base md:text-xl text-muted-foreground dark:text-zinc-400 leading-relaxed break-words">
+                    {selectedProject.subtitle}
+                  </DialogDescription>
+                </div>
               </div>
-            </div>
+            </DialogHeader>
 
-            {/* Code Snippet */}
-            <div className="bg-surface rounded-2xl p-6 md:p-8 border border-border-soft">
-              <h3 className="text-xl md:text-2xl font-bold mb-5 text-foreground flex items-center gap-3">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                <Code2 className="w-6 h-6" />
-                Code Snippet
-              </h3>
-              <pre className="bg-background border-2 border-border-soft rounded-xl p-5 overflow-x-auto shadow-inner">
-                <code className="text-sm md:text-base font-subtitle text-text-subtle break-all leading-relaxed">
-                  {selectedProject.codeSnippet}
-                </code>
-              </pre>
-            </div>
+            <div className="space-y-6 md:space-y-8">
+              {/* Preview Image */}
+              <div className="rounded-2xl overflow-hidden border-2 border-border dark:border-zinc-800 shadow-lg bg-muted">
+                <img
+                  src={selectedProject.previewImage}
+                  alt={selectedProject.title}
+                  className="w-full h-auto max-h-[300px] md:max-h-[500px] object-cover"
+                />
+              </div>
 
-            {/* Links */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t-2 border-border-soft">
-              {selectedProject.links.demo && (
-                <Button
-                  asChild
-                  size="lg"
-                  className="flex-1 h-14 text-base font-medium shadow-lg hover:shadow-xl transition-all"
-                >
-                  <a
-                    href={selectedProject.links.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3"
+              {/* Description */}
+              <div className="bg-card dark:bg-zinc-800/50 rounded-2xl p-5 md:p-8 border border-border dark:border-zinc-700">
+                <h3 className="text-lg md:text-2xl font-bold mb-4 text-foreground dark:text-white flex items-center gap-2">
+                  <div className="w-1 h-6 bg-primary rounded-full" />
+                  About This Project
+                </h3>
+                <p className="text-sm md:text-lg text-muted-foreground dark:text-zinc-300 leading-relaxed break-words">
+                  {selectedProject.longDescription}
+                </p>
+              </div>
+
+              {/* Tech Stack */}
+              <div className="bg-card dark:bg-zinc-800/50 rounded-2xl p-5 md:p-8 border border-border dark:border-zinc-700">
+                <h3 className="text-lg md:text-2xl font-bold mb-5 text-foreground dark:text-white flex items-center gap-2">
+                  <div className="w-1 h-6 bg-primary rounded-full" />
+                  Technologies Used
+                </h3>
+                <div className="flex flex-wrap gap-2 md:gap-3">
+                  {selectedProject.techStack.map((tech, i) => (
+                    <Badge
+                      key={i}
+                      variant="outline"
+                      className="text-xs md:text-base px-3 py-1.5 md:px-4 md:py-2 bg-secondary/10 dark:bg-zinc-700/50 border-border dark:border-zinc-600 text-foreground dark:text-zinc-200"
+                    >
+                      {tech}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Code Snippet */}
+              <div className="bg-card dark:bg-zinc-800/50 rounded-2xl p-5 md:p-8 border border-border dark:border-zinc-700">
+                <h3 className="text-lg md:text-2xl font-bold mb-5 text-foreground dark:text-white flex items-center gap-3">
+                  <div className="w-1 h-6 bg-primary rounded-full" />
+                  <Code2 className="w-5 h-5 md:w-6 md:h-6" />
+                  Code Snippet
+                </h3>
+                <pre className="bg-muted dark:bg-black/30 border-2 border-border dark:border-zinc-700 rounded-xl p-4 md:p-5 overflow-x-auto shadow-inner">
+                  <code className="text-xs md:text-base font-subtitle text-muted-foreground dark:text-zinc-400 break-all leading-relaxed">
+                    {selectedProject.codeSnippet}
+                  </code>
+                </pre>
+              </div>
+
+              {/* Links */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t-2 border-[hsl(var(--border-soft))]">
+                {selectedProject.links.demo && (
+                  <Button
+                    asChild
+                    size="lg"
+                    className="flex-1 h-12 md:h-14 text-sm md:text-base font-medium shadow-lg hover:shadow-xl transition-all"
                   >
-                    <ExternalLink className="w-5 h-5" />
-                    Live Demo
-                  </a>
-                </Button>
-              )}
-              {selectedProject.links.github && (
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="flex-1 h-14 text-base font-medium border-2 shadow-lg hover:shadow-xl transition-all"
-                >
-                  <a
-                    href={selectedProject.links.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3"
+                    <a
+                      href={selectedProject.links.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3"
+                    >
+                      <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
+                      Live Demo
+                    </a>
+                  </Button>
+                )}
+                {selectedProject.links.github && (
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="flex-1 h-12 md:h-14 text-sm md:text-base font-medium border-2 shadow-lg hover:shadow-xl transition-all bg-transparent border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                   >
-                    <Github className="w-5 h-5" />
-                    View on GitHub
-                  </a>
-                </Button>
-              )}
+                    <a
+                      href={selectedProject.links.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3"
+                    >
+                      <Github className="w-4 h-4 md:w-5 md:h-5" />
+                      View on GitHub
+                    </a>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </DialogContent>

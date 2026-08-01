@@ -73,7 +73,7 @@ const ContactSection: React.FC = () => {
             exit={{ opacity: 0, x: -20, scale: 0.85 }}
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 380, damping: 24 }}
-            className="fixed top-5 left-4 sm:left-10 max-w-[calc(100vw-180px)] sm:max-w-none z-50 pointer-events-auto cursor-pointer"
+            className="fixed top-[72px] sm:top-5 right-4 sm:right-auto sm:left-10 z-50 pointer-events-auto cursor-pointer"
             onClick={() => {
               sectionRef.current?.scrollIntoView({ behavior: "smooth" });
             }}

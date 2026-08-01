@@ -128,7 +128,7 @@ export const EducationSection: React.FC = () => {
             exit={{ opacity: 0, x: -20, scale: 0.85 }}
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 380, damping: 24 }}
-            className="fixed top-5 left-4 sm:left-10 max-w-[calc(100vw-180px)] sm:max-w-none z-50 pointer-events-auto cursor-pointer"
+            className="fixed top-[72px] sm:top-5 right-4 sm:right-auto sm:left-10 z-50 pointer-events-auto cursor-pointer"
             onClick={() => sectionRef.current?.scrollIntoView({ behavior: "smooth" })}
           >
             <div className="h-[38px] sm:h-[44px] flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-full bg-[#FDFBF7]/40 dark:bg-[#1C1917]/40 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-md border border-white/50 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.12),inset_0_1px_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] group relative overflow-hidden">

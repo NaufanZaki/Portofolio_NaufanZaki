@@ -10,7 +10,6 @@ import {
   Star,
   GitFork,
   ArrowRight,
-  Sparkles,
   Building2,
   GraduationCap,
   Award,
@@ -89,32 +88,6 @@ const HeroSection: React.FC = () => {
     <section className="relative min-h-screen py-16 md:py-24 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* GitHub Header Navigation Bar */}
-        <div className="mb-8 border-b border-border/60 pb-3 flex items-center gap-6 overflow-x-auto scrollbar-none text-xs sm:text-sm font-subtitle">
-          <button onClick={() => scrollToSection('home')} className="flex items-center gap-2 font-semibold text-primary border-b-2 border-primary pb-3 -mb-3.5">
-            <BookOpen className="w-4 h-4 text-primary" />
-            Overview
-          </button>
-          <button onClick={() => scrollToSection('projects')} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors pb-3">
-            <FileCode2 className="w-4 h-4" />
-            Projects
-            <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-surface-elevated border border-border/50">4</span>
-          </button>
-          <button onClick={() => scrollToSection('experience')} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors pb-3">
-            <Building2 className="w-4 h-4" />
-            Experience
-            <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-full bg-surface-elevated border border-border/50">5</span>
-          </button>
-          <button onClick={() => scrollToSection('education')} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors pb-3">
-            <GraduationCap className="w-4 h-4" />
-            Education
-          </button>
-          <button onClick={() => scrollToSection('achievements')} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors pb-3">
-            <Award className="w-4 h-4" />
-            Achievements
-          </button>
-        </div>
-
         {/* GitHub Layout: Left Sidebar + Right Main Readme Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 items-start">
           
@@ -127,7 +100,7 @@ const HeroSection: React.FC = () => {
                 <img
                   src={heroAvatar}
                   alt="Naufan Zaki Luqmanulhakim"
-                  className="w-36 h-36 sm:w-44 sm:h-44 lg:w-64 lg:h-64 rounded-full border-2 border-border/80 object-cover shadow-lg"
+                  className="w-36 h-36 sm:w-44 sm:h-44 lg:w-64 lg:h-64 rounded-[32px] border-2 border-border/80 object-cover shadow-lg"
                 />
                 <div className="absolute bottom-2 right-2 bg-card dark:bg-zinc-900 border border-border/80 rounded-full p-2 text-xs flex items-center gap-1.5 shadow-md">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -163,7 +136,7 @@ const HeroSection: React.FC = () => {
               <span>•</span>
               <span><strong className="text-foreground">ITS</strong> Surabaya</span>
               <span>•</span>
-              <span><strong className="text-foreground">90</strong> Mentored</span>
+              <span><strong className="text-foreground">Enterprise</strong> & ML</span>
             </div>
 
             {/* Contact Meta List */}
@@ -196,7 +169,7 @@ const HeroSection: React.FC = () => {
             <div className="pt-3 space-y-2">
               <Button
                 onClick={() => scrollToSection('projects')}
-                className="w-full h-10 rounded-xl text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 shadow-md font-subtitle"
+                className="w-full h-10 rounded-2xl text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 shadow-md font-subtitle"
               >
                 View Pinned Work
                 <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
@@ -204,7 +177,7 @@ const HeroSection: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={() => scrollToSection('contact')}
-                className="w-full h-10 rounded-xl text-xs font-semibold border-border/80 hover:border-primary hover:bg-primary/10 font-subtitle"
+                className="w-full h-10 rounded-2xl text-xs font-semibold border-border/80 hover:border-primary hover:bg-primary/10 font-subtitle"
               >
                 Contact Developer
               </Button>
@@ -215,15 +188,15 @@ const HeroSection: React.FC = () => {
           <div className="space-y-6">
             
             {/* README.md Card Container */}
-            <div className="bg-card/80 dark:bg-zinc-900/80 backdrop-blur-md border border-border/70 rounded-2xl overflow-hidden shadow-lg">
+            <div className="bg-card/80 dark:bg-zinc-900/80 backdrop-blur-md border border-border/70 rounded-[32px] overflow-hidden shadow-lg">
               
               {/* Header Bar */}
-              <div className="bg-surface-elevated/70 px-4 py-2.5 border-b border-border/60 flex items-center justify-between font-mono text-xs text-muted-foreground">
+              <div className="bg-surface-elevated/70 px-4 py-3 border-b border-border/60 flex items-center justify-between font-mono text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Terminal className="w-3.5 h-3.5 text-primary" />
                   <span>naufanzaki / README.md</span>
                 </div>
-                <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30">
+                <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30 rounded-full">
                   Verified Profile
                 </Badge>
               </div>
@@ -290,14 +263,14 @@ const HeroSection: React.FC = () => {
                     Core Technologies & Skills:
                   </p>
                   <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
-                    <Badge variant="secondary" className="bg-surface-elevated">React.js</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">Vue.js</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">Strapi CMS</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">Power BI & DAX</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">TensorFlow & XAI</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">Kotlin Android</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">Express.js</Badge>
-                    <Badge variant="secondary" className="bg-surface-elevated">MongoDB</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">React.js</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">Vue.js</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">Strapi CMS</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">Power BI & DAX</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">TensorFlow & XAI</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">Kotlin Android</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">Express.js</Badge>
+                    <Badge variant="secondary" className="bg-surface-elevated rounded-xl">MongoDB</Badge>
                   </div>
                 </div>
 
@@ -317,7 +290,7 @@ const HeroSection: React.FC = () => {
                   <div
                     key={idx}
                     onClick={() => scrollToSection('projects')}
-                    className="bg-card/80 dark:bg-zinc-900/80 backdrop-blur-md border border-border/60 hover:border-primary/50 rounded-xl p-4 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between group"
+                    className="bg-card/80 dark:bg-zinc-900/80 backdrop-blur-md border border-border/60 hover:border-primary/50 rounded-[24px] p-5 transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between group"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
@@ -325,7 +298,7 @@ const HeroSection: React.FC = () => {
                           <BookOpen className="w-3.5 h-3.5" />
                           {repo.name}
                         </div>
-                        <Badge variant="outline" className="text-[10px] font-mono px-2 py-0">
+                        <Badge variant="outline" className="text-[10px] font-mono px-2 py-0 rounded-full">
                           {repo.category}
                         </Badge>
                       </div>
@@ -356,7 +329,7 @@ const HeroSection: React.FC = () => {
             </div>
 
             {/* GitHub Contributions Matrix Widget */}
-            <div className="bg-card/80 dark:bg-zinc-900/80 backdrop-blur-md border border-border/60 rounded-xl p-4 space-y-3">
+            <div className="bg-card/80 dark:bg-zinc-900/80 backdrop-blur-md border border-border/60 rounded-[24px] p-5 space-y-3">
               <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
                 <span>2,480 contributions in the last year</span>
                 <span className="text-[11px]">Contribution settings</span>

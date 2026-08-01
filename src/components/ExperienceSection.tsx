@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar,
   Briefcase,
@@ -9,6 +9,7 @@ import {
   Award,
   Code2,
   ArrowUpRight,
+  ArrowUp,
   X,
   CheckCircle2,
 } from "lucide-react";
@@ -33,6 +34,8 @@ interface ExperienceItem {
   details: string[];
   skills: string[];
   image: string;
+  metrics: { label: string; value: string }[];
+  highlight: string;
 }
 
 const experiences: ExperienceItem[] = [
@@ -60,6 +63,11 @@ const experiences: ExperienceItem[] = [
     ],
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    metrics: [
+      { label: "OpCos Integrated", value: "9 Operating Cos" },
+      { label: "Cost Savings", value: "100% Cloud SaaS" },
+    ],
+    highlight: "Enterprise BI & Data Pipelines",
   },
   {
     id: "exp2",
@@ -85,6 +93,11 @@ const experiences: ExperienceItem[] = [
     ],
     image:
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
+    metrics: [
+      { label: "Stack", value: "ReactJS + Strapi" },
+      { label: "Modules", value: "Legal & Case LMS" },
+    ],
+    highlight: "Digitalized Corporate Legal LMS",
   },
   {
     id: "exp3",
@@ -109,6 +122,11 @@ const experiences: ExperienceItem[] = [
     ],
     image:
       "https://images.unsplash.com/photo-1555066931-4365d1469c9b?q=80&w=2070&auto=format&fit=crop",
+    metrics: [
+      { label: "Course Curriculum", value: "JS, Express & Nuxt" },
+      { label: "Lab Modules", value: "Hands-on Exercises" },
+    ],
+    highlight: "Full-Stack Web Mentoring",
   },
   {
     id: "exp4",
@@ -121,7 +139,7 @@ const experiences: ExperienceItem[] = [
     details: [
       "Created online programming exercises on HackerRank platform to evaluate algorithm efficiency.",
       "Developed supplementary learning materials for complex algorithms, linked lists, trees, and graph data structures.",
-      "Mentored 90 students by providing targeted technical support, ultimately achieving a 100% class pass rate.",
+      "Mentored undergraduate students by providing targeted technical support, achieving a 100% class pass rate.",
     ],
     skills: [
       "Data Structures",
@@ -132,6 +150,11 @@ const experiences: ExperienceItem[] = [
     ],
     image:
       "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
+    metrics: [
+      { label: "Pass Rate", value: "100% Class Pass" },
+      { label: "Platform", value: "HackerRank Practice" },
+    ],
+    highlight: "Algorithm & DS Mastery",
   },
   {
     id: "exp5",
@@ -155,6 +178,11 @@ const experiences: ExperienceItem[] = [
     ],
     image:
       "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2070&auto=format&fit=crop",
+    metrics: [
+      { label: "Funding Secured", value: "80M IDR" },
+      { label: "Corporate Partners", value: "7 Partners" },
+    ],
+    highlight: "Strategic Leadership & Deals",
   },
 ];
 
@@ -162,18 +190,85 @@ const ExperienceSection: React.FC = () => {
   const [selectedExperience, setSelectedExperience] =
     useState<ExperienceItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showFloatingBubble, setShowFloatingBubble] = useState(false);
+  const [filterType, setFilterType] = useState<string>("All");
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !headerRef.current) return;
+      const headerRect = headerRef.current.getBoundingClientRect();
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+
+      const headerScrolledPast = headerRect.top <= 100;
+      const sectionStillVisible = sectionRect.bottom >= 180;
+
+      setShowFloatingBubble(headerScrolledPast && sectionStillVisible);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const openModal = (exp: ExperienceItem) => {
     setSelectedExperience(exp);
     setIsModalOpen(true);
   };
 
+  const filteredExperiences =
+    filterType === "All"
+      ? experiences
+      : experiences.filter((exp) => exp.type === filterType);
+
   return (
-    <section id="experience" className="py-20 md:py-32 relative overflow-hidden">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+    <section ref={sectionRef} id="experience" className="py-20 md:py-32 relative overflow-hidden">
+      
+      {/* Floating Glassmorphism Header Bubble (Positioned on the LEFT side) */}
+      <AnimatePresence>
+        {showFloatingBubble && (
+          <motion.div
+            initial={{ opacity: 0, x: -20, scale: 0.85 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -20, scale: 0.85 }}
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 380, damping: 24 }}
+            className="fixed top-5 left-4 sm:left-10 max-w-[calc(100vw-180px)] sm:max-w-none z-50 pointer-events-auto cursor-pointer"
+            onClick={() => {
+              sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            <div className="h-[38px] sm:h-[44px] flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-full bg-[#FDFBF7]/40 dark:bg-[#1C1917]/40 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-md border border-white/50 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.12),inset_0_1px_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] group relative overflow-hidden">
+              
+              {/* Briefcase Icon */}
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <Briefcase className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
+              </div>
+
+              {/* Title Text */}
+              <span className="font-title font-bold text-xs sm:text-sm tracking-wide text-foreground group-hover:text-primary transition-colors whitespace-nowrap truncate">
+                Work Experience
+              </span>
+
+              {/* Counter Badge */}
+              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30 font-bold whitespace-nowrap">
+                5 Roles
+              </span>
+
+              {/* Scroll Top Arrow Accent */}
+              <ArrowUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary opacity-80 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-all flex-shrink-0" />
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Header */}
-        <div className="text-center mb-12 md:mb-24">
+        {/* Static Header */}
+        <div ref={headerRef} className="text-center mb-10 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -186,19 +281,38 @@ const ExperienceSection: React.FC = () => {
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-title text-foreground mb-3">
               Work <span className="text-primary">Experience</span>
             </h2>
-            <p className="text-muted-foreground text-xs sm:text-base lg:text-lg font-subtitle max-w-2xl mx-auto leading-relaxed">
-              A comprehensive record of enterprise roles, software engineering, business intelligence, and academic leadership.
+            <p className="text-muted-foreground text-xs sm:text-base lg:text-lg font-subtitle max-w-2xl mx-auto leading-relaxed mb-6">
+              Impactful enterprise internships, software engineering, business intelligence, and academic mentoring.
             </p>
+
+            {/* Filter Pills */}
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {["All", "Enterprise Internship", "Academic Mentoring", "Leadership Role"].map(
+                (type) => (
+                  <button
+                    key={type}
+                    onClick={() => setFilterType(type)}
+                    className={`px-3.5 py-1.5 rounded-full font-subtitle text-xs transition-all duration-300 ${
+                      filterType === type
+                        ? "bg-primary text-primary-foreground shadow-md font-semibold"
+                        : "bg-surface-elevated text-foreground hover:bg-surface border border-border/50"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                )
+              )}
+            </div>
           </motion.div>
         </div>
 
         {/* Timeline Container */}
         <div className="relative">
-          {/* Vertical Timeline Spine Line (Visible on Mobile & Desktop) */}
+          {/* Vertical Timeline Spine Line */}
           <div className="absolute left-5 md:left-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-primary via-amber-500/60 to-primary/20 -translate-x-1/2" />
 
-          <div className="space-y-10 md:space-y-16">
-            {experiences.map((exp, idx) => {
+          <div className="space-y-12 md:space-y-20">
+            {filteredExperiences.map((exp, idx) => {
               const IconComponent = exp.icon;
               const isEven = idx % 2 === 0;
 
@@ -218,7 +332,7 @@ const ExperienceSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Content Card */}
+                  {/* Main Experience Card */}
                   <div
                     className={`flex-1 ${
                       isEven ? "md:pr-14 md:text-right" : "md:order-2 md:pl-14 md:text-left"
@@ -288,17 +402,54 @@ const ExperienceSection: React.FC = () => {
                     </Card>
                   </div>
 
-                  {/* Right Column (Spacer for opposite side on Desktop) */}
+                  {/* Opposite Side Feature Widget (Eliminates Empty Whitespace on Desktop) */}
                   <div
-                    className={`flex-1 hidden md:block ${
-                      isEven ? "order-2" : "order-1"
+                    className={`flex-1 hidden md:flex flex-col justify-center ${
+                      isEven ? "order-2 md:pl-14" : "order-1 md:pr-14"
                     }`}
-                  />
+                  >
+                    <div 
+                      onClick={() => openModal(exp)}
+                      className="bg-card/60 dark:bg-zinc-900/60 backdrop-blur-md border border-border/50 hover:border-primary/40 rounded-3xl p-6 transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group space-y-4"
+                    >
+                      {/* Image Thumbnail */}
+                      <div className="relative rounded-2xl overflow-hidden aspect-[16/9] border border-border/40">
+                        <img
+                          src={exp.image}
+                          alt={exp.role}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-mono border border-white/20">
+                          {exp.highlight}
+                        </div>
+                      </div>
+
+                      {/* Key Metrics Chips */}
+                      <div className="grid grid-cols-2 gap-3 pt-1">
+                        {exp.metrics.map((m, mIdx) => (
+                          <div
+                            key={mIdx}
+                            className="bg-surface-elevated/80 border border-border/50 rounded-2xl p-3 text-left"
+                          >
+                            <p className="text-[10px] font-mono text-muted-foreground leading-none mb-1">
+                              {m.label}
+                            </p>
+                            <p className="text-xs font-bold font-title text-foreground group-hover:text-primary transition-colors">
+                              {m.value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
                 </motion.div>
               );
             })}
           </div>
         </div>
+
       </div>
 
       {/* Experience Detail Modal Dialog */}

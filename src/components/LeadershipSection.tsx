@@ -1,6 +1,6 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Users, Calendar, Award, ShieldCheck } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Users, Calendar, Award, ShieldCheck, ArrowUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -45,10 +45,62 @@ const roles: LeadershipRole[] = [
 ];
 
 export const LeadershipSection: React.FC = () => {
+  const [showFloatingBubble, setShowFloatingBubble] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !headerRef.current) return;
+      const headerRect = headerRef.current.getBoundingClientRect();
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+
+      const headerScrolledPast = headerRect.top <= 100;
+      const sectionStillVisible = sectionRect.bottom >= 180;
+
+      setShowFloatingBubble(headerScrolledPast && sectionStillVisible);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section id="leadership" className="py-20 md:py-28 relative">
+    <section ref={sectionRef} id="leadership" className="py-20 md:py-28 relative">
+      
+      {/* Floating Glassmorphism Header Bubble (Positioned on the LEFT side) */}
+      <AnimatePresence>
+        {showFloatingBubble && (
+          <motion.div
+            initial={{ opacity: 0, x: -20, scale: 0.85 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -20, scale: 0.85 }}
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 380, damping: 24 }}
+            className="fixed top-5 left-4 sm:left-10 max-w-[calc(100vw-180px)] sm:max-w-none z-50 pointer-events-auto cursor-pointer"
+            onClick={() => {
+              sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            <div className="h-[38px] sm:h-[44px] flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-full bg-[#FDFBF7]/40 dark:bg-[#1C1917]/40 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-md border border-white/50 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.12),inset_0_1px_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] group relative overflow-hidden">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
+              </div>
+              <span className="font-title font-bold text-xs sm:text-sm tracking-wide text-foreground group-hover:text-primary transition-colors whitespace-nowrap truncate">
+                Leadership
+              </span>
+              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30 font-bold whitespace-nowrap">
+                3 Roles
+              </span>
+              <ArrowUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary opacity-80 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-all flex-shrink-0" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
+        <div ref={headerRef} className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -73,14 +125,14 @@ export const LeadershipSection: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.15 }}
             >
-              <Card className="bg-card/70 dark:bg-zinc-900/80 backdrop-blur-md border border-border/60 hover:border-primary/40 rounded-3xl h-full flex flex-col p-6 shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <Card className="bg-card/70 dark:bg-zinc-900/80 backdrop-blur-md border border-border/60 hover:border-primary/40 rounded-[32px] h-full flex flex-col p-8 shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+                  <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">
                     <Users className="w-5 h-5" />
                   </div>
                   <div>
                     <span className="text-xs text-muted-foreground flex items-center gap-1 font-mono">
-                      <Calendar className="w-3 h-3" />
+                      <Calendar className="w-3.5 h-3.5" />
                       {role.period}
                     </span>
                   </div>

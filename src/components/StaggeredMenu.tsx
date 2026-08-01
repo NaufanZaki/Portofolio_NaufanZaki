@@ -3,7 +3,6 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
-  useEffect,
 } from "react";
 import { gsap } from "gsap";
 import { Sun, Moon, Menu as MenuIcon, X } from "lucide-react";
@@ -35,9 +34,8 @@ export interface StaggeredMenuProps {
 
 export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   position = "right",
-  colors = ["#2C1A11", "#1C1917"], // Warm dark chocolate & espresso tones
+  colors = ["#2C1A11", "#1C1917"],
   items = [],
-  socialItems = [],
   displaySocials = true,
   displayItemNumbering = true,
   className,
@@ -259,7 +257,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           aria-hidden="true"
         >
           {(() => {
-            const arr = ["#8B4513", "#3C2415"]; // Warm terracotta brown & deep espresso
+            const arr = ["#8B4513", "#3C2415"];
             return arr.map((c, i) => (
               <div
                 key={i}
@@ -270,16 +268,20 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           })()}
         </div>
 
-        {/* --- Top Floating Navigation Bar (Cream & Brown Theme) --- */}
+        {/* --- Top Floating Navigation Bar (High Contrast Glassmorphism Pill) --- */}
         <header
           className="staggered-menu-header fixed top-5 right-5 sm:right-10 flex items-center gap-3 p-0 bg-transparent pointer-events-none z-50"
           aria-label="Main navigation header"
         >
-          <div className="pointer-events-auto flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FDFBF7]/90 dark:bg-[#1C1917]/90 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-xl border border-[#E6DEC6] dark:border-[#3C2E24] shadow-2xl transition-all duration-300">
+          <div className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 dark:bg-zinc-900/70 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-xl border-2 border-primary/40 dark:border-primary/50 shadow-[0_10px_30px_rgba(0,0,0,0.18)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.6)] transition-all duration-300 relative group overflow-hidden">
+            
+            {/* Ambient Glass Reflective Sheen */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-white/20 dark:from-white/10 dark:via-transparent dark:to-white/5 pointer-events-none" />
+
             {/* Inline Light/Dark Mode Switcher Button */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-[#EAE2CE] dark:hover:bg-[#2C241D] text-[#C25E00] dark:text-[#F59E0B] transition-colors flex items-center justify-center cursor-pointer"
+              className="relative z-10 p-2 rounded-full hover:bg-primary/20 text-[#C25E00] dark:text-[#F59E0B] transition-all cursor-pointer hover:scale-105 active:scale-95"
               aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
               type="button"
             >
@@ -297,12 +299,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             </button>
 
             {/* Vertical Separator */}
-            <div className="w-[1px] h-5 bg-[#D8CEB7] dark:bg-[#3C2E24]" />
+            <div className="relative z-10 w-[1.5px] h-5 bg-primary/30 dark:bg-primary/40" />
 
             {/* Clear Menu Trigger Button with "Menu" Text */}
             <button
               onClick={toggleMenu}
-              className="flex items-center gap-2.5 px-3 py-1.5 rounded-full hover:bg-[#EAE2CE] dark:hover:bg-[#2C241D] transition-all font-title font-semibold text-sm cursor-pointer select-none"
+              className="relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-primary/20 transition-all font-title font-bold text-sm cursor-pointer select-none hover:scale-102 active:scale-98"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               aria-controls="staggered-menu-panel"

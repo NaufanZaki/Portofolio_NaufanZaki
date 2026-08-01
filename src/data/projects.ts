@@ -1,155 +1,159 @@
 export interface Project {
-    id: number;
-    title: string;
-    subtitle: string;
-    description: string;
-    longDescription: string;
-    techStack: string[];
-    category: "Frontend" | "Full-Stack" | "Backend";
-    links: {
-        demo?: string;
-        github?: string;
-    };
-    previewImage: string;
-    codeSnippet: string;
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  longDescription: string;
+  techStack: string[];
+  category: "Frontend" | "Full-Stack" | "Backend" | "AI & Data";
+  links: {
+    demo?: string;
+    github?: string;
+  };
+  previewImage: string;
+  codeSnippet: string;
 }
 
 export const projects: Project[] = [
-    {
-        id: 1,
-        title: "PySpark ML Pipeline",
-        subtitle: "Machine Learning Platform",
-        description:
-            "A distributed ML pipeline for large datasets using Apache Spark.",
-        longDescription:
-            "Built a distributed machine learning pipeline capable of processing large datasets efficiently using Apache Spark. Implemented various ML algorithms optimized for big data workloads with automated model evaluation and deployment strategies. This project demonstrates expertise in big data technologies and scalable machine learning.",
-        techStack: [
-            "PySpark",
-            "Machine Learning",
-            "Big Data",
-            "Apache Spark",
-            "Python",
-        ],
-        category: "Backend",
-        links: {
-            demo: "#",
-            github: "#",
-        },
-        previewImage:
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-        codeSnippet: `from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.classification import LogisticRegression
-from pyspark.ml import Pipeline
-
-# Create feature vector
-assembler = VectorAssembler(inputCols=features, outputCol="features")
-lr = LogisticRegression(maxIter=10)
-pipeline = Pipeline(stages=[assembler, lr])
-
-# Train model
-model = pipeline.fit(training_data)
-predictions = model.transform(test_data)`,
+  {
+    id: 1,
+    title: "Cervical Cancer Early Detection XAI & Edge ML",
+    subtitle: "Undergraduate Thesis Project",
+    description:
+      "CNN-based diagnostic system with Quantization for edge deployment and XAI (CAM) integration, paired with a native Kotlin Android app.",
+    longDescription:
+      "Engineered deep learning models (MobileNet, EfficientNet, ResNet) for cervical image analysis, integrating Explainable AI (Class Activation Maps) for transparent and verifiable medical diagnostics. Optimized models via post-training quantization to drastically cut memory/compute footprints, allowing real-time, on-device inference inside a custom Kotlin Android app.",
+    techStack: [
+      "TensorFlow",
+      "PyTorch",
+      "OpenCV",
+      "Quantization",
+      "Explainable AI (CAM)",
+      "Kotlin",
+      "Android",
+      "Python",
+    ],
+    category: "AI & Data",
+    links: {
+      github: "https://github.com/NaufanZaki",
     },
-    {
-        id: 2,
-        title: "Cloud Resource Optimizer",
-        subtitle: "Optimization System",
-        description:
-            "An intelligent cloud resource allocation system using Crow Search Algorithm.",
-        longDescription:
-            "Developed an intelligent cloud resource allocation system using the Crow Search Algorithm for optimization. The system automatically adjusts resource distribution based on workload patterns, reducing costs while maintaining performance. This highlights skills in optimization algorithms and cloud infrastructure management.",
-        techStack: [
-            "Algorithms",
-            "Optimization",
-            "Cloud Computing",
-            "Python",
-            "AWS",
-        ],
-        category: "Full-Stack",
-        links: {
-            demo: "#",
-            github: "#",
-        },
-        previewImage:
-            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-        codeSnippet: `def crow_search_optimizer(objective_function, bounds, n_crows=50, max_iter=100):
-    crows = initialize_population(n_crows, bounds)
-    memory = crows.copy()
-    
-    for iteration in range(max_iter):
-        for i in range(n_crows):
-            # Follow and search
-            j = random.randint(0, n_crows - 1)
-            new_position = crows[i] + random.random() * (memory[j] - crows[i])
-            
-            # Update if better
-            if objective_function(new_position) < objective_function(memory[i]):
-                memory[i] = new_position
-    
-    return best_solution(memory)`,
-    },
-    {
-        id: 3,
-        title: "Secure Attendance System",
-        subtitle: "Security Application",
-        description: "A robust attendance system with end-to-end RSA encryption.",
-        longDescription:
-            "Created a robust attendance management system with end-to-end encryption using the RSA algorithm. Features include biometric integration, real-time synchronization, and comprehensive audit trails for enhanced security. This project showcases strong knowledge of cryptography and secure system design.",
-        techStack: ["Cryptography", "Security", "RSA", "Biometrics", "Java"],
-        category: "Full-Stack",
-        links: {
-            demo: "#",
-            github: "#",
-        },
-        previewImage:
-            "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-        codeSnippet: `import javax.crypto.Cipher;
-import java.security.*;
+    previewImage:
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop",
+    codeSnippet: `import tensorflow as tf
+from tensorflow.lite.python.optimize import calibrator
 
-public class RSAEncryption {
-    private KeyPair keyPair;
-    
-    public RSAEncryption() throws NoSuchAlgorithmException {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-        generator.initialize(2048);
-        keyPair = generator.generateKeyPair();
-    }
-    
-    public byte[] encrypt(String data) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
-        return cipher.doFinal(data.getBytes());
-    }
-}`,
+# Post-Training Quantization for Edge Inference
+converter = tf.lite.TFLiteConverter.from_saved_model(saved_model_dir)
+converter.optimizations = [tf.lite.Optimize.DEFAULT]
+converter.target_spec.supported_types = [tf.float16]
+tflite_quant_model = converter.convert()
+
+with open('model_quantized.tflite', 'wb') as f:
+    f.write(tflite_quant_model)`,
+  },
+  {
+    id: 2,
+    title: "Legal Management System (LMS)",
+    subtitle: "PT INKA (Persero) - Digitalization Project",
+    description:
+      "Enterprise workflow platform for digitizing legal cases, document tracking, and licensing monitoring.",
+    longDescription:
+      "Directed the full software development lifecycle—from UI/UX design wireframes and relational database blueprinting to final cloud deployment. Developed modular monitoring features for legal contracts and licensing lifecycle management using ReactJS and Strapi headless CMS, significantly speeding up corporate compliance workflows.",
+    techStack: [
+      "React.js",
+      "Strapi",
+      "TypeScript",
+      "Node.js",
+      "Tailwind CSS",
+      "RESTful APIs",
+      "SQLite",
+    ],
+    category: "Full-Stack",
+    links: {
+      github: "https://github.com/NaufanZaki",
     },
-    {
-        id: 4,
-        title: "Real-time Analytics Dashboard",
-        subtitle: "Data Visualization",
-        description:
-            "Interactive dashboard for real-time data monitoring and analytics.",
-        longDescription:
-            "Built a comprehensive analytics dashboard with real-time data processing capabilities. Features include customizable widgets, data export functionality, and advanced filtering options for deep insights.",
-        techStack: ["React", "D3.js", "WebSocket", "Node.js", "MongoDB"],
-        category: "Frontend",
-        links: {
-            demo: "#",
-            github: "#",
-        },
-        previewImage:
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-        codeSnippet: `const Dashboard = () => {
-  const [data, setData] = useState([]);
+    previewImage:
+      "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=800&h=600&fit=crop",
+    codeSnippet: `import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+export const CaseMonitoring = () => {
+  const [legalCases, setLegalCases] = useState([]);
   
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
-    ws.onmessage = (event) => {
-      setData(prev => [...prev, JSON.parse(event.data)]);
-    };
-    return () => ws.close();
+    axios.get('/api/legal-cases?populate=*')
+      .then(res => setLegalCases(res.data.data));
   }, []);
-  
-  return <ChartComponent data={data} />;
-}`,
+
+  return (
+    <div className="grid gap-4 p-6">
+      {legalCases.map(c => <CaseCard key={c.id} item={c} />)}
+    </div>
+  );
+};`,
+  },
+  {
+    id: 3,
+    title: "Enterprise Power BI Risk & EAC Dashboard",
+    subtitle: "PT Semen Indonesia Tbk",
+    description:
+      "Automated BI intelligence platform centralizing data across 9 OpCos with real-time DAX S-Curves.",
+    longDescription:
+      "Engineered an automated Power BI intelligence platform via Power Query to centralize multi-source SharePoint data across 9 operating companies. Programmed custom DAX measures for real-time S-Curves and Estimate at Completion (EAC) risk modeling, while migrating legacy server infrastructure to SaaS with Row-Level Security (RLS).",
+    techStack: [
+      "Power BI",
+      "DAX",
+      "Power Query",
+      "SharePoint",
+      "ETL Pipelines",
+      "Row-Level Security",
+      "Cloud SaaS",
+    ],
+    category: "Backend",
+    links: {
+      linkedin: "https://linkedin.com/in/naufan-zaki-luqmanulhakim-0b0810248",
     },
+    previewImage:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+    codeSnippet: `// DAX Real-Time EAC & S-Curve Calculation
+EAC_Cumulative = 
+VAR CurrentDate = MAX('Calendar'[Date])
+VAR ActualToDate = CALCULATE([Total Actual Cost], 'Calendar'[Date] <= CurrentDate)
+VAR RemainingBudget = CALCULATE([Total Budget] - [Total Actual Cost], ALL('Calendar'))
+RETURN 
+    ActualToDate + (RemainingBudget * [Risk_Multiplier_Index])`,
+  },
+  {
+    id: 4,
+    title: "Smart City Urban Management Platform",
+    subtitle: "GemasTIK 2024 National Finalist Project",
+    description:
+      "Smart urban infrastructure analytics system developed for the prestigious GemasTIK Smart City competition.",
+    longDescription:
+      "Designed and prototyped an integrated smart city dashboard for monitoring urban resource efficiency, public services, and infrastructure performance. Recognized as a national finalist in GemasTIK 2024 by the Ministry of Education, Culture, Research, and Technology (Kemendikbudristek).",
+    techStack: [
+      "React.js",
+      "TypeScript",
+      "Figma",
+      "UI/UX Design",
+      "IoT Analytics",
+      "Smart City",
+    ],
+    category: "Frontend",
+    links: {
+      github: "https://github.com/NaufanZaki",
+    },
+    previewImage:
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=600&fit=crop",
+    codeSnippet: `interface SensorData {
+  nodeId: string;
+  trafficDensity: number;
+  airQualityIndex: number;
+  timestamp: string;
+}
+
+export const analyzeUrbanMetrics = (data: SensorData[]): number => {
+  return data.reduce((acc, curr) => acc + (curr.trafficDensity * 0.6 + curr.airQualityIndex * 0.4), 0) / data.length;
+};`,
+  },
 ];

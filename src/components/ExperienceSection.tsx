@@ -12,6 +12,7 @@ import {
   ArrowUp,
   X,
   CheckCircle2,
+  ChevronRight,
 } from "lucide-react";
 import {
   Dialog,
@@ -21,177 +22,211 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 
 interface ExperienceItem {
   id: string;
+  index: string;
   role: string;
   organization: string;
   duration: string;
+  period: string;
   location: string;
   type: string;
+  typeMark: string;
+  typeVariant: "enterprise" | "academic" | "leadership";
   icon: React.ElementType;
   details: string[];
   skills: string[];
   image: string;
   metrics: { label: string; value: string }[];
   highlight: string;
+  accentColor: string;
 }
+
+// Rubber document stamp — double border, inset white ring, rotated
+const TypeTag: React.FC<{ variant: ExperienceItem["typeVariant"]; label: string; size?: "sm" | "md" }> = ({ variant, label, size = "md" }) => {
+  const configs = {
+    enterprise: {
+      bg: "bg-red-600",
+      rotate: "-rotate-[2deg]",
+      shadow: "shadow-red-900/40",
+    },
+    academic: {
+      bg: "bg-blue-700",
+      rotate: "rotate-[1.5deg]",
+      shadow: "shadow-blue-900/40",
+    },
+    leadership: {
+      bg: "bg-emerald-700",
+      rotate: "-rotate-[1deg]",
+      shadow: "shadow-emerald-900/40",
+    },
+  };
+
+  const { bg, rotate, shadow } = configs[variant];
+  const outerPad = size === "sm" ? "p-[2.5px]" : "p-[3px]";
+  const innerPad = size === "sm" ? "px-2 py-0.5" : "px-3 py-1";
+  const textSize = size === "sm" ? "text-[8px]" : "text-[10px]";
+
+  return (
+    <span
+      className={`inline-flex flex-shrink-0 ${rotate} ${bg} ${outerPad} rounded-[5px] shadow-md ${shadow}`}
+      style={{ mixBlendMode: "multiply" }}
+    >
+      {/* Inner white inset ring — the double-border stamp effect */}
+      <span className={`flex items-center justify-center border border-white/60 rounded-[3px] ${innerPad}`}>
+        <span className={`font-black font-mono tracking-[0.25em] uppercase text-white ${textSize} leading-none`}>
+          {label}
+        </span>
+      </span>
+    </span>
+  );
+};
+
 
 const experiences: ExperienceItem[] = [
   {
     id: "exp1",
+    index: "01",
     role: "Project Performance & Support Admin Intern",
     organization: "PT Semen Indonesia Tbk",
     duration: "Aug 2025 – Jan 2026",
+    period: "6 months",
     location: "Indonesia",
     type: "Enterprise Internship",
+    typeMark: "Enterprise",
+    typeVariant: "enterprise" as const,
     icon: Building2,
     details: [
       "Built an automated Power BI dashboard via Power Query to centralize raw SharePoint data across multiple operating departments.",
       "Enabled risk management across 9 OpCos by programming DAX measures for real-time S-Curves and Estimate at Completion (EAC).",
       "Eliminated server costs by migrating infrastructure to cloud SaaS with Row-Level Security (RLS) policies.",
     ],
-    skills: [
-      "Power BI",
-      "DAX Measures",
-      "Power Query",
-      "SharePoint",
-      "Row-Level Security",
-      "Cloud SaaS",
-      "Risk Analytics",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    skills: ["Power BI", "DAX Measures", "Power Query", "SharePoint", "Row-Level Security", "Cloud SaaS", "Risk Analytics"],
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
     metrics: [
-      { label: "OpCos Integrated", value: "9 Operating Cos" },
-      { label: "Cost Savings", value: "100% Cloud SaaS" },
+      { label: "OpCos Integrated", value: "9 OpCos" },
+      { label: "Infrastructure", value: "100% Cloud" },
+      { label: "Duration", value: "6 Months" },
     ],
-    highlight: "Enterprise BI & Data Pipelines",
+    highlight: "Enterprise BI & Risk Dashboards",
+    accentColor: "from-blue-600 to-cyan-500",
   },
   {
     id: "exp2",
+    index: "02",
     role: "Web Developer Intern",
     organization: "PT INKA (Persero)",
     duration: "Jan 2025 – Apr 2025",
+    period: "4 months",
     location: "Madiun, East Java",
     type: "Enterprise Internship",
+    typeMark: "Enterprise",
+    typeVariant: "enterprise" as const,
     icon: Code2,
     details: [
       "Developed a Legal Management System (LMS) using ReactJS and Strapi to digitize corporate legal workflows.",
       "Boosted operational efficiency by building automated monitoring modules for legal cases, contracts, and licensing deadlines.",
       "Directed the full project lifecycle from UI/UX design wireframing and database blueprinting to final cloud deployment.",
     ],
-    skills: [
-      "React.js",
-      "Strapi",
-      "Node.js",
-      "SQLite",
-      "Tailwind CSS",
-      "RESTful APIs",
-      "UI/UX Design",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
+    skills: ["React.js", "Strapi", "Node.js", "SQLite", "Tailwind CSS", "RESTful APIs", "UI/UX Design"],
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
     metrics: [
-      { label: "Stack", value: "ReactJS + Strapi" },
-      { label: "Modules", value: "Legal & Case LMS" },
+      { label: "Stack", value: "React + Strapi" },
+      { label: "System", value: "Legal LMS" },
+      { label: "Duration", value: "4 Months" },
     ],
-    highlight: "Digitalized Corporate Legal LMS",
+    highlight: "Corporate Legal LMS Digitalization",
+    accentColor: "from-amber-500 to-orange-400",
   },
   {
     id: "exp3",
-    role: "Lecturer Assistant, Web Programming Course",
+    index: "03",
+    role: "Lecturer Assistant — Web Programming",
     organization: "Institut Teknologi Sepuluh Nopember",
     duration: "Aug 2024 – Nov 2024",
+    period: "4 months",
     location: "Surabaya, East Java",
-    type: "Academic Mentoring",
+    type: "Academic",
+    typeMark: "Academic",
+    typeVariant: "academic" as const,
     icon: GraduationCap,
     details: [
       "Developed and delivered course materials covering Javascript, Express JS & MongoDB, and Nuxt.js framework.",
       "Created comprehensive examination materials, hands-on lab exercises, and assessment criteria.",
       "Supported students through regular consultation sessions and code debugging assistance.",
     ],
-    skills: [
-      "JavaScript",
-      "Express.js",
-      "MongoDB",
-      "Nuxt.js",
-      "Lab Instruction",
-      "Technical Mentoring",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1555066931-4365d1469c9b?q=80&w=2070&auto=format&fit=crop",
+    skills: ["JavaScript", "Express.js", "MongoDB", "Nuxt.js", "Lab Instruction", "Technical Mentoring"],
+    image: "https://images.unsplash.com/photo-1555066931-4365d1469c9b?q=80&w=2070&auto=format&fit=crop",
     metrics: [
-      { label: "Course Curriculum", value: "JS, Express & Nuxt" },
-      { label: "Lab Modules", value: "Hands-on Exercises" },
+      { label: "Curriculum", value: "JS + Nuxt.js" },
+      { label: "Format", value: "Hands-on Labs" },
+      { label: "Duration", value: "4 Months" },
     ],
     highlight: "Full-Stack Web Mentoring",
+    accentColor: "from-emerald-500 to-teal-400",
   },
   {
     id: "exp4",
-    role: "Lecturer Assistant, Data Structure Course",
+    index: "04",
+    role: "Lecturer Assistant — Data Structures",
     organization: "Institut Teknologi Sepuluh Nopember",
     duration: "Feb 2024 – May 2024",
+    period: "4 months",
     location: "Surabaya, East Java",
-    type: "Academic Mentoring",
+    type: "Academic",
+    typeMark: "Academic",
+    typeVariant: "academic" as const,
     icon: Code2,
     details: [
       "Created online programming exercises on HackerRank platform to evaluate algorithm efficiency.",
       "Developed supplementary learning materials for complex algorithms, linked lists, trees, and graph data structures.",
       "Mentored undergraduate students by providing targeted technical support, achieving a 100% class pass rate.",
     ],
-    skills: [
-      "Data Structures",
-      "Algorithms",
-      "HackerRank",
-      "Problem Solving",
-      "Technical Mentoring",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
+    skills: ["Data Structures", "Algorithms", "HackerRank", "Problem Solving", "Technical Mentoring"],
+    image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
     metrics: [
-      { label: "Pass Rate", value: "100% Class Pass" },
-      { label: "Platform", value: "HackerRank Practice" },
+      { label: "Pass Rate", value: "100%" },
+      { label: "Platform", value: "HackerRank" },
+      { label: "Duration", value: "4 Months" },
     ],
     highlight: "Algorithm & DS Mastery",
+    accentColor: "from-violet-500 to-purple-400",
   },
   {
     id: "exp5",
+    index: "05",
     role: "Head of Sponsorship Division",
     organization: "A Renewal Agent 5.0",
     duration: "Aug 2023 – Mar 2024",
+    period: "8 months",
     location: "Surabaya, East Java",
-    type: "Leadership Role",
+    type: "Leadership",
+    typeMark: "Leadership",
+    typeVariant: "leadership" as const,
     icon: Award,
     details: [
       "Led a 6-member team in developing and executing comprehensive sponsorship outreach strategies.",
       "Secured funding and sponsorship deals totaling 80 million rupiah for event execution.",
       "Managed sponsor relationships, contract agreements, and branding deliverables with 7 corporate partners.",
     ],
-    skills: [
-      "Team Leadership",
-      "Sponsorship Strategy",
-      "Negotiation",
-      "Stakeholder Management",
-      "Budgeting",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2070&auto=format&fit=crop",
+    skills: ["Team Leadership", "Sponsorship Strategy", "Negotiation", "Stakeholder Management", "Budgeting"],
+    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2070&auto=format&fit=crop",
     metrics: [
       { label: "Funding Secured", value: "80M IDR" },
-      { label: "Corporate Partners", value: "7 Partners" },
+      { label: "Partners", value: "7 Corps" },
+      { label: "Team Size", value: "6 Members" },
     ],
     highlight: "Strategic Leadership & Deals",
+    accentColor: "from-rose-500 to-pink-400",
   },
 ];
 
 const ExperienceSection: React.FC = () => {
-  const [selectedExperience, setSelectedExperience] =
-    useState<ExperienceItem | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFloatingBubble, setShowFloatingBubble] = useState(false);
-  const [filterType, setFilterType] = useState<string>("All");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -201,13 +236,8 @@ const ExperienceSection: React.FC = () => {
       if (!sectionRef.current || !headerRef.current) return;
       const headerRect = headerRef.current.getBoundingClientRect();
       const sectionRect = sectionRef.current.getBoundingClientRect();
-
-      const headerScrolledPast = headerRect.top <= 100;
-      const sectionStillVisible = sectionRect.bottom >= 180;
-
-      setShowFloatingBubble(headerScrolledPast && sectionStillVisible);
+      setShowFloatingBubble(headerRect.top <= 100 && sectionRect.bottom >= 180);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -218,15 +248,14 @@ const ExperienceSection: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const filteredExperiences =
-    filterType === "All"
-      ? experiences
-      : experiences.filter((exp) => exp.type === filterType);
+  // Spotlight = first two (enterprise), list = rest
+  const spotlight = experiences.slice(0, 2);
+  const listItems = experiences.slice(2);
 
   return (
-    <section ref={sectionRef} id="experience" className="py-20 md:py-32 relative overflow-hidden">
-      
-      {/* Floating Glassmorphism Header Bubble (Positioned on the LEFT side) */}
+    <section ref={sectionRef} id="experience" className="relative overflow-hidden py-20 md:py-32">
+
+      {/* Floating Bubble */}
       <AnimatePresence>
         {showFloatingBubble && (
           <motion.div
@@ -235,294 +264,309 @@ const ExperienceSection: React.FC = () => {
             exit={{ opacity: 0, x: -20, scale: 0.85 }}
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 380, damping: 24 }}
-            className="fixed top-5 left-4 sm:left-10 max-w-[calc(100vw-180px)] sm:max-w-none z-50 pointer-events-auto cursor-pointer"
-            onClick={() => {
-              sectionRef.current?.scrollIntoView({ behavior: "smooth" });
-            }}
+            className="fixed top-5 left-4 sm:left-10 z-50 pointer-events-auto cursor-pointer"
+            onClick={() => sectionRef.current?.scrollIntoView({ behavior: "smooth" })}
           >
-            <div className="h-[38px] sm:h-[44px] flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-full bg-[#FDFBF7]/40 dark:bg-[#1C1917]/40 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-md border border-white/50 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.12),inset_0_1px_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] group relative overflow-hidden">
-              
-              {/* Briefcase Icon */}
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+            <div className="h-[38px] sm:h-[44px] flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-full bg-[#FDFBF7]/40 dark:bg-[#1C1917]/40 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-md border border-white/50 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.12),inset_0_1px_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] group overflow-hidden">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                 <Briefcase className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary" />
               </div>
-
-              {/* Title Text */}
-              <span className="font-title font-bold text-xs sm:text-sm tracking-wide text-foreground group-hover:text-primary transition-colors whitespace-nowrap truncate">
+              <span className="font-title font-bold text-xs sm:text-sm tracking-wide text-foreground group-hover:text-primary transition-colors whitespace-nowrap">
                 Work Experience
               </span>
-
-              {/* Counter Badge */}
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30 font-bold whitespace-nowrap">
+              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30 font-bold">
                 5 Roles
               </span>
-
-              {/* Scroll Top Arrow Accent */}
               <ArrowUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary opacity-80 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-all flex-shrink-0" />
-
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        
-        {/* Static Header */}
-        <div ref={headerRef} className="text-center mb-10 md:mb-16">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+
+        {/* ─── SECTION HEADER — editorial style ─── */}
+        <div ref={headerRef} className="mb-14 md:mb-20">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-mono font-medium mb-3">
-              Professional Journey
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-xs font-mono text-muted-foreground border border-border/60 px-3 py-1 rounded-full bg-card/50">
+                Professional Journey
+              </span>
+              <div className="h-px flex-1 bg-border/40 max-w-[80px]" />
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-title text-foreground mb-3">
-              Work <span className="text-primary">Experience</span>
+            <h2
+              className="font-title font-black leading-[0.9] tracking-[-0.03em] text-foreground"
+              style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
+            >
+              WORK
             </h2>
-            <p className="text-muted-foreground text-xs sm:text-base lg:text-lg font-subtitle max-w-2xl mx-auto leading-relaxed mb-6">
-              Impactful enterprise internships, software engineering, business intelligence, and academic mentoring.
-            </p>
-
-            {/* Filter Pills */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {["All", "Enterprise Internship", "Academic Mentoring", "Leadership Role"].map(
-                (type) => (
-                  <button
-                    key={type}
-                    onClick={() => setFilterType(type)}
-                    className={`px-3.5 py-1.5 rounded-full font-subtitle text-xs transition-all duration-300 ${
-                      filterType === type
-                        ? "bg-primary text-primary-foreground shadow-md font-semibold"
-                        : "bg-surface-elevated text-foreground hover:bg-surface border border-border/50"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                )
-              )}
+            <div className="flex items-end gap-4 md:gap-8">
+              <h2
+                className="font-title font-black leading-[0.9] tracking-[-0.03em] text-foreground"
+                style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
+              >
+                EXPERIENCE
+              </h2>
+              <p className="hidden md:block text-sm font-subtitle text-muted-foreground max-w-xs mb-2 leading-relaxed">
+                Enterprise internships, teaching assistantships & leadership roles that shaped my engineering thinking.
+              </p>
+            </div>
+            <div className="mt-4 md:mt-6 pt-4 border-t border-border/40 flex flex-wrap items-center gap-4">
+              {[
+                { label: "Enterprise Internships", val: "2" },
+                { label: "Academic Roles", val: "2" },
+                { label: "Leadership", val: "1" },
+                { label: "Total Duration", val: "26 months" },
+              ].map((s, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="font-title font-black text-2xl md:text-3xl text-foreground">{s.val}</span>
+                  <span className="text-xs font-subtitle text-muted-foreground">{s.label}</span>
+                  {i < 3 && <span className="text-border/60 ml-2">·</span>}
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>
 
-        {/* Timeline Container */}
-        <div className="relative">
-          {/* Vertical Timeline Spine Line */}
-          <div className="absolute left-5 md:left-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-primary via-amber-500/60 to-primary/20 -translate-x-1/2" />
+        {/* ─── SPOTLIGHT: 2 BIG ENTERPRISE CARDS ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border/30 rounded-[28px] overflow-hidden border border-border/40 mb-4">
+          {spotlight.map((exp, idx) => (
+            <motion.div
+              key={exp.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.12 }}
+              onClick={() => openModal(exp)}
+              onMouseEnter={() => setHoveredId(exp.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className="relative bg-card/70 dark:bg-zinc-900/70 backdrop-blur-sm p-7 md:p-10 cursor-pointer group overflow-hidden hover:bg-primary/5 transition-colors duration-500"
+            >
+              {/* Gradient accent blob */}
+              <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gradient-to-br ${exp.accentColor} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-700`} />
 
-          <div className="space-y-12 md:space-y-20">
-            {filteredExperiences.map((exp, idx) => {
-              const IconComponent = exp.icon;
-              const isEven = idx % 2 === 0;
+              {/* Index number — giant behind content */}
+              <span
+                className="absolute -bottom-4 -right-2 font-title font-black text-[8rem] leading-none text-foreground/5 select-none pointer-events-none"
+              >
+                {exp.index}
+              </span>
 
-              return (
-                <motion.div
-                  key={exp.id}
-                  initial={{ opacity: 0, y: 35 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="relative flex flex-col md:flex-row items-stretch gap-6 md:gap-12 pl-12 md:pl-0"
-                >
-                  {/* Timeline Center Node Badge */}
-                  <div className="absolute left-5 md:left-1/2 top-6 md:top-8 -translate-x-1/2 z-20 flex items-center justify-center">
-                    <div className="w-9 h-9 md:w-12 md:h-12 rounded-2xl bg-card dark:bg-zinc-900 border-2 border-primary text-primary shadow-lg flex items-center justify-center font-bold transition-transform hover:scale-110">
-                      <IconComponent className="w-4 h-4 md:w-6 md:h-6" />
+              {/* Type marker + duration */}
+              <div className="flex items-center justify-between mb-6">
+                <TypeTag variant={exp.typeVariant} label={exp.typeMark} />
+                <span className="text-xs font-mono text-muted-foreground">{exp.period}</span>
+              </div>
+
+              {/* Role headline */}
+              <h3
+                className="font-title font-black text-2xl md:text-3xl text-foreground group-hover:text-primary transition-colors leading-tight mb-2"
+                style={{ letterSpacing: "-0.02em" }}
+              >
+                {exp.role}
+              </h3>
+
+              {/* Org + location */}
+              <div className="flex flex-wrap items-center gap-3 mb-6 text-sm">
+                <span className="font-subtitle font-bold text-primary">{exp.organization}</span>
+                <span className="text-border/60">·</span>
+                <span className="flex items-center gap-1 text-muted-foreground font-mono text-xs">
+                  <MapPin className="w-3.5 h-3.5" />{exp.location}
+                </span>
+                <span className="text-border/60">·</span>
+                <span className="flex items-center gap-1 text-muted-foreground font-mono text-xs">
+                  <Calendar className="w-3.5 h-3.5" />{exp.duration}
+                </span>
+              </div>
+
+              {/* Image thumbnail */}
+              <div className="relative rounded-2xl overflow-hidden aspect-[16/7] mb-6 border border-border/40">
+                <img
+                  src={exp.image}
+                  alt={exp.role}
+                  className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-3 left-3 font-mono text-white text-xs bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-white/15">
+                  {exp.highlight}
+                </div>
+              </div>
+
+              {/* Key metrics */}
+              <div className="grid grid-cols-3 gap-px bg-border/30 rounded-2xl overflow-hidden border border-border/30 mb-6">
+                {exp.metrics.map((m, i) => (
+                  <div key={i} className="bg-card/60 dark:bg-zinc-900/60 px-4 py-3">
+                    <p className="text-[10px] font-mono text-muted-foreground mb-0.5">{m.label}</p>
+                    <p className="text-sm font-title font-black text-foreground group-hover:text-primary transition-colors">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Skills */}
+              <div className="flex flex-wrap gap-1.5">
+                {exp.skills.slice(0, 5).map((s, i) => (
+                  <span key={i} className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-surface-elevated border border-border/50 text-muted-foreground">
+                    {s}
+                  </span>
+                ))}
+                {exp.skills.length > 5 && (
+                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary">
+                    +{exp.skills.length - 5} more
+                  </span>
+                )}
+              </div>
+
+              {/* CTA row */}
+              <div className="flex items-center gap-2 mt-5 pt-4 border-t border-border/30 text-xs font-mono text-muted-foreground group-hover:text-primary transition-colors">
+                <span>View full details</span>
+                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ─── STACKED LIST: remaining 3 roles ─── */}
+        <div className="bg-border/30 rounded-[28px] overflow-hidden border border-border/40 divide-y divide-border/30">
+          {listItems.map((exp, idx) => {
+            const isHovered = hoveredId === exp.id;
+            return (
+              <motion.div
+                key={exp.id}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                onClick={() => openModal(exp)}
+                onMouseEnter={() => setHoveredId(exp.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                className="relative bg-card/60 dark:bg-zinc-900/60 backdrop-blur-sm px-6 md:px-10 py-6 md:py-7 cursor-pointer hover:bg-primary/5 transition-colors duration-300 group"
+              >
+                {/* hidden index */}
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 font-title font-black text-6xl text-foreground/5 select-none pointer-events-none">
+                  {exp.index}
+                </span>
+
+                <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+                  {/* Left: type + role */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <TypeTag variant={exp.typeVariant} label={exp.typeMark} size="sm" />
+                      <span className="text-[10px] font-mono text-muted-foreground">{exp.duration}</span>
+                    </div>
+                    <h3 className="font-title font-black text-lg md:text-xl text-foreground group-hover:text-primary transition-colors leading-tight truncate">
+                      {exp.role}
+                    </h3>
+                    <p className="text-sm font-subtitle font-semibold text-primary mt-0.5">{exp.organization}</p>
+                  </div>
+
+                  {/* Middle: metrics chips */}
+                  <div className="hidden md:flex items-center gap-3">
+                    {exp.metrics.slice(0, 2).map((m, i) => (
+                      <div key={i} className="text-center px-4 py-2 rounded-xl bg-surface-elevated border border-border/50">
+                        <p className="text-sm font-title font-black text-foreground">{m.value}</p>
+                        <p className="text-[9px] font-mono text-muted-foreground">{m.label}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Right: skills + arrow */}
+                  <div className="flex items-center gap-3">
+                    <div className="hidden lg:flex flex-wrap gap-1.5 max-w-[240px]">
+                      {exp.skills.slice(0, 3).map((s, i) => (
+                        <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-elevated border border-border/50 text-muted-foreground">
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="w-9 h-9 rounded-full border border-border/60 group-hover:border-primary group-hover:bg-primary/10 flex items-center justify-center transition-all duration-300 flex-shrink-0 ml-auto">
+                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors group-hover:translate-x-0.5" />
                     </div>
                   </div>
-
-                  {/* Main Experience Card */}
-                  <div
-                    className={`flex-1 ${
-                      isEven ? "md:pr-14 md:text-right" : "md:order-2 md:pl-14 md:text-left"
-                    }`}
-                  >
-                    <Card
-                      onClick={() => openModal(exp)}
-                      className="bg-card/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-border/70 hover:border-primary/50 transition-all duration-500 shadow-xl hover:shadow-2xl rounded-3xl p-5 md:p-8 cursor-pointer group hover:-translate-y-1"
-                    >
-                      {/* Top Header inside Card */}
-                      <div className="flex flex-wrap items-center justify-between gap-2.5 mb-3">
-                        <Badge
-                          variant="secondary"
-                          className="bg-primary/10 text-primary border border-primary/20 font-mono text-[11px] md:text-xs px-3 py-1 rounded-full"
-                        >
-                          {exp.duration}
-                        </Badge>
-                        <Badge className="bg-surface-elevated text-foreground border border-border/50 font-subtitle text-[11px]">
-                          {exp.type}
-                        </Badge>
-                      </div>
-
-                      {/* Role & Org */}
-                      <h3 className="text-lg md:text-2xl font-bold font-title text-foreground group-hover:text-primary transition-colors leading-tight mb-1">
-                        {exp.role}
-                      </h3>
-
-                      <p className="text-xs md:text-sm font-subtitle font-semibold text-primary mb-2">
-                        {exp.organization}
-                      </p>
-
-                      <div className="flex items-center gap-1.5 text-xs font-subtitle text-muted-foreground mb-3">
-                        <MapPin className="w-3.5 h-3.5 text-primary" />
-                        {exp.location}
-                      </div>
-
-                      <hr className="border-border/40 mb-3" />
-
-                      {/* Bullets */}
-                      <ul className="space-y-2 text-xs md:text-sm text-muted-foreground dark:text-gray-300 text-left mb-4">
-                        {exp.details.map((bullet, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="leading-relaxed">{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Tech Badges */}
-                      <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/40">
-                        {exp.skills.map((skill, sIdx) => (
-                          <Badge
-                            key={sIdx}
-                            variant="outline"
-                            className="text-[10px] md:text-[11px] font-mono px-2.5 py-0.5 bg-surface-elevated text-foreground border border-border/50"
-                          >
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      {/* Card Bottom CTA */}
-                      <div className="mt-4 pt-3 flex items-center justify-between text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors font-subtitle">
-                        <span>View Role Visuals</span>
-                        <ArrowUpRight className="w-4 h-4 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </div>
-                    </Card>
-                  </div>
-
-                  {/* Opposite Side Feature Widget (Eliminates Empty Whitespace on Desktop) */}
-                  <div
-                    className={`flex-1 hidden md:flex flex-col justify-center ${
-                      isEven ? "order-2 md:pl-14" : "order-1 md:pr-14"
-                    }`}
-                  >
-                    <div 
-                      onClick={() => openModal(exp)}
-                      className="bg-card/60 dark:bg-zinc-900/60 backdrop-blur-md border border-border/50 hover:border-primary/40 rounded-3xl p-6 transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer group space-y-4"
-                    >
-                      {/* Image Thumbnail */}
-                      <div className="relative rounded-2xl overflow-hidden aspect-[16/9] border border-border/40">
-                        <img
-                          src={exp.image}
-                          alt={exp.role}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-mono border border-white/20">
-                          {exp.highlight}
-                        </div>
-                      </div>
-
-                      {/* Key Metrics Chips */}
-                      <div className="grid grid-cols-2 gap-3 pt-1">
-                        {exp.metrics.map((m, mIdx) => (
-                          <div
-                            key={mIdx}
-                            className="bg-surface-elevated/80 border border-border/50 rounded-2xl p-3 text-left"
-                          >
-                            <p className="text-[10px] font-mono text-muted-foreground leading-none mb-1">
-                              {m.label}
-                            </p>
-                            <p className="text-xs font-bold font-title text-foreground group-hover:text-primary transition-colors">
-                              {m.value}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                </motion.div>
-              );
-            })}
-          </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>
 
-      {/* Experience Detail Modal Dialog */}
+      {/* ─── DETAIL MODAL ─── */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         {selectedExperience && (
-          <DialogContent className="w-full max-w-[95vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto bg-background dark:bg-zinc-900 border-2 border-border dark:border-zinc-800 p-6 flex flex-col gap-0 shadow-2xl rounded-3xl">
-            <DialogHeader className="pb-4 border-b border-border text-left">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/20 text-primary rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 border border-primary/30">
-                  <Briefcase className="w-6 h-6 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <DialogTitle className="text-lg md:text-2xl font-bold font-title text-foreground dark:text-white break-words">
-                    {selectedExperience.role}
-                  </DialogTitle>
-                  <p className="text-primary font-subtitle font-medium text-xs md:text-sm mt-0.5 break-words">
-                    {selectedExperience.organization}
-                  </p>
-                </div>
-              </div>
-            </DialogHeader>
-            
-            <div className="flex-1 overflow-y-auto pr-1 mt-4 space-y-4">
-              <img 
-                src={selectedExperience.image} 
-                alt={selectedExperience.role} 
-                className="rounded-2xl object-cover w-full h-44 md:h-56 shadow-md border border-border" 
+          <DialogContent className="w-full max-w-[95vw] sm:max-w-2xl max-h-[88vh] overflow-y-auto bg-background dark:bg-zinc-900 border-2 border-border dark:border-zinc-800 p-0 shadow-2xl rounded-3xl">
+            {/* Modal hero image */}
+            <div className="relative h-48 md:h-56 overflow-hidden rounded-t-3xl">
+              <img
+                src={selectedExperience.image}
+                alt={selectedExperience.role}
+                className="w-full h-full object-cover"
               />
-              
-              <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <Calendar size={14} className="text-primary" />
-                  {selectedExperience.duration}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <div className="absolute bottom-4 left-5 right-16">
+                <span className="mb-2 inline-block text-[10px] font-mono font-bold tracking-widest uppercase text-white/80 border-b border-white/40 pb-px">
+                  {selectedExperience.typeMark}
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin size={14} className="text-primary" />
-                  {selectedExperience.location}
-                </span>
+                <h2 className="text-white font-title font-black text-xl md:text-2xl leading-tight">
+                  {selectedExperience.role}
+                </h2>
+                <p className="text-white/70 text-sm font-subtitle mt-0.5">{selectedExperience.organization}</p>
+              </div>
+              <DialogClose asChild>
+                <button className="absolute right-4 top-4 rounded-full p-2 bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-colors">
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">Close</span>
+                </button>
+              </DialogClose>
+            </div>
+
+            <div className="p-6 space-y-5">
+              {/* Meta row */}
+              <div className="flex flex-wrap items-center gap-4">
+                <TypeTag variant={selectedExperience.typeVariant} label={selectedExperience.typeMark} />
+                <span className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground"><Calendar size={13} className="text-primary" />{selectedExperience.duration}</span>
+                <span className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground"><MapPin size={13} className="text-primary" />{selectedExperience.location}</span>
               </div>
 
+              {/* Metrics */}
+              <div className="grid grid-cols-3 gap-px bg-border/30 rounded-2xl overflow-hidden border border-border/30">
+                {selectedExperience.metrics.map((m, i) => (
+                  <div key={i} className="bg-card/60 dark:bg-zinc-900/60 px-4 py-3 text-center">
+                    <p className="text-[10px] font-mono text-muted-foreground">{m.label}</p>
+                    <p className="text-base font-title font-black text-foreground">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Responsibilities */}
               <div>
-                <h4 className="text-base font-semibold text-foreground dark:text-white mb-3 font-title">
-                  Key Responsibilities & Deliverables
-                </h4>
+                <h4 className="text-sm font-title font-bold text-foreground mb-3">Key Responsibilities & Deliverables</h4>
                 <ul className="space-y-3">
-                  {selectedExperience.details.map((detail, index) => (
-                    <li key={index} className="flex items-start gap-3 text-muted-foreground dark:text-zinc-300 text-sm">
+                  {selectedExperience.details.map((d, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground dark:text-zinc-300">
                       <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="leading-relaxed">{detail}</span>
+                      <span className="leading-relaxed">{d}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
+              {/* Skills */}
               <div>
-                <h4 className="text-sm font-semibold text-foreground dark:text-white mb-2 font-title">
-                  Tools & Technologies
-                </h4>
+                <h4 className="text-sm font-title font-bold text-foreground mb-2">Tools & Technologies</h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {selectedExperience.skills.map((skill, i) => (
-                    <Badge key={i} variant="outline" className="font-mono text-xs px-3 py-1 bg-surface-elevated">
-                      {skill}
-                    </Badge>
+                  {selectedExperience.skills.map((s, i) => (
+                    <span key={i} className="text-xs font-mono px-3 py-1 rounded-full bg-surface-elevated border border-border/50 text-muted-foreground">
+                      {s}
+                    </span>
                   ))}
                 </div>
               </div>
             </div>
-            <DialogClose asChild>
-              <button className="absolute right-4 top-4 rounded-full p-2 opacity-70 hover:opacity-100 hover:bg-surface transition-opacity">
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </button>
-            </DialogClose>
           </DialogContent>
         )}
       </Dialog>

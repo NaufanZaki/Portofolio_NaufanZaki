@@ -228,7 +228,7 @@ const ContactSection: React.FC = () => {
         
         <div className="text-center mt-16 pt-8 border-t border-border/40">
           <p className="font-subtitle text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Naufan Zaki Luqmanulhakim • Built with React, TypeScript & Tailwind CSS
+            © {new Date().getFullYear()} Naufan Zaki Luqmanulhakim 
           </p>
         </div>
       </div>

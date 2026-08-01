@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Code2,
@@ -13,59 +11,99 @@ import {
   Palette,
   ShieldCheck,
   Zap,
-  Sparkles,
   Layers,
+  ArrowUpRight,
+  Sparkles,
   CheckCircle2,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface SkillItem {
+  id: string;
   name: string;
   category: "Full-Stack Web" | "AI & Machine Learning" | "BI & Data Engineering" | "Design & UI/UX" | "Strategy & Governance";
   levelLabel: "Core Expertise" | "Production Ready" | "Enterprise Scaled";
   application: string;
-  iconName: string;
+  projectProof: string;
+  highlight: string;
 }
 
 const skillsData: SkillItem[] = [
   // Full-Stack Web
-  { name: "React.js", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "PT INKA Legal LMS & Modern Web Apps", iconName: "Zap" },
-  { name: "Vue.js & Nuxt.js", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "SSR Web Apps & ITS Web Programming Lab", iconName: "Zap" },
-  { name: "Strapi Headless CMS", category: "Full-Stack Web", levelLabel: "Production Ready", application: "PT INKA Legal Case Management System", iconName: "Layers" },
-  { name: "Express.js & Node.js", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "RESTful Microservices & Backend APIs", iconName: "Code2" },
-  { name: "MongoDB & SQLite", category: "Full-Stack Web", levelLabel: "Production Ready", application: "Database Schemas & Local Embedded DBs", iconName: "Layers" },
-  { name: "TypeScript & JS (ES6+)", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "Type-Safe Enterprise Web Frontend", iconName: "Code2" },
+  { id: "s1", name: "React.js", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "Built PT INKA Legal Management System (LMS) digitized workflows.", projectProof: "PT INKA (Persero)", highlight: "Frontend Architecture" },
+  { id: "s2", name: "Vue.js & Nuxt.js", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "SSR Web applications & ITS Web Programming course curriculum.", projectProof: "ITS Surabaya", highlight: "SSR & Frameworks" },
+  { id: "s3", name: "Strapi Headless CMS", category: "Full-Stack Web", levelLabel: "Production Ready", application: "RESTful headless CMS powering corporate legal case management.", projectProof: "PT INKA (Persero)", highlight: "Headless CMS" },
+  { id: "s4", name: "Express.js & Node.js", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "Scalable backend microservices and RESTful API endpoints.", projectProof: "Full-Stack Systems", highlight: "Backend APIs" },
+  { id: "s5", name: "MongoDB & SQLite", category: "Full-Stack Web", levelLabel: "Production Ready", application: "Document schemas and lightweight embedded databases.", projectProof: "Enterprise DBs", highlight: "Database Engineering" },
+  { id: "s6", name: "TypeScript & JS (ES6+)", category: "Full-Stack Web", levelLabel: "Core Expertise", application: "Type-safe web frontends with strict design systems.", projectProof: "Enterprise Frontends", highlight: "Type-Safe Systems" },
   
   // AI & Machine Learning
-  { name: "TensorFlow & Keras", category: "AI & Machine Learning", levelLabel: "Core Expertise", application: "Cervical Cancer CNN Models (ResNet, MobileNet)", iconName: "Brain" },
-  { name: "Explainable AI (Grad-CAM)", category: "AI & Machine Learning", levelLabel: "Core Expertise", application: "Medical Heatmap Visualization for Diagnosis", iconName: "Brain" },
-  { name: "Edge Model Quantization", category: "AI & Machine Learning", levelLabel: "Production Ready", application: "TFLite Optimization for Kotlin Mobile", iconName: "Cpu" },
-  { name: "Kotlin Android", category: "AI & Machine Learning", levelLabel: "Production Ready", application: "On-Device Medical Inference App", iconName: "Cpu" },
-  { name: "PyTorch & OpenCV", category: "AI & Machine Learning", levelLabel: "Production Ready", application: "Computer Vision & Image Preprocessing", iconName: "Brain" },
-  { name: "Python Data Science", category: "AI & Machine Learning", levelLabel: "Core Expertise", application: "Pandas, NumPy, Scikit-Learn Pipelines", iconName: "Code2" },
+  { id: "s7", name: "TensorFlow & Keras", category: "AI & Machine Learning", levelLabel: "Core Expertise", application: "Undergraduate thesis CNN models (ResNet, MobileNet) for medical diagnostics.", projectProof: "B.S. Thesis @ ITS", highlight: "Deep Learning" },
+  { id: "s8", name: "Explainable AI (Grad-CAM)", category: "AI & Machine Learning", levelLabel: "Core Expertise", application: "Visual heatmap interpretability for CNN classification decisions.", projectProof: "XAI Research", highlight: "Model Interpretability" },
+  { id: "s9", name: "Edge Model Quantization", category: "AI & Machine Learning", levelLabel: "Production Ready", application: "TFLite model compression for low-latency mobile inference.", projectProof: "Edge AI", highlight: "Model Optimization" },
+  { id: "s10", name: "Kotlin Android", category: "AI & Machine Learning", levelLabel: "Production Ready", application: "Native Android application for real-time medical image inference.", projectProof: "Mobile AI App", highlight: "On-Device Inference" },
+  { id: "s11", name: "PyTorch & OpenCV", category: "AI & Machine Learning", levelLabel: "Production Ready", application: "Computer vision preprocessing pipelines & image augmentation.", projectProof: "CV Pipelines", highlight: "Computer Vision" },
+  { id: "s12", name: "Python Data Science", category: "AI & Machine Learning", levelLabel: "Core Expertise", application: "Pandas, NumPy, and Scikit-Learn exploratory data pipelines.", projectProof: "Data Analytics", highlight: "Data Science" },
 
   // BI & Data Engineering
-  { name: "Microsoft Power BI", category: "BI & Data Engineering", levelLabel: "Enterprise Scaled", application: "PT Semen Indonesia 9 OpCos Centralized BI", iconName: "BarChart3" },
-  { name: "DAX Measures & Power Query", category: "BI & Data Engineering", levelLabel: "Enterprise Scaled", application: "Real-Time S-Curves & EAC Calculation Engine", iconName: "BarChart3" },
-  { name: "Row-Level Security (RLS)", category: "BI & Data Engineering", levelLabel: "Enterprise Scaled", application: "Departmental Data Privacy Policies", iconName: "ShieldCheck" },
-  { name: "ETL Pipelines & SharePoint", category: "BI & Data Engineering", levelLabel: "Production Ready", application: "Automated Data Ingestion & Transformation", iconName: "Layers" },
-  { name: "Google Looker Studio", category: "BI & Data Engineering", levelLabel: "Production Ready", application: "Executive Performance Reporting", iconName: "BarChart3" },
+  { id: "s13", name: "Microsoft Power BI", category: "BI & Data Engineering", levelLabel: "Enterprise Scaled", application: "Centralized risk management dashboards across 9 operating companies.", projectProof: "PT Semen Indonesia Tbk", highlight: "Enterprise BI" },
+  { id: "s14", name: "DAX Measures & Power Query", category: "BI & Data Engineering", levelLabel: "Enterprise Scaled", application: "Real-time S-Curves & Estimate at Completion (EAC) calculation engines.", projectProof: "PT Semen Indonesia Tbk", highlight: "DAX Engineering" },
+  { id: "s15", name: "Row-Level Security (RLS)", category: "BI & Data Engineering", levelLabel: "Enterprise Scaled", application: "Granular departmental data privacy policies across multi-tenant BI.", projectProof: "BUMN Governance", highlight: "Data Governance" },
+  { id: "s16", name: "ETL Pipelines & SharePoint", category: "BI & Data Engineering", levelLabel: "Production Ready", application: "Automated ingestion & transformation of raw SharePoint operational data.", projectProof: "PT Semen Indonesia Tbk", highlight: "Cloud ETL" },
+  { id: "s17", name: "Google Looker Studio", category: "BI & Data Engineering", levelLabel: "Production Ready", application: "Executive reporting & interactive performance metrics visualization.", projectProof: "Executive BI", highlight: "Data Viz" },
 
   // Design & UI/UX
-  { name: "Figma UI/UX Design", category: "Design & UI/UX", levelLabel: "Core Expertise", application: "Interactive Wireframes & Component Design Systems", iconName: "Palette" },
-  { name: "Responsive Web Design", category: "Design & UI/UX", levelLabel: "Core Expertise", application: "Mobile-First Apple-Style Glassmorphic UIs", iconName: "Palette" },
-  { name: "UI/UX Blueprinting", category: "Design & UI/UX", levelLabel: "Production Ready", application: "User Flow Mapping & Interaction Specs", iconName: "Palette" },
+  { id: "s18", name: "Figma UI/UX Design", category: "Design & UI/UX", levelLabel: "Core Expertise", application: "Interactive high-fidelity wireframes and scalable component design systems.", projectProof: "UI/UX Design", highlight: "Design Systems" },
+  { id: "s19", name: "Responsive Web Design", category: "Design & UI/UX", levelLabel: "Core Expertise", application: "Mobile-first Apple-style glassmorphic user interfaces.", projectProof: "Web weaver", highlight: "Glassmorphism UI" },
+  { id: "s20", name: "UI/UX Blueprinting", category: "Design & UI/UX", levelLabel: "Production Ready", application: "User flow mapping, interaction specs, and design handoff docs.", projectProof: "Product Blueprinting", highlight: "UX Strategy" },
 
   // Strategy & Governance
-  { name: "IT Governance & Strategy", category: "Strategy & Governance", levelLabel: "Production Ready", application: "Enterprise Systems Alignment & Risk Planning", iconName: "ShieldCheck" },
-  { name: "Technical Leadership & Mentoring", category: "Strategy & Governance", levelLabel: "Core Expertise", application: "ITS Lecturer Assistant & Sponsorship Lead (80M IDR)", iconName: "ShieldCheck" },
-  { name: "Data Governance & Security", category: "Strategy & Governance", levelLabel: "Production Ready", application: "Cloud SaaS Security & Access Controls", iconName: "ShieldCheck" },
+  { id: "s21", name: "IT Governance & Strategy", category: "Strategy & Governance", levelLabel: "Production Ready", application: "Enterprise systems alignment, digital transformation & risk planning.", projectProof: "Enterprise IT", highlight: "IT Strategy" },
+  { id: "s22", name: "Technical Mentoring", category: "Strategy & Governance", levelLabel: "Core Expertise", application: "ITS Lecturer Assistant & Sponsorship Division Lead (80M IDR funding).", projectProof: "ITS & Sponsorship", highlight: "Tech Leadership" },
+  { id: "s23", name: "Data Governance & Security", category: "Strategy & Governance", levelLabel: "Production Ready", application: "Cloud SaaS security, role-based permissions, and access controls.", projectProof: "Cloud Security", highlight: "SaaS Security" },
+];
+
+// ── Rubber document stamp component ─────────────────────────────────────
+type LevelLabel = "Core Expertise" | "Production Ready" | "Enterprise Scaled";
+
+const levelStampConfig: Record<LevelLabel, { bg: string; rotate: string; shadow: string }> = {
+  "Core Expertise":    { bg: "bg-indigo-600",  rotate: "-rotate-[1.5deg]", shadow: "shadow-indigo-900/40" },
+  "Production Ready":  { bg: "bg-amber-600",   rotate: "rotate-[1deg]",    shadow: "shadow-amber-900/40"  },
+  "Enterprise Scaled": { bg: "bg-emerald-700", rotate: "-rotate-[2deg]",   shadow: "shadow-emerald-900/40" },
+};
+
+const SkillStamp: React.FC<{ label: LevelLabel; size?: "sm" | "md" }> = ({ label, size = "md" }) => {
+  const { bg, rotate, shadow } = levelStampConfig[label];
+  const outerPad = size === "sm" ? "p-[2px]"   : "p-[3px]";
+  const innerPad = size === "sm" ? "px-1.5 py-px" : "px-2.5 py-0.5";
+  const textSize = size === "sm" ? "text-[7px]"  : "text-[9px]";
+  return (
+    <span
+      className={`inline-flex flex-shrink-0 ${rotate} ${bg} ${outerPad} rounded-[5px] shadow-md ${shadow}`}
+      style={{ mixBlendMode: "multiply" }}
+    >
+      <span className={`flex items-center justify-center border border-white/50 rounded-[3px] ${innerPad}`}>
+        <span className={`font-black font-mono tracking-[0.2em] uppercase text-white ${textSize} leading-none`}>
+          {label}
+        </span>
+      </span>
+    </span>
+  );
+};
+
+const categoryPillars = [
+  { id: "Full-Stack Web", name: "Full-Stack Web", icon: Code2, accent: "from-blue-600 to-cyan-500", tag: "Frontend & Backend" },
+  { id: "AI & Machine Learning", name: "AI & Machine Learning", icon: Brain, accent: "from-purple-600 to-indigo-500", tag: "Edge AI & XAI" },
+  { id: "BI & Data Engineering", name: "BI & Data Engineering", icon: BarChart3, accent: "from-emerald-600 to-teal-500", tag: "Power BI & DAX" },
+  { id: "Design & UI/UX", name: "Design & UI/UX", icon: Palette, accent: "from-amber-500 to-orange-400", tag: "Design Systems" },
+  { id: "Strategy & Governance", name: "Strategy & Governance", icon: ShieldCheck, accent: "from-rose-600 to-pink-500", tag: "IT Strategy" },
 ];
 
 const SkillsSection: React.FC = () => {
   const [showFloatingBubble, setShowFloatingBubble] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [activeCategory, setActiveCategory] = useState<string>("Full-Stack Web");
+  const [activeSkillId, setActiveSkillId] = useState<string>("s1");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [viewMode, setViewMode] = useState<"interactive" | "compact">("interactive");
 
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -75,11 +113,7 @@ const SkillsSection: React.FC = () => {
       if (!sectionRef.current || !headerRef.current) return;
       const headerRect = headerRef.current.getBoundingClientRect();
       const sectionRect = sectionRef.current.getBoundingClientRect();
-
-      const headerScrolledPast = headerRect.top <= 100;
-      const sectionStillVisible = sectionRect.bottom >= 180;
-
-      setShowFloatingBubble(headerScrolledPast && sectionStillVisible);
+      setShowFloatingBubble(headerRect.top <= 100 && sectionRect.bottom >= 180);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -87,43 +121,27 @@ const SkillsSection: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const categories = [
-    "All",
-    "Full-Stack Web",
-    "AI & Machine Learning",
-    "BI & Data Engineering",
-    "Design & UI/UX",
-    "Strategy & Governance",
-  ];
+  // Filter skills for active category or global search
+  const isSearching = searchQuery.trim().length > 0;
+  
+  const categorySkills = isSearching
+    ? skillsData.filter((s) => s.name.toLowerCase().includes(searchQuery.toLowerCase()) || s.application.toLowerCase().includes(searchQuery.toLowerCase()))
+    : skillsData.filter((s) => s.category === activeCategory);
 
-  const filteredSkills = skillsData.filter((skill) => {
-    const matchesCategory = selectedCategory === "All" || skill.category === selectedCategory;
-    const matchesSearch =
-      skill.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      skill.application.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  // Active highlighted skill object
+  const activeSkill = skillsData.find((s) => s.id === activeSkillId) || categorySkills[0] || skillsData[0];
 
-  const getCategoryIcon = (categoryName: string) => {
-    switch (categoryName) {
-      case "Full-Stack Web":
-        return Code2;
-      case "AI & Machine Learning":
-        return Brain;
-      case "BI & Data Engineering":
-        return BarChart3;
-      case "Design & UI/UX":
-        return Palette;
-      case "Strategy & Governance":
-        return ShieldCheck;
-      default:
-        return Cpu;
-    }
+  // Auto update active skill when category changes
+  const handleCategoryClick = (catId: string) => {
+    setActiveCategory(catId);
+    setSearchQuery("");
+    const firstInCat = skillsData.find((s) => s.category === catId);
+    if (firstInCat) setActiveSkillId(firstInCat.id);
   };
 
   return (
-    <section ref={sectionRef} id="skills" className="py-20 md:py-28 relative overflow-hidden bg-transparent">
-      
+    <section ref={sectionRef} id="skills" className="relative py-20 md:py-32 overflow-hidden bg-transparent">
+
       {/* Floating Glassmorphism Header Bubble (Positioned on the LEFT side) */}
       <AnimatePresence>
         {showFloatingBubble && (
@@ -134,9 +152,7 @@ const SkillsSection: React.FC = () => {
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 380, damping: 24 }}
             className="fixed top-5 left-4 sm:left-10 max-w-[calc(100vw-180px)] sm:max-w-none z-50 pointer-events-auto cursor-pointer"
-            onClick={() => {
-              sectionRef.current?.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => sectionRef.current?.scrollIntoView({ behavior: "smooth" })}
           >
             <div className="h-[38px] sm:h-[44px] flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 rounded-full bg-[#FDFBF7]/40 dark:bg-[#1C1917]/40 text-[#2C1A11] dark:text-[#FDFBF7] backdrop-blur-md border border-white/50 dark:border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.12),inset_0_1px_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] group relative overflow-hidden">
               <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
@@ -154,175 +170,209 @@ const SkillsSection: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        
-        {/* Header */}
-        <div ref={headerRef} className="text-center mb-10 md:mb-14">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+
+        {/* ─── SECTION HEADER — Editorial Style ─── */}
+        <div ref={headerRef} className="mb-12 md:mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-mono font-medium mb-3">
-              Interactive Tech Hub & Radar
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-xs font-mono text-muted-foreground border border-border/60 px-3 py-1 rounded-full bg-card/50">
+                Interactive Engineering Matrix
+              </span>
+              <div className="h-px flex-1 bg-border/40 max-w-[80px]" />
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-3 text-foreground font-title">
-              Technical <span className="text-primary">Skills Playground</span>
+            <h2
+              className="font-title font-black leading-[0.9] tracking-[-0.03em] text-foreground"
+              style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
+            >
+              TECHNICAL
             </h2>
-            <p className="text-muted-foreground text-xs sm:text-base lg:text-lg font-subtitle max-w-2xl mx-auto leading-relaxed">
-              Explore full-stack web engineering, enterprise Power BI analytics, TensorFlow Edge ML, and IT strategy.
-            </p>
+            <div className="flex items-end gap-4 md:gap-8">
+              <h2
+                className="font-title font-black leading-[0.9] tracking-[-0.03em] text-foreground"
+                style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
+              >
+                SKILLS RADAR
+              </h2>
+              <p className="hidden md:block text-sm font-subtitle text-muted-foreground max-w-xs mb-2 leading-relaxed">
+                Explore 23 production-proven technologies organized across 5 core engineering pillars.
+              </p>
+            </div>
           </motion.div>
         </div>
 
-        {/* Live Workstation Status Terminal Banner */}
-        <div className="bg-card/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-border/80 rounded-[32px] p-6 mb-8 shadow-xl">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        {/* ─── INTERACTIVE WORKSTATION CONSOLE (2-Column Bento) ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+          {/* ── LEFT COLUMN: 5 Category Pillars Hub (4 Cols on LG) ── */}
+          <div className="lg:col-span-5 space-y-3">
             
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/30">
-                <Terminal className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="text-xs font-mono font-bold text-foreground flex items-center gap-2">
-                  <span>nzluqmanulhakim@dev-workstation:~$</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                </p>
-                <p className="text-xs text-muted-foreground font-mono">
-                  Stack Status: <span className="text-emerald-500 font-semibold">22 Production Technologies Active</span>
-                </p>
-              </div>
+            {/* Search Box */}
+            <div className="relative mb-4">
+              <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Input
+                placeholder="Search any tech (e.g. React, Power BI, DAX)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 h-11 rounded-2xl bg-card/70 dark:bg-zinc-900/70 border-border/70 text-xs font-mono focus:border-primary backdrop-blur-md shadow-sm"
+              />
             </div>
 
-            {/* Live Search & View Mode Switcher */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-              <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <Input
-                  placeholder="Filter skills (e.g. React, DAX)..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 h-10 rounded-2xl bg-surface-elevated border-border/60 text-xs font-mono focus:border-primary"
-                />
-              </div>
+            <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest px-1 mb-2">
+              Select Engineering Pillar:
+            </p>
 
-              <div className="flex items-center bg-surface-elevated p-1 rounded-2xl border border-border/60 font-mono text-xs">
-                <button
-                  onClick={() => setViewMode("interactive")}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
-                    viewMode === "interactive"
-                      ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Cards
-                </button>
-                <button
-                  onClick={() => setViewMode("compact")}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
-                    viewMode === "compact"
-                      ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Tags
-                </button>
-              </div>
-            </div>
+            {/* 5 Pillar Buttons */}
+            {categoryPillars.map((pillar) => {
+              const PillarIcon = pillar.icon;
+              const count = skillsData.filter((s) => s.category === pillar.id).length;
+              const isActive = !isSearching && activeCategory === pillar.id;
 
-          </div>
-
-          {/* Filter Pills Tabs */}
-          <div className="flex flex-wrap items-center gap-2 pt-5 border-t border-border/50 mt-5">
-            {categories.map((cat) => {
-              const IconComp = getCategoryIcon(cat);
               return (
                 <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-subtitle transition-all duration-300 ${
-                    selectedCategory === cat
-                      ? "bg-primary text-primary-foreground font-semibold shadow-md"
-                      : "bg-surface-elevated text-foreground hover:bg-surface border border-border/50"
+                  key={pillar.id}
+                  onClick={() => handleCategoryClick(pillar.id)}
+                  className={`w-full text-left p-4 md:p-5 rounded-2xl border transition-all duration-300 flex items-center justify-between group cursor-pointer ${
+                    isActive
+                      ? "bg-foreground text-background border-foreground shadow-lg scale-[1.01]"
+                      : "bg-card/70 dark:bg-zinc-900/70 backdrop-blur-md border-border/70 text-foreground hover:border-primary/40 hover:bg-primary/5"
                   }`}
                 >
-                  {cat !== "All" && <IconComp className="w-3.5 h-3.5" />}
-                  {cat}
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                      isActive ? "bg-background/20 text-background" : "bg-primary/10 text-primary group-hover:bg-primary/20"
+                    }`}>
+                      <PillarIcon className="w-5 h-5" />
+                    </div>
+                    <div className="truncate">
+                      <h4 className={`font-title font-bold text-sm md:text-base leading-tight truncate ${isActive ? "text-background" : "text-foreground"}`}>
+                        {pillar.name}
+                      </h4>
+                      <p className={`text-xs font-mono mt-0.5 truncate ${isActive ? "text-background/70" : "text-muted-foreground"}`}>
+                        {pillar.tag}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                    <span className={`text-xs font-mono font-bold px-2.5 py-1 rounded-full ${
+                      isActive ? "bg-background/20 text-background" : "bg-surface-elevated border border-border/60 text-muted-foreground"
+                    }`}>
+                      {count} Techs
+                    </span>
+                  </div>
                 </button>
               );
             })}
-          </div>
-        </div>
 
-        {/* Skill Display Grid */}
-        <AnimatePresence mode="wait">
-          {viewMode === "interactive" ? (
-            <motion.div
-              key="interactive-grid"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {filteredSkills.map((skill, idx) => {
-                const IconComp = getCategoryIcon(skill.category);
-                return (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: idx * 0.04 }}
-                    className="bg-card/85 dark:bg-zinc-900/85 backdrop-blur-md border border-border/70 hover:border-primary/50 rounded-[28px] p-6 shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <div className="flex items-center gap-2 font-subtitle text-xs font-semibold text-primary">
-                          <div className="p-1.5 rounded-xl bg-primary/10 text-primary">
-                            <IconComp className="w-4 h-4" />
-                          </div>
-                          <span>{skill.category}</span>
-                        </div>
-                        <Badge variant="outline" className="text-[10px] font-mono px-2.5 py-0.5 rounded-full border-border/60">
-                          {skill.levelLabel}
-                        </Badge>
+            {/* Terminal Status Bar */}
+            <div className="p-4 rounded-2xl bg-card/50 dark:bg-zinc-900/50 border border-border/50 backdrop-blur-sm flex items-center gap-3 font-mono text-xs text-muted-foreground">
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+              <span>Status: <strong className="text-foreground">23 Skills Production Active</strong></span>
+            </div>
+
+          </div>
+
+          {/* ── RIGHT COLUMN: Active Category Spotlight & Interactive Matrix (7 Cols on LG) ── */}
+          <div className="lg:col-span-7 space-y-6">
+
+            {/* Active Skill Hero Spotlight Banner */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSkill.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className="bg-card/85 dark:bg-zinc-900/85 backdrop-blur-xl border-2 border-primary/30 rounded-[28px] p-6 md:p-8 shadow-xl relative overflow-hidden group"
+              >
+                {/* Background ambient radial highlight */}
+                <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold">
+                      {activeSkill.category}
+                    </span>
+                    <span className="text-xs font-mono text-muted-foreground">•</span>
+                    <span className="text-xs font-mono text-muted-foreground">{activeSkill.highlight}</span>
+                  </div>
+
+                  <SkillStamp label={activeSkill.levelLabel} />
+                </div>
+
+                <h3 className="font-title font-black text-2xl md:text-3xl text-foreground mb-3 leading-tight">
+                  {activeSkill.name}
+                </h3>
+
+                <p className="text-sm font-subtitle text-muted-foreground leading-relaxed mb-5">
+                  {activeSkill.application}
+                </p>
+
+                <div className="flex items-center justify-between pt-4 border-t border-border/50 text-xs font-mono">
+                  <div className="flex items-center gap-2 text-primary font-bold">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <span>Applied @ {activeSkill.projectProof}</span>
+                  </div>
+                  <span className="text-muted-foreground">Production Proven</span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Interactive Skill Tiles Matrix */}
+            <div>
+              <div className="flex items-center justify-between mb-3 px-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                  {isSearching ? `Search Results (${categorySkills.length})` : `${activeCategory} Skills Matrix:`}
+                </span>
+                <span className="text-xs font-mono text-muted-foreground">Click tile to spotlight</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {categorySkills.map((skill) => {
+                  const isSelected = activeSkill.id === skill.id;
+
+                  return (
+                    <motion.div
+                      key={skill.id}
+                      onClick={() => setActiveSkillId(skill.id)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between group ${
+                        isSelected
+                          ? "bg-primary/10 border-primary shadow-md"
+                          : "bg-card/60 dark:bg-zinc-900/60 backdrop-blur-md border-border/60 hover:border-primary/40 hover:bg-card/90"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <h4 className={`font-title font-bold text-sm leading-tight transition-colors ${
+                          isSelected ? "text-primary" : "text-foreground group-hover:text-primary"
+                        }`}>
+                          {skill.name}
+                        </h4>
+                        <SkillStamp label={skill.levelLabel} size="sm" />
                       </div>
 
-                      <h3 className="text-lg md:text-xl font-bold font-title text-foreground group-hover:text-primary transition-colors leading-tight mb-2">
-                        {skill.name}
-                      </h3>
-
-                      <p className="text-xs text-muted-foreground leading-relaxed font-subtitle">
-                        <span className="font-semibold text-foreground">Practical Use:</span> {skill.application}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="compact-cloud"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="bg-card/85 dark:bg-zinc-900/85 backdrop-blur-xl border border-border/80 rounded-[32px] p-8 shadow-xl"
-            >
-              <div className="flex flex-wrap gap-2.5">
-                {filteredSkills.map((skill) => (
-                  <Badge
-                    key={skill.name}
-                    variant="secondary"
-                    className="px-4 py-2 text-xs md:text-sm font-mono font-medium rounded-2xl bg-surface-elevated hover:bg-primary/10 text-foreground hover:text-primary border border-border/60 hover:border-primary/50 transition-all cursor-pointer shadow-xs"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-primary mr-1.5 inline" />
-                    {skill.name}
-                  </Badge>
-                ))}
+                      <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground pt-2 border-t border-border/40">
+                        <span className="truncate">{skill.highlight}</span>
+                        <ArrowUpRight className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${
+                          isSelected ? "text-primary translate-x-0.5 -translate-y-0.5" : "text-muted-foreground group-hover:text-primary"
+                        }`} />
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
     </section>

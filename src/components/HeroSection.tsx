@@ -94,11 +94,7 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="flex items-center justify-between mb-8 md:mb-12"
         >
-          {/* Available badge */}
-          <div className="flex items-center gap-2 bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono px-4 py-1.5 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Available for work — 2026
-          </div>
+          
 
           {/* Social + location pills */}
           <div className="hidden sm:flex items-center gap-2">

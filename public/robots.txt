@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://portofolio-naufanzaki.pages.dev/sitemap.xml
+Sitemap: https://naufanzaki.com/sitemap.xml

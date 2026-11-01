@@ -41,7 +41,7 @@ const HeroSection: React.FC = () => {
   }, []);
 
   const stats = [
-    { value: '3.66', label: 'GPA Score', sub: '/ 4.00' },
+    { value: '3.68', label: 'GPA Score', sub: '/ 4.00' },
     { value: '2+', label: 'Enterprise Internships', sub: 'BUMN-level' },
     { value: '10+', label: 'Projects Shipped', sub: 'Production-ready' },
     { value: 'Top', label: 'GemasTIK 2024', sub: 'National Finalist' },
